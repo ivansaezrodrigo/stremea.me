@@ -90,11 +90,51 @@ const deleteUser = async (req, res) => {
     }
 };
 
+// Metodo para darse de baja de la newsletter
+const unsubscribeNewsletter = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const user = await modeloUser.findByPk(userId);
+        if (user) {
+            await user.update({
+                newsletter: false
+            });
+            res.status(200).send('Usuario dado de baja de la newsletter');
+        } else {
+            res.status(404).send('Usuario no encontrado');
+        }
+    } catch (error) {
+        res.status(500).send('Error al darse de baja de la newsletter');
+    }
+};
+
+// Metodo para darse de alta de la newsletter
+const subscribeNewsletter = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const user = await modeloUser.findByPk(userId);
+        if (user) {
+            await user.update({
+                newsletter: true
+            });
+            res.status(200).send('Usuario dado de alta de la newsletter');
+        } else {
+            res.status(404).send('Usuario no encontrado');
+        }
+    } catch (error) {
+        res.status(500).send('Error al darse de alta de la newsletter');
+    }
+};
+
+
+
 
 module.exports = {
     createUser,
     getAllUsers,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    unsubscribeNewsletter,
+    subscribeNewsletter
 };

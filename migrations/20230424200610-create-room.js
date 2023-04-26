@@ -23,7 +23,7 @@ module.exports = {
         onUpdate: 'CASCADE'
       },
       title: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false
       },
       description: {

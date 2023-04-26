@@ -10,11 +10,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       alias: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         allowNull: true
       },
       email: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(150),
         allowNull: false
       },
       password: {
@@ -22,19 +22,19 @@ module.exports = {
         allowNull: false
       },
       rol: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         allowNull: false
       },
       twitter: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         allowNull: true
       },
       instagram: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         allowNull: true
       },
       twitch: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         allowNull: true
       },
       url: {

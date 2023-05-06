@@ -56,8 +56,8 @@ function isValidNanoid(nanoid) {
 
 // Función para validar la contraseña
 function isValidPassword(password) {
-  // expresión regular para validar la contraseña
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+  // expresión regular para validar la contraseña Comprueba que la longitud de la contraseña sea mayor o igual a 6 caracteres y no haya inyección de código
+  const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{6,}$/;
   if (password.length < 6) {
     // Comprueba que la longitud de la contraseña sea mayor o igual a 6 caracteres
     return false;

@@ -6,16 +6,35 @@ const router = express.Router();
 const controladorUser = require('../controllers/UserController');
 const controladorRoom = require('../controllers/RoomController');
 const controladorToken = require('../controllers/TokenController');
+const vista = require('../controllers/ViewController');
 
-// Ruta raiz
-router.get('/', (req, res) => {
-    res.send('Futuro stremea.me!');
-});
+// importamos el middleware de autenticación
+const {isAuth} = require('../middlewares/isAuth');
+
+
+// Vistas
+router.get('/', vista.vistaLanding);
+router.get('/cookies', vista.vistaCookies);
+router.get('/login', vista.vistaLogin);
+router.get('/register', vista.vistaRegister);
+router.get('/perfil', vista.vistaPerfil);
+router.get('/sayonara', vista.vistaEliminarCuenta);
+router.get('/reset-password', vista.vistaCambioPassword);
+router.get('/miss-password', vista.vistaOlvidoPassword);
+router.get('/banned', vista.vistaBanned);
+router.get('/kicked', vista.vistaKicked);
+router.get('/recovery', vista.vistaRecovery);
+router.get('/recovered', vista.vistaRecovered);
+router.get('/unsuscribe', vista.vistaUnsuscribe);
+router.get('/new', vista.vistaStreaming);
+
+
 
 // -Ruta para darse de alta en la plataforma 
 router.post('/signup', controladorUser.createUser);
 
 // Ruta para loguearse en la plataforma
+router.post('/login', controladorUser.loginUser);
 
 // -Ruta para darse de baja de la newsletter
 router.post('/unsuscribe', controladorUser.unsubscribeNewsletter);
@@ -24,7 +43,7 @@ router.post('/unsuscribe', controladorUser.unsubscribeNewsletter);
 router.post('/suscribe', controladorUser.subscribeNewsletter);
 
 // Ruta para obtener un usuario por su id
-//router.get('/user/:id', controladorUser.getUserById);
+router.get('/user/:id', isAuth ,controladorUser.getUserById);
 
 // -Ruta para actualizar un usuario
 router.put('/user', controladorUser.updateUser);
@@ -59,5 +78,9 @@ router.put('/private', controladorRoom.makePrivate);
 // -Ruta para banear a un usuario de una Room
 router.put('/ban', controladorRoom.banUser);
 
+// - Ruta desconocida
+router.use((req, res, next) => {
+    res.status(404).render('404', { title: '404' });
+});
 
 module.exports = router;

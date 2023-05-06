@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       alias: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(10),
         allowNull: true
       },
       email: {

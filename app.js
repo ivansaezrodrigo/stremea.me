@@ -2,9 +2,14 @@
 const cors = require('cors');
 // Importamos express
 const express = require('express');
+// Importamos las variables de entorno
+require('dotenv').config();
 
 // Importamos path
 const path = require('path');
+
+// Importamos la dependencia de cookies
+const cookieParser = require('cookie-parser');
 
 // Importamos express-ejs-layouts
 const expressLayouts = require('express-ejs-layouts');
@@ -15,6 +20,16 @@ const router2 = require('./routes/routes2.js');
 
 // Usamos express
 const app = express();
+
+// Importamos body-parser
+const bodyparser = require('body-parser');
+
+// Usamos cookie-parser
+app.use(cookieParser());
+
+// Usamos body-parser
+app.use(bodyparser.urlencoded({extended: true}));
+app.use(bodyparser.json());
 
 // Usamos ejs como motor de plantillas
 app.set('view engine', 'ejs');
@@ -39,12 +54,13 @@ app.use('/', router);
 // app.use(router2.router);
 
 // Puerto
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Escuchamos el puerto
 app.listen(port, () => {
     console.log(`Server is running on port http://localhost:${port}`);
 }
 );
+
 
 

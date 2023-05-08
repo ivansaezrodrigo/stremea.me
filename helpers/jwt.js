@@ -8,7 +8,7 @@ function generateToken(data, expiresIn) {
   //return jwt.sign(data, process.env.SECRET_KEY, { expiresIn: expiresIn});
   return jwt.sign(
     data,
-    "process.env.SECRET_KEY",
+    process.env.SECRET_KEY,
     {
       expiresIn: expiresIn,
     }

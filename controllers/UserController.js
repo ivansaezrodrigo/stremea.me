@@ -17,47 +17,74 @@ const { generateToken } = require("../helpers/jwt");
 // importamos jsonwebtoken
 const jwt = require("jsonwebtoken");
 
+// importamos el joi para validar los campos
+const Joi = require("@hapi/joi");
 
 // Metodos para el CRUD
 
 // Metodo para crear un usuario
-
 const createUser = async (req, res) => {
-  try {
-    // Comprobamos que el usuario no existe
-    const user = await modeloUser.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
-    if (user) {
-      // Si el usuario existe devolvemos un error
-      res.status(400).send("El usuario ya existe");
-    } else if (!isValidEmail(req.body.email)) {
-      // Si el email no es valido
+  // Comprobamos que el usuario no existe
+  const user = await modeloUser.findOne({
+    where: {
+      email: req.body.email,
+    },
+  });
 
-      res.status(400).send("El email no es valido");
-    } else if (!isValidPassword(req.body.password)) {
-      // Si el password no es valido
-      res.status(400).send("El password no es valido");
+  if (user) {
+    // Devolvemos un error con el mismo formato que el joi
+    const error = {
+      details: [
+        {
+          message: "El usuario ya existe.",
+          path: ["email"],
+          type: "any.empty",
+          context: {
+            label: "email",
+            value: req.body.email,
+            key: "email",
+          },
+        },
+      ],
+    };
+    res.render("register", { title: "Registro", errors: error });
+  } else {
+    // Validamos los campos del formulario de registro
+    const schemaRegister = Joi.object({
+      email: Joi.string().email().required(),
+      password: Joi.string().min(8).required(),
+      password2: Joi.ref("password"),
+    });
+
+    // Validamos los datos
+    const { error } = schemaRegister.validate(req.body);
+
+    // Si no hay errores creamos el usuario
+    if (!error) {
+      try {
+        // Si el usuario no existe y el email y password son validos
+        const passwordEncriptado = bcrypt.hashSync(req.body.password, 10);
+        // Creamos el usuario
+        const newUser = await modeloUser.create({
+          email: req.body.email.toLowerCase(),
+          password: passwordEncriptado,
+          rol: "user",
+          newsletter: true,
+        });
+        // Enviamos el usuario creado como respuesta
+        res.status(201).send(newUser);
+      } catch (error) {
+        console.log(error);
+        res.status(500).send("Error al crear el usuario");
+      }
     } else {
-      // Si el usuario no existe y el email y password son validos
-      const passwordEncriptado = bcrypt.hashSync(req.body.password, 10);
-      // Creamos el usuario
-      const newUser = await modeloUser.create({
-        email: req.body.email.toLowerCase(),
-        password: passwordEncriptado,
-        rol: "user",
-        newsletter: true,
-      });
-      // Devolvemos el usuario creado
-      res.status(201).send(newUser);
+      // Si hay errores en la validación, renderizamos la página de registro con los errores
+      res.render("register", { title: "Registro", errors: error.details });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(400).send("Error al crear el usuario");
   }
 };
+
+
 
 // Metodo para obtener todos los usuarios
 const getAllUsers = async (req, res) => {
@@ -239,14 +266,25 @@ const changeRol = async (req, res) => {
 
 // Metodo para loguearse 
 const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+  // Validamos los campos del formulario de login
+  const schemaLogin = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required(),
+  });
 
-    // comprobamos que el email es valido
-    if (!isValidEmail(email)) {
-      res.status(400).send("El email no es valido");
-      return;
-    } else {
+  // Validamos los datos
+  const {error} = schemaLogin.validate(req.body);
+
+  if (error) {
+    // si hay errores devolvemos el formulario con los errores
+    return res.render("login", { title: "Iniciar sesión", errors: error.details });
+
+  } else {
+
+    try {
+      const { email, password } = req.body;
+
+      // pasamos el email a minusculas
       const emailMinus = email.toLowerCase();
       // comprobamos que el email existe en la bbdd
       const user = await modeloUser.findOne({ where: { email: emailMinus } });
@@ -261,18 +299,25 @@ const loginUser = async (req, res) => {
           };
           const token = generateToken(payload, "4h");
 
-          res.status(200).send({ token: token });
+          res.cookie("jwt", token, { maxAge: 4 * 60 * 60 * 1000 , httpOnly: true });
+          res.render("landing", { title: "Iniciar sesión", token: token });
         } else {
-          res.status(400).send("Password incorrecto");
+          // si el password no es correcto devolvemos un error
+          res.render("login", { title: "Iniciar sesión", errors: {message: "El password no es correcto"} });
         }
       } else {
-        res.status(404).send("Usuario no encontrado");
+        // si el usuario no existe devolvemos un error
+        res.render("login", { title: "Iniciar sesión", errors: {message: "Usuario no encontrado"} });
       }
+      
+    } catch (error) {
+      console.log(error);
+      res.status(400).send("Error al loguearse");
     }
-  } catch (error) {
-    console.log(error);
-    res.status(400).send("Error al loguearse");
+
   }
+
+
 };
 
 

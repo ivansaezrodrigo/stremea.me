@@ -4,7 +4,7 @@ function isValidEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // Comprueba que la longitud del email sea menor o igual a 150 caratceres
-  if (email.length > 150) {
+  if (email.length > 150 && email.length < 0) {
     return false;
   }
   return regex.test(email); // Devuelve true si el email es válido, de lo contrario, devuelve false

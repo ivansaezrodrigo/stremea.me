@@ -12,20 +12,20 @@ const vista = require('../controllers/ViewController');
 const {isAuth} = require('../middlewares/isAuth');
 
 
-// Vistas
+// Rutas y vistas
 router.get('/', vista.vistaLanding);
 router.get('/cookies', vista.vistaCookies);
 router.get('/login', vista.vistaLogin);
-router.get('/register', vista.vistaRegister);
-router.get('/perfil', vista.vistaPerfil);
-router.get('/sayonara', vista.vistaEliminarCuenta);
+router.get('/signup', vista.vistaRegister);
+router.get('/perfil', isAuth , vista.vistaPerfil);
+router.get('/sayonara', isAuth , vista.vistaEliminarCuenta);
 router.get('/reset-password', vista.vistaCambioPassword);
 router.get('/miss-password', vista.vistaOlvidoPassword);
 router.get('/banned', vista.vistaBanned);
 router.get('/kicked', vista.vistaKicked);
 router.get('/recovery', vista.vistaRecovery);
 router.get('/recovered', vista.vistaRecovered);
-router.get('/unsuscribe', vista.vistaUnsuscribe);
+router.get('/unsuscribe', isAuth , vista.vistaUnsuscribe);
 router.get('/new', vista.vistaStreaming);
 
 

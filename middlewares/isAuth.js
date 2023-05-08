@@ -1,31 +1,38 @@
-// Importamos la dependencia de cookies
-const cookies = require("cookie-parser");
-
 // Middleware para comprobar si el usuario está autenticado
+
+// Importamos el modelo de usuario
+const modeloUser = require("../models").User;
+
+// Importamos jwt
+const jwt = require("jsonwebtoken");
 
 const isAuth = async (req, res, next) => {
   try {
-    // Importamos las cookies
-    const token = req.cookies.token;
+    // Importamos las cookies con cookie parser
+    const token = req.cookies.jwt;
     
-
-    // Comprobamos si existe la cabecera de autorización
-    //const token = req.headers.authorization.split(" ")[1];
+    // si no existe el token redirigimos al login
+    if (!token) {
+      return res.redirect("/login")
+    }
 
     // Verificamos el token
-    const payload = jwt.verify(token, "process.env.SECRET_KEY");
-    // Buscamos el usuario en la bbdd
-    const user = await modeloUser.findByPk(payload.userId);
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+
+    // Buscamos el usuario en la base de datos
+    const user = await modeloUser.findByPk(decoded.userId);
+    console.log(token,user);
     if (user) {
       // Guardamos el usuario en el objeto request
       req.user = user;
       // Pasamos al siguiente middleware
-      next();
+      return next();
     } else {
-      res.status(401).send("Usuario no autenticado");
+      return res.redirect("/login")
     }
   } catch (error) {
-    res.status(401).send("Usuario no autenticado");
+    console.log(error);
+    // res.redirect("/login")
   }
 };
 

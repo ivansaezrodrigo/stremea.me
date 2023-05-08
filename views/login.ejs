@@ -1,3 +1,4 @@
+<% var errors = Array.isArray(locals.errors) ? locals.errors : [{message:''}] %>
 <main class="row-span-4 bg-gradient-to-t from-secondary-100 to-secondary-200 min-h-screen flex flex-col">
     <div class="min-h-screen flex flex-col justify-self-center content-center justify-between pt-14 ">
         <div class="flex justify-center self-center lg:flex-row sm:flex-col flex-col lg:pt-44">
@@ -10,16 +11,22 @@
             <div class="flex justify-center self-center flex-col lg:w-1/2
             font-medium bg-primary-100 py-3 px-6 rounded-3xl border-b-4 border-primary-300">
             <span class="text-4xl font-black leading-none text-black select-none logo self-center">Stremea.me</span>
-            <form class="p-5" action="post">
+            <form class="p-5" action="/login" method="post">
                 <div class="flex flex-col pb-2">
                     <label class="rounded-md text-base font-bold text-black" for="email">Correo</label>
                     <input class="border border-gray-200 rounded-lg pl-2 py-2
                     font-medium bg-white px-6 border-b-4 border-primary-300" type="email" placeholder="Introduce tu correo" name="email" id="email">
+                    <% if(errors.path && errors[0].path == 'email') { %>
+                        <p class="text-red-500"><%= errors[0].message %></p>
+                    <% } %>
                 </div>
                 <div class="flex flex-col">
                     <label class="rounded-md text-base font-bold text-black" for="password">Contraseña</label>
                     <input class="border border-gray-200 rounded-lg pl-2 py-2
                     font-medium bg-white px-6 border-b-4 border-primary-300" type="password" placeholder="Introduce tu contraseña" name="password" id="password">
+                    <% if(errors.path && errors[0].path == 'password') { %>
+                        <p class="text-red-500"><%= errors[0].message %></p>
+                    <% } %>
                 </div>
                 <button class="mt-2 w-full text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-3
                 py-2 rounded-lg transition duration-300  

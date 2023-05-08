@@ -1,30 +1,42 @@
+<% var errors = Array.isArray(locals.errors) ? locals.errors : [{message:''}] %>
+<% console.log(errors[0]) %>
 <main class="row-span-4 bg-gradient-to-t from-secondary-100 to-secondary-200 min-h-screen flex flex-col">
     <div class="min-h-screen flex flex-col justify-self-center content-center justify-between pt-14 ">
-        <div class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pt-28 md:pt-36 lg:pt-44 w-full">
+        <div class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pt-28 md:pt-36 lg:pt-44 w-full z-10">
             <div class="flex justify-center self-center flex-col 
             font-medium bg-primary-100 py-3 w-2/3 lg:w-2/3 max-w-5xl rounded-3xl border-b-4 border-primary-300 p-10">
             <span class="text-4xl font-black leading-none text-black select-none logo pb-5">Stremea.me</span>
-            <form class="flex flex-col " action="post">
+            <form class="flex flex-col" action="/signup" method="post">
                 <div class="flex flex-col pb-2">
                     <label class="rounded-md text-base font-bold text-black w-2/3" for="email">Correo</label>
                     <input class="border border-gray-200 rounded-lg pl-2 py-2
-                    font-medium bg-white px-6 border-b-4 border-primary-300" type="email" placeholder="Introduce tu correo" name="email" id="email">
+                    font-medium bg-white px-6 border-b-4 border-primary-300" type="email" <% if(errors[0].context != undefined) {%> value="<%= errors[0].context.value %>" <% } %> placeholder="Introduce tu correo" name="email" id="email">
+                    <% if(errors && errors[0].path == 'email') { %>
+                        <p class="text-red-500"><%= errors[0].message %></p>
+                    <% } %>
+
                 </div>
                 <div class="flex flex-col sm:flex-row w-full">
                     <div class="flex flex-col w-full sm:w-1/2 sm:pr-2">
-                        <label class="rounded-md text-base font-bold text-black" for="email">Contraseña</label>
+                        <label class="rounded-md text-base font-bold text-black" for="password">Contraseña</label>
                         <input class="border border-gray-200 rounded-lg pl-2 py-2
-                        font-medium bg-white px-6 border-b-4 border-primary-300" type="email" placeholder="Introduce tu correo" name="email" id="email">
+                        font-medium bg-white px-6 border-b-4 border-primary-300" type="password" placeholder="Introduce tu contraseña" name="password" id="password">
+                        <% if(errors && errors[0].path == 'password') { %>
+                            <p class="text-red-500"><%= errors[0].message %></p>
+                        <% } %>
                     </div>
                     <div class="flex flex-col w-full sm:w-1/2 sm:pl-2">
-                        <label class="rounded-md text-base font-bold text-black" for="email">Contraseña</label>
+                        <label class="rounded-md text-base font-bold text-black" for="password2">Contraseña</label>
                         <input class="border border-gray-200 rounded-lg pl-2 py-2
-                        font-medium bg-white px-6 border-b-4 border-primary-300" type="email" placeholder="Introduce tu correo" name="email" id="email">
+                        font-medium bg-white px-6 border-b-4 border-primary-300" type="password" placeholder="Repite tu contraseña" name="password2" id="password2">
+                        <% if(errors && errors[0].path == 'password2') { %>
+                            <p class="text-red-500"><%= errors[0].message %></p>
+                        <% } %>
                     </div>
                 </div>
                 <button class="my-5 text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-6
                 py-2 rounded-lg transition duration-300  
-                border-b-4 border-primary-300 self-center w-full sm:w-1/2" href="">Registrarse</button>
+                border-b-4 border-primary-300 self-center w-full sm:w-1/2" type="submit">Registrarse</button>
             </form>
             <hr class="w-48 h-0.5 mx-auto my-1 bg-gray-900 border-0 rounded ">
             <span class="self-center font-normal text-gray-800"><i>O continúa con:</i></span>

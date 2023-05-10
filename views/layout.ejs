@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,7 +37,7 @@
                 100: "#282828",
                 200: "#000",
               },
-              chat:{
+              chat: {
                 v1: "#FD5D76",
                 v2: "#E98862",
                 v3: "#F2C06D",
@@ -51,21 +50,37 @@
                 v10: "#9F63E0",
                 v11: "#E063A3",
                 v12: "#E06363",
-              }
+              },
             },
           },
         },
       };
     </script>
+    <script>
+      // si no existe una entrada en sesion storage que almacene el id de la imagen de perfil
+      if (!sessionStorage.getItem("idImagenPerfil")) {
+        // se crea una entrada en sesion storage que almacene el id de la imagen de perfil con la cantidad de imagenes que hay en la carpeta imt/avatars/
+        sessionStorage.setItem(
+          "idImagenPerfil",
+          Math.floor(Math.random() * 10) + 1
+        );
+      }
+    </script>
   </head>
 
-<body class="flex flex-col">
-    <%- include('partials/nav') %>
+  <body class="flex flex-col">
+    <%- include('partials/nav') %> <%- body %> <%- include('partials/footer') %>
+  </body>
 
-
-    <%- body %>
-
-    <%- include('partials/footer') %>
-</body>
-
+  <script>
+    // se obtienen todas las imagenes con la clase imagenPerfil
+    let imagenesPerfil = document.querySelectorAll(".imagenPerfil");
+    console.log(imagenesPerfil);
+    // se recorren todas las imagenes con la clase imagenPerfil y se les asigna el id de la imagen de perfil
+    imagenesPerfil.forEach((imagen) => {
+      imagen.src = `img/avatars/${sessionStorage.getItem(
+        "idImagenPerfil"
+      )}.jpg`;
+    });
+  </script>
 </html>

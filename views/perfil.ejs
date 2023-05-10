@@ -3,7 +3,7 @@
         <div class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pt-28 md:pt-36 lg:pt-44 w-full">
             <div class="border-gray-950 border-2 flex justify-center self-center flex-col 
             font-medium bg-primary-100 py-3 w-2/3 lg:w-2/3 max-w-5xl rounded-3xl border-b-4 border-primary-300 p-4 sm:p-10">
-                <form class="flex flex-col " method="put" action="/user">
+                <form id="formPerfil" class="flex flex-col " method="put" action="/user">
                     
                     <div class="border-gray-950 flex justify-center self-center flex-col 
                     font-medium bg-primary-100 py-3 w-full rounded-3xl border-2 border-b-4 border-primary-300 p-2 sm:p-5 mb-5">
@@ -14,13 +14,25 @@
                                     font-medium bg-white px-6 border-b-4 border-primary-300"  <% if(user.alias != undefined) {%> value="<%= user.alias %>" <% } %>  type="text" placeholder="Introduce tu correo" name="alias" id="alias">
                                 </div>
                                 <div class="flex flex-col md:flex-row w-fit">
-                                    <div class="flex flex-col max-w-80 w-fit pr-5 sm:pl-2">
+                                    <!-- <div class="flex flex-col max-w-80 w-fit pr-5 sm:pl-2">
                                         <label class="text-2xl rounded-md my-1.5 font-bold text-black w-fit" for="image">Imagen</label>
                                         <input class="hidden border border-gray-200 rounded-lg pl-2 py-2
                                         font-medium bg-white px-6 border-b-4 border-primary-300" type="text" placeholder="Id imagen" name="image" id="image">
+                                    </div> -->
+                                    
+                                    <div class="flex flex-col h-20 mr-3">
+                                        <label class="text-2xl rounded-md my-1.5 font-bold text-black w-fit" for="image">Imagen</label>
+                                        <div id="idImagenPerfilBtn"
+                                            class="flex justify-center w-20 h-11 mr-2 items-center bg-white rounded-lg border-2 border-b-4 active:mt-1 active:border-b-0 border-primary-300"
+                                        >
+                                            <a href="#">
+                                            <img src="img/d20.svg" alt="Icono de dado" />
+                                            </a>
+                                        </div>
                                     </div>
-                                    <img class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md"
-                                    src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png" alt="">
+                                    
+                                    <img class="imagenPerfil h-20 w-20 rounded-full bg-primary-100 self-center shadow-md"
+                                    src="img/avatars/0.jpg" alt="Imagen de perfil">
                                 </div>
                             </div>
                             <span class="text-center w-full pt-4">No sabíamos cómo <b>llamar tu atención</b> para que nos apoyases en patreon <br>así que <b>te hemos dedicado un alias en Japonés</b> y un avatar <i>un poco troll</i>..</span>
@@ -69,16 +81,35 @@
 </main>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    const form = document.querySelector('form');
+
+    // al clicar en idImagenPerfilBtn se reasigna de forma aleatoria la imagen de perfil
+    document.getElementById('idImagenPerfilBtn').addEventListener('click', () => {
+
+        let id = Math.floor(Math.random() * 10) + 1;
+        // mientras el id no sea el mismo que el que ya tiene
+        while (id == sessionStorage.getItem('idImagenPerfil')) {
+            id = Math.floor(Math.random() * 10) + 1;
+        }
+        // se cambia en sesion storage el valor de la imagen de perfil
+        sessionStorage.setItem('idImagenPerfil', id);
+        // se recarga la pagina
+        location.reload();
+    });
+
+    // Se obtiene el formulario
+    const form = document.getElementById('formPerfil');
+
+    // Se le asigna un evento al formulario
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      const alias = document.querySelector('#alias').value;
-      const image = document.querySelector('#image').value;
-      const twitter = document.querySelector('#twitter').value;
-      const twitch = document.querySelector('#twitch').value;
-      const url = document.querySelector('#url').value;
-      const instagram = document.querySelector('#instagram').value;
-  
+      const alias = document.getElementById('alias').value;
+      const image = document.getElementById('image').value;
+      const twitter = document.getElementById('twitter').value;
+      const twitch = document.getElementById('twitch').value;
+      const url = document.getElementById('url').value;
+      const instagram = document.getElementById('instagram').value;
+        
+      // Se envían los datos al servidor
       axios.put('/user', {
         alias,
         image,

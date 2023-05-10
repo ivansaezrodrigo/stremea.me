@@ -21,10 +21,8 @@ const isAuth = async (req, res, next) => {
 
     // Buscamos el usuario en la base de datos
     const user = await modeloUser.findByPk(decoded.userId);
-    console.log(token,user);
+    //console.log(token,user);
     if (user) {
-      // Guardamos el usuario en el objeto request
-      req.user = user;
       // Pasamos al siguiente middleware
       return next();
     } else {
@@ -32,7 +30,7 @@ const isAuth = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    // res.redirect("/login")
+    res.redirect("/login")
   }
 };
 

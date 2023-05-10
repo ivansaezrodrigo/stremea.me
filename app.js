@@ -27,6 +27,12 @@ const bodyparser = require('body-parser');
 // Usamos cookie-parser
 app.use(cookieParser());
 
+// Agrega middleware para exponer las cookies a las vistas
+app.use((req, res, next) => {
+    res.locals.cookies = req.cookies;
+    next();
+});
+
 // Usamos body-parser
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
@@ -49,9 +55,6 @@ app.use(expressLayouts);
 
 // Rutas
 app.use('/', router);
-
-// Rutas2
-// app.use(router2.router);
 
 // Puerto
 const port = process.env.PORT || 3000;

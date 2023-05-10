@@ -1,5 +1,9 @@
 // importamos el modelo
 const modeloUser = require("../models").User;
+
+// Importamos las variables de entorno
+require("dotenv").config({ path: "../.env" });
+
 // importamos el helper de validacion
 const {
   isValidEmail,
@@ -64,15 +68,44 @@ const createUser = async (req, res) => {
       try {
         // Si el usuario no existe y el email y password son validos
         const passwordEncriptado = bcrypt.hashSync(req.body.password, 10);
+
+        // Importamos el array de usuarios aleatorio de la variable de entorno
+        const users = process.env.USERS.split(",");
+
         // Creamos el usuario
         const newUser = await modeloUser.create({
+          alias: users[Math.floor(Math.random() * users.length)],
           email: req.body.email.toLowerCase(),
           password: passwordEncriptado,
           rol: "user",
           newsletter: true,
         });
-        // Enviamos el usuario creado como respuesta
-        res.status(201).send(newUser);
+
+        try {
+          // Buscamos el usuario en la base de datos
+          const user = await modeloUser.findOne({
+            where: {
+              email: req.body.email,
+            },
+          });
+
+          // creamos el token
+          const payload = {
+            userId: user.id,
+            email: user.email,
+            rol: user.rol,
+          };
+          const token = generateToken(payload, "4h");
+
+          res.cookie("jwt", token, {
+            maxAge: 4 * 60 * 60 * 1000,
+            httpOnly: true,
+          });
+          res.redirect("/");
+        } catch (error) {
+          console.log(error);
+          res.status(400).send("Error al loguearse");
+        }
       } catch (error) {
         console.log(error);
         res.status(500).send("Error al crear el usuario");
@@ -83,8 +116,6 @@ const createUser = async (req, res) => {
     }
   }
 };
-
-
 
 // Metodo para obtener todos los usuarios
 const getAllUsers = async (req, res) => {
@@ -113,8 +144,20 @@ const getUserById = async (req, res) => {
 // Metodo para actualizar un usuario
 const updateUser = async (req, res) => {
   try {
-    // busca usuario por su id
-    const user = await modeloUser.findByPk(req.body.id);
+    // Importamos las cookies con cookie parser
+    const token = req.cookies.jwt;
+
+    // si no existe el token redirigimos al login
+    if (!token) {
+      return res.redirect("/login");
+    }
+
+    // Verificamos el token
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+
+    // Buscamos el usuario en la base de datos
+    const user = await modeloUser.findByPk(decoded.userId);
+
     //si existe el usuario actualiza los campos que han sido modificados
     if (user) {
       // comprobamos que el password es distinto al que ya tiene el usuario
@@ -198,14 +241,24 @@ const updateUser = async (req, res) => {
 // Metodo para borrar un usuario
 const deleteUser = async (req, res) => {
   try {
-    const user = await modeloUser.findByPk(req.body.id);
-    if (user) {
-      await user.destroy();
-      res.status(200).send("Usuario borrado");
-    } else {
-      res.status(404).send("Usuario no encontrado");
-    }
+    const token = req.cookies.jwt;
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await modeloUser.findByPk(decoded.userId);
+
+    if (user.alias == req.body.aliasDelete) {
+
+        user.destroy();
+        // borramos la cookie
+        res.clearCookie("jwt");
+        res.status(200).send("Usuario borrado");
+
+        // res.status(200).send("Usuario borrado");
+      } else {
+        res.redirect("/sayonara");
+      }
+
   } catch (error) {
+    console.log(error);
     res.status(400).send("Error al borrar el usuario");
   }
 };
@@ -264,7 +317,7 @@ const changeRol = async (req, res) => {
   }
 };
 
-// Metodo para loguearse 
+// Metodo para loguearse
 const loginUser = async (req, res) => {
   // Validamos los campos del formulario de login
   const schemaLogin = Joi.object({
@@ -273,14 +326,15 @@ const loginUser = async (req, res) => {
   });
 
   // Validamos los datos
-  const {error} = schemaLogin.validate(req.body);
+  const { error } = schemaLogin.validate(req.body);
 
   if (error) {
     // si hay errores devolvemos el formulario con los errores
-    return res.render("login", { title: "Iniciar sesión", errors: error.details });
-
+    return res.render("login", {
+      title: "Iniciar sesión",
+      errors: error.details,
+    });
   } else {
-
     try {
       const { email, password } = req.body;
 
@@ -299,29 +353,42 @@ const loginUser = async (req, res) => {
           };
           const token = generateToken(payload, "4h");
 
-          res.cookie("jwt", token, { maxAge: 4 * 60 * 60 * 1000 , httpOnly: true });
-          res.render("landing", { title: "Iniciar sesión", token: token });
+          res.cookie("jwt", token, {
+            maxAge: 4 * 60 * 60 * 1000,
+            httpOnly: true,
+          });
+          res.redirect("/");
+          //res.render("landing", { title: "Iniciar sesión", token: token });
         } else {
           // si el password no es correcto devolvemos un error
-          res.render("login", { title: "Iniciar sesión", errors: {message: "El password no es correcto"} });
+          res.render("login", {
+            title: "Iniciar sesión",
+            errors: { message: "El password no es correcto" },
+          });
         }
       } else {
         // si el usuario no existe devolvemos un error
-        res.render("login", { title: "Iniciar sesión", errors: {message: "Usuario no encontrado"} });
+        res.render("login", {
+          title: "Iniciar sesión",
+          errors: { message: "Usuario no encontrado" },
+        });
       }
-      
     } catch (error) {
       console.log(error);
       res.status(400).send("Error al loguearse");
     }
-
   }
-
-
 };
 
-
-
+// Metodo para desloguearse
+const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("jwt");
+    res.redirect("/");
+  } catch (error) {
+    res.status(400).send("Error al desloguearse");
+  }
+};
 
 module.exports = {
   createUser,
@@ -333,4 +400,5 @@ module.exports = {
   subscribeNewsletter,
   changeRol,
   loginUser,
+  logoutUser,
 };

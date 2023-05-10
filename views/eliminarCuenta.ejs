@@ -7,10 +7,10 @@
                 <span class="text-left w-full italic">¿Estas seguro de que lo que quieres es dejar de formar parte de <b>Stremea.me</b>?</span>
                 <hr class="w-48 h-0.5 mx-auto my-1 bg-gray-900 border-0 rounded mt-2">
                 <span class="text-left w-full italic">Por favor escriba <b>su alias público actual</b> para proceder a la eliminación:</span>
-                <form class="flex flex-col " action="post">
+                <form class="flex flex-col " id="formulario-delete" method="post" >
                     <div class="flex flex-col pb-2 mt-2">
                         <input class="border border-gray-200 rounded-lg pl-2 py-2
-                        font-medium bg-white px-6 border-b-4 border-primary-300" type="text" placeholder="Introduce tu alias actual" name="alias" id="alias">
+                        font-medium bg-white px-6 border-b-4 border-primary-300" type="text" placeholder="Introduce tu alias actual" name="alias" id="aliasDelete">
                     </div>
                     <button class=" text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-6
                     py-2 rounded-lg transition duration-300  
@@ -20,5 +20,23 @@
         </div>
         <img src="img/wave-gris.svg" alt="Ola gris">
     </div>
-   
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+const form = document.getElementById('formulario-delete');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const aliasDelete = document.getElementById('aliasDelete').value;
+
+  axios.post('/sayonara', { aliasDelete })
+  .then(response => {
+    // alert('Usuario eliminado correctamente');
+    window.location.href = '/';
+  })
+  .catch(error => {
+    console.log(error);
+    alert('Ha ocurrido un error al borrar los datos.');
+  });
+});
+</script>

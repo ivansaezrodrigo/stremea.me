@@ -6,12 +6,12 @@ const modeloUser = require("../models").User;
 // Importamos jwt
 const jwt = require("jsonwebtoken");
 
-// Si el usuario está autenticado pasamos al siguiente middleware
-const isAuth = async (req, res, next) => {
+// Si el usuario está autenticado redirigimos al index
+const isNotAuth = async (req, res, next) => {
   try {
     // Importamos las cookies con cookie parser
     const token = req.cookies.jwt;
-    
+
     // si no existe el token redirigimos al login
     if (!token) {
       return res.redirect("/login")
@@ -19,22 +19,23 @@ const isAuth = async (req, res, next) => {
 
     // Verificamos el token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
-
+    
     // Buscamos el usuario en la base de datos
     const user = await modeloUser.findByPk(decoded.userId);
     //console.log(token,user);
-    if (user) {
+    if (!user) {
       // Pasamos al siguiente middleware
       return next();
     } else {
-      return res.redirect("/login")
+      return res.redirect("/")
     }
+
   } catch (error) {
     console.log(error);
-    res.redirect("/login")
+    res.redirect("/")
   }
 };
 
 module.exports = {
-    isAuth,
+    isNotAuth,
 };

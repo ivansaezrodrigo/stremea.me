@@ -26,14 +26,6 @@ const vistaRegister = function (req, res) {
 
 const vistaPerfil = async function (req, res) {
   try {
-    // Importamos las cookies con cookie parser
-    const token = req.cookies.jwt;
-
-    // si no existe el token redirigimos al login
-    if (!token) {
-      return res.redirect("/login");
-    }
-
     // Verificamos el token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
 
@@ -55,8 +47,30 @@ const vistaPerfil = async function (req, res) {
   }
 };
 
-const vistaEliminarCuenta = function (req, res) {
-  res.render("eliminarCuenta", { title: "- Eliminar cuenta" });
+const vistaEliminarCuenta = async function (req, res) {
+  try {
+    // Importamos las cookies con cookie parser
+    const token = req.cookies.jwt;
+
+    // Verificamos el token
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+
+    // Buscamos el usuario en la base de datos
+    const user = await modeloUser.findByPk(decoded.userId);
+
+    const {id, email, alias, rol,twitter, twitch, instagram, url} = user.dataValues;
+
+    //console.log(token,user);
+    if (user) {
+      res.render("eliminarCuenta", { title: "- Eliminar cuenta" , user: {email, alias, rol,twitter, twitch, instagram, url}});
+    } else {
+      console.log(error);
+      res.redirect("/login");
+    }
+  } catch (error) {
+    console.log(error);
+    res.redirect("/login");
+  }
 };
 
 const vistaCambioPassword = function (req, res) {

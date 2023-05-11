@@ -1,17 +1,18 @@
 <main class="row-span-4 bg-gradient-to-t from-secondary-100 to-secondary-200 min-h-screen flex flex-col">
-    <div class="min-h-screen flex flex-col justify-self-center content-center justify-between pt-14 ">
-        <div class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pt-28 md:pt-36 lg:pt-44 w-full">
-            <div class="border-gray-950 border-2 flex justify-center self-center flex-col 
-            font-medium bg-primary-100 py-3 w-2/3 lg:w-2/3 max-w-5xl rounded-3xl border-b-4 border-primary-300 p-4 sm:p-10">
+    <div class="min-h-screen flex flex-col justify-self-center content-center justify-between  ">
+        <div class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pt-24 -mb-24 w-full">
+            <div class="z-10 border-gray-950 border-2 flex justify-center self-center flex-col 
+            font-medium bg-primary-100 py-3 w-2/3 lg:w-2/3 max-w-5xl rounded-3xl border-b-4 border-primary-300 p-2 sm:p-10">
+            <h1 class="font-bold text-2xl text-center -mt-7 mb-3"><i>Cambio de contraseña</i></h1>
                 <form id="formPerfil" class="flex flex-col " method="put" action="/user">
                     
                     <div class="border-gray-950 flex justify-center self-center flex-col 
                     font-medium bg-primary-100 py-3 w-full rounded-3xl border-2 border-b-4 border-primary-300 p-2 sm:p-5 mb-5">
-                            <div class="flex flex-col sm:flex-row w-full">
+                            <div class="flex flex-col sm:flex-row w-full justify-evenly">
                                 <div class="flex flex-col w-full sm:w-1/2 sm:pr-2">
                                     <label class="text-2xl rounded-md my-1.5 font-bold text-black" for="alias">Alias público</label>
-                                    <input disabled class="cursor-not-allowed border border-gray-200 rounded-lg pl-2 py-2
-                                    font-medium bg-white px-6 border-b-4 border-primary-300"  <% if(user.alias != undefined) {%> value="<%= user.alias %>" <% } %>  type="text" placeholder="Introduce tu correo" name="alias" id="alias">
+                                    <input title="Alias aleatorio en japones" disabled class="cursor-not-allowed border border-gray-200 rounded-lg pl-2 py-2
+                                    font-medium bg-gray-300 px-6 border-b-4 border-primary-300"  <% if(user.alias != undefined) {%> value="<%= user.alias %>" <% } %>  type="text" placeholder="Introduce tu correo" name="alias" id="alias">
                                 </div>
                                 <div class="flex flex-col md:flex-row w-fit">
                                     <!-- <div class="flex flex-col max-w-80 w-fit pr-5 sm:pl-2">
@@ -22,13 +23,13 @@
                                     
                                     <div class="flex flex-col h-20 mr-3">
                                         <label class="text-2xl rounded-md my-1.5 font-bold text-black w-fit" for="image">Imagen</label>
+                                        <a href="#"  title="Imagen de perfil aleatoria">
                                         <div id="idImagenPerfilBtn"
-                                            class="flex justify-center w-20 h-11 mr-2 items-center bg-white rounded-lg border-2 border-b-4 active:mt-1 active:border-b-0 border-primary-300"
+                                            class="flex justify-center p-2 w-20 h-11 mr-2 items-center bg-white rounded-lg border-2 border-b-4 active:mt-1 active:border-b-0 border-primary-300"
                                         >
-                                            <a href="#">
-                                            <img src="img/d20.svg" alt="Icono de dado" />
-                                            </a>
+                                            <img class="h-7 w-7" src="img/d20.svg" alt="Icono de dado" />
                                         </div>
+                                    </a>
                                     </div>
                                     
                                     <img class="imagenPerfil h-20 w-20 rounded-full bg-primary-100 self-center shadow-md"
@@ -41,24 +42,24 @@
                         <div class="flex flex-col w-full sm:w-1/2 sm:pr-2">
                             <label class="text-2xl rounded-md my-1.5 font-bold text-black" for="twitter">Twitter</label>
                             <input class="border border-gray-200 rounded-lg pl-2 py-2
-                            font-medium bg-white px-6 border-b-4 border-primary-300" <% if(user.twitter != undefined) {%> value="<%= user.twitter %>" <% } %> type="text" placeholder="Introduce tu correo" name="twitter" id="twitter">
+                            font-medium bg-white px-6 border-b-4 border-primary-300" <% if(user.twitter != undefined) {%> value="<%= user.twitter %>" <% } %> type="text" placeholder="Introduce tu Twitter" name="twitter" id="twitter">
                         </div>
                         <div class="flex flex-col w-full sm:w-1/2 sm:pl-2">
                             <label class="text-2xl rounded-md my-1.5 font-bold text-black" for="twitch">Twitch</label>
                             <input class="border border-gray-200 rounded-lg pl-2 py-2
-                            font-medium bg-white px-6 border-b-4 border-primary-300" <% if(user.twitch != undefined) {%> value="<%= user.twitch %>" <% } %> type="text" placeholder="Introduce tu correo" name="twitch" id="twitch">
+                            font-medium bg-white px-6 border-b-4 border-primary-300" <% if(user.twitch != undefined) {%> value="<%= user.twitch %>" <% } %> type="text" placeholder="Introduce tu Twitch" name="twitch" id="twitch">
                         </div>
                     </div>
                     <div class="flex flex-col pb-2">
                         <label class="text-2xl rounded-md my-1.5 font-bold text-black w-2/3" for="url">Url</label>
                         <input class="border border-gray-200 rounded-lg pl-2 py-2
-                        font-medium bg-white px-6 border-b-4 border-primary-300" <% if(user.url != undefined) {%> value="<%= user.url %>" <% } %> type="url" placeholder="Introduce tu correo" name="url" id="url">
+                        font-medium bg-white px-6 border-b-4 border-primary-300" <% if(user.url != undefined) {%> value="<%= user.url %>" <% } %> type="url" placeholder="Introduce tu dirección web" name="url" id="url">
                     </div>
                     <div class="flex flex-col sm:flex-row w-full">
                         <div class="flex flex-col w-full sm:w-1/2 sm:pr-2">
                             <label class="text-2xl rounded-md my-1.5 font-bold text-black" for="instagram">Instagram</label>
                             <input class="border border-gray-200 rounded-lg pl-2 py-2
-                            font-medium bg-white px-6 border-b-4 border-primary-300" <% if(user.instagram != undefined) {%> value="<%= user.instagram %>" <% } %> type="text" placeholder="Introduce tu correo" name="instagram" id="instagram">
+                            font-medium bg-white px-6 border-b-4 border-primary-300" <% if(user.instagram != undefined) {%> value="<%= user.instagram %>" <% } %> type="text" placeholder="Introduce tu Instagram" name="instagram" id="instagram">
                         </div>
                         <div class="flex flex-col w-full sm:w-1/2 sm:pl-2">
                             <label class="text-2xl rounded-md my-1.5 font-bold text-black" for="email">Correo</label>
@@ -79,7 +80,6 @@
     </div>
    
 </main>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
 
     // al clicar en idImagenPerfilBtn se reasigna de forma aleatoria la imagen de perfil
@@ -92,8 +92,15 @@
         }
         // se cambia en sesion storage el valor de la imagen de perfil
         sessionStorage.setItem('idImagenPerfil', id);
+
+        // se cambian la imagenes de perfil
+        document.querySelectorAll('.imagenPerfil').forEach((element) => {
+            element.src = `img/avatars/${id}.jpg`;
+        });
+        
+
         // se recarga la pagina
-        location.reload();
+        // flocation.reload();
     });
 
     // Se obtiene el formulario
@@ -103,28 +110,48 @@
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const alias = document.getElementById('alias').value;
-      const image = document.getElementById('image').value;
+      //const image = document.getElementById('image').value;
       const twitter = document.getElementById('twitter').value;
       const twitch = document.getElementById('twitch').value;
       const url = document.getElementById('url').value;
       const instagram = document.getElementById('instagram').value;
         
       // Se envían los datos al servidor
-      axios.put('/user', {
+    //   axios.put('/user', {
+    //     alias,
+    //     image,
+    //     twitter,
+    //     twitch,
+    //     url,
+    //     instagram
+    //   })
+    axios.put('/user', {
         alias,
-        image,
         twitter,
         twitch,
         url,
         instagram
-      })
+    })
       .then(response => {
         // Meter aqui un modal de que se ha actualizado correctamente
         console.log('Datos actualizados');
+        Swal.fire({
+                    icon: 'success',
+                    title: 'Datos guardados satisfactoriamente.',
+                    showConfirmButton: false,
+                    timer: 2500
+        })
+      
       })
       .catch(error => {
         console.log(error);
-        alert('Ha ocurrido un error al actualizar los datos. Por favor, inténtalo de nuevo más tarde.');
-      });
+
+        Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ha ocurrido un error al actualizar los datos. Por favor, inténtalo de nuevo más tarde.',
+                    confirmButtonText: 'Aceptar'
+        })
+    });
     });
   </script>

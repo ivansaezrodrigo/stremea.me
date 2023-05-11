@@ -5,7 +5,7 @@
             <div class="flex justify-center self-center flex-col 
             font-medium bg-primary-100 py-3 w-2/3 lg:w-2/3 max-w-5xl rounded-3xl border-b-4 border-primary-300 p-10">
             <span class="text-4xl font-black leading-none text-black select-none logo pb-5">Stremea.me</span>
-            <form class="flex flex-col" action="/signup" method="post">
+            <form class="flex flex-col" action="/signup" method="post" id="formulario-registro">
                 <div class="flex flex-col pb-2">
                     <label class="rounded-md text-base font-bold text-black w-2/3" for="email">Correo</label>
                     <input class="border border-gray-200 rounded-lg pl-2 py-2
@@ -48,3 +48,65 @@
     </div>
    
 </main>
+
+<script>
+    // cogemos todos los inputs del formulario
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const password2 = document.getElementById('password2');
+    const formulario = document.getElementById('formulario-registro');
+
+    // captuar el evento submit del formulario
+
+    formulario.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // comprobar que los campos no estén vacíos
+        if(email.value == '' || password.value == '' || password2.value == '') {
+            Swal.fire({
+                    icon: 'warning',
+                    title: 'Atención',
+                    text: 'Todos los campos son obligatorios.',
+                    confirmButtonText: 'Aceptar'
+        })
+        // comprobar que las contraseñas sean iguales
+        } else if(password.value != password2.value && password.value.length <= 8) {
+            Swal.fire({
+                    icon: 'warning',
+                    title: 'Atención',
+                    text: 'Las contraseñas han de ser iguales y tener como mínimo 8 caracteres.',
+                    confirmButtonText: 'Aceptar'
+        })
+        } else {
+            try {
+                // enviar el formulario
+                axios.post('/signup', {
+                    email: email.value,
+                    password: password.value,
+                    password2: password2.value
+                }).then((res) => {
+                    if(res.status == 200) {
+                        window.location.href = '/';
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Error!',
+                            text: 'No se ha podido registrar el usuario.'
+                        })
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops..!',
+                        text: 'Correo ya registrado.'
+                    })
+                })
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+    });
+
+</script>

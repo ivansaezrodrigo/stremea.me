@@ -1,6 +1,9 @@
 // importamos el modelo
 const modeloUser = require("../models").User;
 
+// importamos nodemailer
+const nodemailer = require("nodemailer");
+
 // Importamos las variables de entorno
 require("dotenv").config({ path: "../.env" });
 
@@ -36,22 +39,9 @@ const createUser = async (req, res) => {
   });
 
   if (user) {
-    // Devolvemos un error con el mismo formato que el joi
-    const error = {
-      details: [
-        {
-          message: "El usuario ya existe.",
-          path: ["email"],
-          type: "any.empty",
-          context: {
-            label: "email",
-            value: req.body.email,
-            key: "email",
-          },
-        },
-      ],
-    };
-    res.render("register", { title: "Registro", errors: error });
+    // Si el usuario existe devolvemos un error
+    console.log("El usuario ya existe")
+    res.status(400).send();
   } else {
     // Validamos los campos del formulario de registro
     const schemaRegister = Joi.object({
@@ -65,6 +55,7 @@ const createUser = async (req, res) => {
 
     // Si no hay errores creamos el usuario
     if (!error) {
+      console.log("No hay errores")
       try {
         // Si el usuario no existe y el email y password son validos
         const passwordEncriptado = bcrypt.hashSync(req.body.password, 10);
@@ -101,14 +92,14 @@ const createUser = async (req, res) => {
             maxAge: 4 * 60 * 60 * 1000,
             httpOnly: true,
           });
-          res.redirect("/");
+          res.status(200).send();
         } catch (error) {
           console.log(error);
-          res.status(400).send("Error al loguearse");
+          res.status(400).send();
         }
       } catch (error) {
         console.log(error);
-        res.status(500).send("Error al crear el usuario");
+        res.status(500).send();
       }
     } else {
       // Si hay errores en la validación, renderizamos la página de registro con los errores
@@ -146,11 +137,6 @@ const updateUser = async (req, res) => {
   try {
     // Importamos las cookies con cookie parser
     const token = req.cookies.jwt;
-
-    // si no existe el token redirigimos al login
-    if (!token) {
-      return res.redirect("/login");
-    }
 
     // Verificamos el token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
@@ -246,17 +232,15 @@ const deleteUser = async (req, res) => {
     const user = await modeloUser.findByPk(decoded.userId);
 
     if (user.alias == req.body.aliasDelete) {
+      user.destroy();
+      // borramos la cookie
+      res.clearCookie("jwt");
+      res.status(200).send("Usuario borrado");
 
-        user.destroy();
-        // borramos la cookie
-        res.clearCookie("jwt");
-        res.status(200).send("Usuario borrado");
-
-        // res.status(200).send("Usuario borrado");
-      } else {
-        res.redirect("/sayonara");
-      }
-
+      // res.status(200).send("Usuario borrado");
+    } else {
+      res.redirect("/sayonara");
+    }
   } catch (error) {
     console.log(error);
     res.status(400).send("Error al borrar el usuario");
@@ -361,25 +345,73 @@ const loginUser = async (req, res) => {
           //res.render("landing", { title: "Iniciar sesión", token: token });
         } else {
           // si el password no es correcto devolvemos un error
-          res.render("login", {
-            title: "Iniciar sesión",
-            errors: { message: "El password no es correcto" },
-          });
+          res.status(400).json({ message: "Usuario o contraseña incorrecta." });
         }
       } else {
         // si el usuario no existe devolvemos un error
-        res.render("login", {
-          title: "Iniciar sesión",
-          errors: { message: "Usuario no encontrado" },
-        });
+        res.status(400).json({ message: "Usuario no encontrado" });
       }
     } catch (error) {
       console.log(error);
-      res.status(400).send("Error al loguearse");
+      res.status(400).json({ message: "Ha ocurrido un error" });
     }
   }
 };
 
+// Metodo para cambiar de contraseña
+const changePassword = async (req, res) => {
+  try {
+    const token = req.cookies.jwt;
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await modeloUser.findByPk(decoded.userId);
+
+    const { passwordOld, password, password2 } = req.body;
+
+    // Validamos los campos del formulario de registro
+    const schemaChangePassword = Joi.object({
+      passwordOld: Joi.string().min(8).required(),
+      password: Joi.string().min(8).required(),
+      password2: Joi.string().min(8).required(),
+    });
+
+    // Validamos los datos
+    const { error } = schemaChangePassword.validate(req.body);
+
+    if (error) {
+      // si hay errores devolvemos el formulario con los errores
+      res.status(400).send();
+    } else {
+      // comprobamos que el passwordOld es correcto
+      if (bcrypt.compareSync(passwordOld, user.password)) {
+        console.log("passwordOld correcto");
+        // comprobamos que las contraseñas coinciden
+        if (password === password2) {
+          // comprobamos que el usuario existe en la bbdd
+          if (user) {
+            // encriptamos la contraseña
+            const passwordHash = bcrypt.hashSync(password, 10);
+            // actualizamos la contraseña
+            await user.update({
+              password: passwordHash,
+            });
+            res.status(200).send("Contraseña cambiada");
+          } else {
+            // res.status(404).send("Usuario no encontrado");
+            res.status(400).send();
+          }
+        } else {
+          res.status(400).send();
+        }
+      } else {
+        res.status(400).send();
+      }
+    }
+    res.status(400).send();
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Error al cambiar la contraseña");
+  }
+};
 // Metodo para desloguearse
 const logoutUser = async (req, res) => {
   try {
@@ -387,6 +419,76 @@ const logoutUser = async (req, res) => {
     res.redirect("/");
   } catch (error) {
     res.status(400).send("Error al desloguearse");
+  }
+};
+
+// Metodo para recuperar la contraseña
+const recoveryPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Validamos los campos del formulario de registro
+    const schemaRecoveryPassword = Joi.object({
+      email: Joi.string().email().required(),
+    });
+
+    // Validamos los datos
+    const { error } = schemaRecoveryPassword.validate(req.body);
+
+    if (error) {
+      // si hay errores devolvemos el formulario con los errores 
+      res.status(400).send();
+    } else {
+      // pasamos el email a minusculas
+      const emailMinus = email.toLowerCase();
+      // comprobamos que el email existe en la bbdd
+      const user = await modeloUser.findOne({ where: { email: emailMinus } });
+      if (user) {
+        // creamos el token
+        const payload = {
+          emailRecuperacion: user.email,
+        };
+        const token = generateToken(payload, "4h");
+
+        // enviamos el email
+        const transporter = nodemailer.createTransport({
+          host: "ssl0.ovh.net",
+          port: 587,
+          secure: false,
+          auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD_EMAIL,
+          },
+        });
+
+        const mailOptions = {
+          from: process.env.EMAIL,
+          to: user.email,
+          subject: "Recuperación de contraseña",
+          html: `
+          <h1>Recuperación de contraseña</h1>
+          <p>Para recuperar la contraseña haz click en el siguiente enlace:</p>
+          <a href="http://localhost:3000/recovery/${token}">Recuperar contraseña</a>
+          `,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log(error);
+            res.status(400).send("Error al enviar el email");
+          } else {
+            console.log("Email enviado");
+            res.status(200).send("Email enviado");
+          }
+        });
+      } else {
+        // si el usuario no existe devolvemos un error
+        res.status(400).send("Usuario no encontrado");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Error al recuperar la contraseña");
   }
 };
 
@@ -401,4 +503,6 @@ module.exports = {
   changeRol,
   loginUser,
   logoutUser,
+  changePassword,
+  recoveryPassword
 };

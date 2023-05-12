@@ -16,7 +16,6 @@ const expressLayouts = require('express-ejs-layouts');
 
 // Importamos las rutas
 const router = require('./routes/routes.js');
-const router2 = require('./routes/routes2.js');
 
 // Usamos express
 const app = express();

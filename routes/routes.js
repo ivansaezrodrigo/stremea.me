@@ -21,10 +21,11 @@ router.get('/signup', vista.vistaRegister);
 router.get('/user', isAuth , vista.vistaPerfil);
 router.get('/sayonara', isAuth , vista.vistaEliminarCuenta);
 router.get('/reset-password', vista.vistaCambioPassword);
-router.get('/miss-password', vista.vistaOlvidoPassword);
+router.get('/miss-password', isNotAuth , vista.vistaOlvidoPassword);
 router.get('/banned', vista.vistaBanned);
 router.get('/kicked', vista.vistaKicked);
 router.get('/recovery', vista.vistaRecovery);
+router.get('/recovering/:token', isNotAuth ,vista.vistaRecovering);
 router.get('/recovered', vista.vistaRecovered);
 router.get('/unsuscribe' , vista.vistaUnsuscribe);
 router.get('/new', isAuth , vista.vistaStreaming);
@@ -71,10 +72,12 @@ router.put('/refresh', isAuth , controladorRoom.updateCode);
 router.put('/password', isAuth ,controladorUser.changePassword);
 
 // -Ruta para recuperar la contraseña
-router.post('/recovery', controladorUser.recoveryPassword);
+router.post('/recovering', isNotAuth ,controladorUser.recoveryPassword);
 
 // -Ruta de confirmación de recuperación con el token
-//router.get('/recovery/:token', controladorToken.confirmToken);
+router.post('/recovery', controladorUser.confirmToken);
+
+
 
 
 // -Ruta para salir de una Room

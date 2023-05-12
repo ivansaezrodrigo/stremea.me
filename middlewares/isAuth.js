@@ -3,6 +3,7 @@
 // Importamos el modelo de usuario
 const modeloUser = require("../models").User;
 
+const { type } = require("@hapi/joi/lib/extend");
 // Importamos jwt
 const jwt = require("jsonwebtoken");
 
@@ -11,7 +12,8 @@ const isAuth = async (req, res, next) => {
   try {
     // Importamos las cookies con cookie parser
     const token = req.cookies.jwt;
-    
+
+    console.log(typeof token)
     // si no existe el token redirigimos al login
     if (!token) {
       return res.redirect("/login")

@@ -12,18 +12,7 @@ const isNotAuth = async (req, res, next) => {
     // Importamos las cookies con cookie parser
     const token = req.cookies.jwt;
 
-    // si no existe el token redirigimos al login
     if (!token) {
-      return res.redirect("/login")
-    }
-
-    // Verificamos el token
-    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
-    
-    // Buscamos el usuario en la base de datos
-    const user = await modeloUser.findByPk(decoded.userId);
-    //console.log(token,user);
-    if (!user) {
       // Pasamos al siguiente middleware
       return next();
     } else {

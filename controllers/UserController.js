@@ -1,11 +1,15 @@
-// importamos el modelo
+// importamos los modelos
 const modeloUser = require("../models").User;
+const modeloToken = require("../models").Token;
 
 // importamos nodemailer
 const nodemailer = require("nodemailer");
 
 // Importamos las variables de entorno
 require("dotenv").config({ path: "../.env" });
+
+// Importamos el cliente de mailtrap
+const { MailtrapClient } = require("mailtrap");
 
 // importamos el helper de validacion
 const {
@@ -40,7 +44,7 @@ const createUser = async (req, res) => {
 
   if (user) {
     // Si el usuario existe devolvemos un error
-    console.log("El usuario ya existe")
+    console.log("El usuario ya existe");
     res.status(400).send();
   } else {
     // Validamos los campos del formulario de registro
@@ -55,7 +59,7 @@ const createUser = async (req, res) => {
 
     // Si no hay errores creamos el usuario
     if (!error) {
-      console.log("No hay errores")
+      console.log("No hay errores");
       try {
         // Si el usuario no existe y el email y password son validos
         const passwordEncriptado = bcrypt.hashSync(req.body.password, 10);
@@ -422,8 +426,101 @@ const logoutUser = async (req, res) => {
   }
 };
 
-// Metodo para recuperar la contraseña
+// Metodo para recuperar la contraseña desde el correo
 const recoveryPassword = async (req, res) => {
+  try {
+    const { password, password2, tokenRecu } = req.body;
+
+    // Validamos los campos del formulario de registro
+    const schemaRecoveryPassword = Joi.object({
+      password: Joi.string().min(8).required(),
+      password2: Joi.string().min(8).required(),
+      tokenRecu: Joi.string().required(),
+    });
+
+    // Validamos los datos
+    const { error } = schemaRecoveryPassword.validate(req.body);
+
+    if (error) {
+      // si hay errores devolvemos el formulario
+      res.status(400).send();
+    } else {
+      // comprobamos si el token ya ha sido usado
+      const token = await modeloToken.findOne({
+        where: { token: tokenRecu },
+      });
+
+      if (token.typetoken === "recuperacion") {
+        // comprobamos que las contraseñas coinciden
+        if (password === password2) {
+          // verificamos el token
+          try {
+            const decoded = jwt.verify(tokenRecu, process.env.SECRET_KEY);
+          } catch (error) {
+            try {
+              // si el token no es válido lo intentamos borrar de la bbdd
+              await modeloToken.destroy({
+                where: { token: tokenRecu },
+              });
+            } catch (error) {
+              res.status(400).send("El token no es válido");
+            }
+            res.status(400).send("El token no es válido");
+          }
+
+          // comprobamos a que id de usuario está asociado el emailRecuperacion del token
+          const user = await modeloUser.findOne({
+            where: { email: decoded.emailRecuperacion },
+          });
+
+          if (user) {
+            // encriptamos la contraseña
+            const passwordHash = bcrypt.hashSync(password, 10);
+            // actualizamos la contraseña
+            await user.update({
+              password: passwordHash,
+            });
+
+            // eliminamos el token
+            await modeloToken.destroy({
+              where: { token: tokenRecu },
+            });
+
+            // le logueamos y le redirigimos a la página principal
+
+            // creamos el token
+            const payload = {
+              userId: user.id,
+              email: user.email,
+              rol: user.rol,
+            };
+            const token = generateToken(payload, "4h");
+
+            res.cookie("jwt", token, {
+              maxAge: 4 * 60 * 60 * 1000,
+              httpOnly: true,
+            });
+
+            res.status(200).send("Contraseña cambiada");
+          } else {
+            res.status(400).send();
+          }
+        } else {
+          // si el usuario no existe devolvemos un error
+          res.status(400).send("Las contraseñas no coinciden");
+        }
+      } else {
+        res.status(400).send("El token ya ha sido usado");
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Error al recuperar la contraseña");
+  }
+};
+
+// Metodo para enviar el correo con el token de recuperación de contraseña
+const confirmToken = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -436,7 +533,7 @@ const recoveryPassword = async (req, res) => {
     const { error } = schemaRecoveryPassword.validate(req.body);
 
     if (error) {
-      // si hay errores devolvemos el formulario con los errores 
+      // si hay errores devolvemos el formulario con los errores
       res.status(400).send();
     } else {
       // pasamos el email a minusculas
@@ -448,39 +545,24 @@ const recoveryPassword = async (req, res) => {
         const payload = {
           emailRecuperacion: user.email,
         };
-        const token = generateToken(payload, "4h");
+        const token = generateToken(payload, "15m");
 
+        const recuperacionURL = `http://localhost:3000/recovering/${token}`;
+        const html = `
+            <h1>Recuperación de contraseña</h1>
+            <p>Para recuperar la contraseña haz click en el siguiente enlace:</p>
+            <a href="${recuperacionURL}">Recuperar contraseña</a>
+          `;
         // enviamos el email
-        const transporter = nodemailer.createTransport({
-          host: "ssl0.ovh.net",
-          port: 587,
-          secure: false,
-          auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWORD_EMAIL,
-          },
+
+        //añadimos el token a la bbdd
+        modeloToken.create({
+          userid: user.id,
+          token: token,
+          typetoken: "recuperacion",
         });
 
-        const mailOptions = {
-          from: process.env.EMAIL,
-          to: user.email,
-          subject: "Recuperación de contraseña",
-          html: `
-          <h1>Recuperación de contraseña</h1>
-          <p>Para recuperar la contraseña haz click en el siguiente enlace:</p>
-          <a href="http://localhost:3000/recovery/${token}">Recuperar contraseña</a>
-          `,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.log(error);
-            res.status(400).send("Error al enviar el email");
-          } else {
-            console.log("Email enviado");
-            res.status(200).send("Email enviado");
-          }
-        });
+        res.status(200).json({ url: recuperacionURL, email: html });
       } else {
         // si el usuario no existe devolvemos un error
         res.status(400).send("Usuario no encontrado");
@@ -504,5 +586,6 @@ module.exports = {
   loginUser,
   logoutUser,
   changePassword,
-  recoveryPassword
+  recoveryPassword,
+  confirmToken,
 };

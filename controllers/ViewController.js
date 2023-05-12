@@ -26,6 +26,8 @@ const vistaRegister = function (req, res) {
 
 const vistaPerfil = async function (req, res) {
   try {
+    // Importamos las cookies con cookie parser
+    const token = req.cookies.jwt;
     // Verificamos el token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
 
@@ -105,6 +107,10 @@ const vistaStreaming = function (req, res) {
   res.render("streaming", { title: "- Generar sala" });
 };
 
+const vistaRecovering = function (req, res) {
+  res.render("recovering", { title: "- Recuperar contraseña", tokenRecu: req.params.token });
+};
+
 module.exports = {
   vistaLanding,
   vistaPrincipal,
@@ -121,4 +127,5 @@ module.exports = {
   vistaRecovered,
   vistaUnsuscribe,
   vistaStreaming,
+  vistaRecovering
 };

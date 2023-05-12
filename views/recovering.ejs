@@ -1,0 +1,106 @@
+<main class="row-span-4 bg-gradient-to-t from-secondary-100 to-secondary-200 min-h-screen flex flex-col">
+    <div class="min-h-screen flex flex-col justify-self-center content-center justify-between pt-14 ">
+        <div class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pt-28 md:pt-36 lg:pt-44 w-full">
+            <div class="flex justify-center self-center flex-col 
+                font-medium bg-primary-100 py-3 w-2/3 lg:w-1/4 max-w-xl rounded-3xl border-b-4 border-primary-300 p-10">
+                <h1 class="font-bold text-2xl text-center"><i>Recuperación de contraseña</i></h1>
+                <form class="flex flex-col " action="/recovering" method="post" id="formulario-recovering">
+                    <div class="flex flex-col mt-2">
+                        <label class="rounded-md text-base font-bold text-black w-2/3 my-2" for="password">Nueva contraseña:</label>
+                        <input class="border border-gray-200 rounded-lg pl-2 py-2
+                        font-medium bg-white px-6 border-b-4 border-primary-300" type="password" placeholder="Introduce tu nueva contraseña" name="password" id="password">
+                    </div>
+                    <div class="flex flex-col pb-2">
+                        <label class="rounded-md text-base font-bold text-black w-2/3 my-2" for="password2">Repite la contraseña:</label>
+                        <input class="mb-3 border border-gray-200 rounded-lg pl-2 py-2
+                        font-medium bg-white px-6 border-b-4 border-primary-300" type="password" placeholder="Repite tu nueva contraseña" name="password2" id="password2">
+                    </div>
+                    <input value="<%- tokenRecu %>" class="" id="tokenRecu" hidden>
+
+                    <button class=" text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-1
+                    py-2 rounded-lg transition duration-300  
+                    border-b-4 border-primary-300 self-center w-full mb-6" type="submit">Guardar</button>
+                </form>
+            </div>
+        </div>
+        <img src="img/wave-gris.svg" alt="Ola gris">
+    </div>
+   
+</main>
+<script>
+    // se obtiene el formulario
+    const formulario = document.getElementById('formulario-recovering');
+    // se obtienen los campos
+    const password = document.getElementById('password');
+    const password2 = document.getElementById('password2');
+    const tokenRecu = document.getElementById('tokenRecu');
+
+    // se añade el evento submit al formulario
+    formulario.addEventListener('submit', (e) => {
+        // se cancela el envio del formulario
+        e.preventDefault();
+        // se comprueba que los campos no esten vacios
+        if (password.value === '' || password2.value === '' || tokenRecu.value === '') {
+            // se muestra un mensaje de error
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'No puede haber campos vacios',
+                confirmButtonText: 'Aceptar'
+            })
+             // se comprueba que las contraseñas coincidan
+        } else if (password.value !== password2.value) {
+                // se muestra un mensaje de error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Las contraseñas no coinciden',
+                    confirmButtonText: 'Aceptar'
+                })
+        } else if (password.value.length < 8 || password2.value.length < 8) {
+                // se muestra un mensaje de error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'La contraseña debe tener al menos 8 caracteres',
+                    confirmButtonText: 'Aceptar'
+                })
+        }
+        // si todo es correcto se envia el formulario con axios meiante un put a la ruta /password
+        else {
+            axios.post('/recovering', {
+                password: password.value,
+                password2: password2.value,
+                tokenRecu: tokenRecu.value
+            })
+            // si la respuesta es correcta se muestra un mensaje de confirmacion
+            .then(function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Contraseña cambiada correctamente',
+                    showConfirmButton: false,
+                })
+
+                // se redirige al usuario al perfil
+               setTimeout(function () {
+                    window.location.href = "/user";
+                }, 5000);
+
+            })
+            // si la respuesta es incorrecta se muestra un mensaje de error
+            .catch(function (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Parece que esta opción ya no está disponible',
+                    confirmButtonText: 'Aceptar'
+                })
+                setTimeout(function () {
+                    window.location.href = "/";
+                }, 5000);
+            });
+        }
+    
+    });
+
+</script>

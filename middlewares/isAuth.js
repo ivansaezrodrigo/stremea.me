@@ -13,7 +13,6 @@ const isAuth = async (req, res, next) => {
     // Importamos las cookies con cookie parser
     const token = req.cookies.jwt;
 
-    console.log(typeof token)
     // si no existe el token redirigimos al login
     if (!token) {
       return res.redirect("/login")

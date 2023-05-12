@@ -140,7 +140,7 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     // Importamos las cookies con cookie parser
-    const token = req.cookies.jwt;
+    const token = req.cookies.jwt ;
 
     // Verificamos el token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
@@ -150,75 +150,59 @@ const updateUser = async (req, res) => {
 
     //si existe el usuario actualiza los campos que han sido modificados
     if (user) {
-      // comprobamos que el password es distinto al que ya tiene el usuario
-      if (
-        req.body.password &&
-        !bcrypt.compareSync(req.body.password, user.password)
-      ) {
-        // encriptamos el password
-        const passwordEncriptado = bcrypt.hashSync(req.body.password, 10);
-        user.password = passwordEncriptado;
-      }
-      if (req.body.email) {
-        const emailMinus = req.body.email.toLowerCase();
-        // comprobamos que el email es valido y no existe en la bbdd
+      
+      // validamos los campos del formulario de actualizacion
+      const schemaUpdate = Joi.object({
+        alias: Joi.string().max(10).required(),
+        email: Joi.string().email().required(),
+        twitter: Joi.string().allow(""),
+        twitch: Joi.string().allow(""),
+        instagram: Joi.string().allow(""),
+        newsletter: Joi.boolean(),
+        url: Joi.string().uri().allow(""),
+        newsletter: Joi.boolean(),
+      });
+      
+      // validamos los datos
+      const { error } = schemaUpdate.validate(req.body);
+
+      
+      // si no hay errores actualizamos el usuario
+      if (!error) {
+
+        // actualizamos el usuario
+        user.email = req.body.email;
+        user.twitter = req.body.twitter;
+        user.twitch = req.body.twitch;
+        user.instagram = req.body.instagram;
+        user.newsletter = req.body.newsletter;
+
+        // si el usuario es mecenas actualizamos el campo alias y si no lo es no
+        if (user.rol === "mecenas") {
+          user.alias = req.body.alias;
+        }
+        
+        // comprobamos que el password es distinto al que ya tiene el usuario
         if (
-          isValidEmail(req.body.email) &&
-          modeloUser.findOne({ where: { email: emailMinus } })
+          req.body.password &&
+          !bcrypt.compareSync(req.body.password, user.password)
         ) {
-          user.email = emailMinus;
-        } else {
-          res.status(400).send("El email no es valido o ya esta en uso");
-          return;
+          // encriptamos el password
+          const passwordEncriptado = bcrypt.hashSync(req.body.password, 10);
+          user.password = passwordEncriptado;
         }
-      }
-      if (req.body.twitter && req.body.twitter != user.twitter) {
-        // comprobamos que el twitter es valido
-        if (isValidUsername(req.body.twitter)) {
-          user.twitter = req.body.twitter;
-        } else {
-          res.status(400).send("El twitter no es valido");
-          return;
-        }
-      }
-      if (req.body.instagram && req.body.instagram != user.instagram) {
-        // comprobamos que el instagram es valido
-        if (isValidUsername(req.body.instagram)) {
-          user.instagram = req.body.instagram;
-        } else {
-          res.status(400).send("El instagram no es valido");
-          return;
-        }
-      }
 
-      if (req.body.twitch && req.body.twitch != user.twitch) {
-        // comprobamos que el twitch es valido
-        if (isValidUsername(req.body.twitch)) {
-          user.twitch = req.body.twitch;
-        } else {
-          res.status(400).send("El twitch no es valido");
-          return;
-        }
-      }
-      if (req.body.url && req.body.url != user.url) {
-        // comprobamos que la url es valida
-        if (isValidUrl(req.body.url)) {
-          user.url = req.body.url;
-        } else {
-          res.status(400).send("La url no es valida");
-          return;
-        }
-      }
+        // guardamos el usuario
+        await user.save();
 
-      // si se ha modificado algo se devuelve  un mensaje de usuario actualizado
-      if (user.changed()) {
         res.status(200).send("Usuario actualizado");
+
       } else {
-        res.status(200).send("No se ha modificado nada");
+        // si hay errores en la validación se devuelve un error
+        console.log(error);
+        res.status(400).send("Error al actualizar el usuario");
       }
 
-      // guardamos los cambios
-      await user.save();
     } else {
       res.status(404).send("Usuario no encontrado");
     }
@@ -547,11 +531,22 @@ const confirmToken = async (req, res) => {
         };
         const token = generateToken(payload, "15m");
 
+        // creamos el token
+        const payload2 = {
+          emailRecuperacion: user.email,
+        };
+        const tokenUnsuscribe = generateToken(payload2, "3652d"); // 10 años
+
         const recuperacionURL = `http://localhost:3000/recovering/${token}`;
+        const urlUnsuscribe = `http://localhost:3000/unsubscribe/${tokenUnsuscribe}`;
         const html = `
             <h1>Recuperación de contraseña</h1>
             <p>Para recuperar la contraseña haz click en el siguiente enlace:</p>
             <a href="${recuperacionURL}">Recuperar contraseña</a>
+            <span>El enlace caduca en 15 minutos</span>
+            <hr>
+            <p>Si quieres desuscribirte de la newsletter haz click <a href="${urlUnsuscribe}">aquí</a></p>
+            <p>Si no has solicitado la recuperación de contraseña ignora este email</p>
           `;
         // enviamos el email
 
@@ -562,7 +557,7 @@ const confirmToken = async (req, res) => {
           typetoken: "recuperacion",
         });
 
-        res.status(200).json({ url: recuperacionURL, email: html });
+        res.status(200).json({ url: recuperacionURL, email: html , urlUnsuscribe: urlUnsuscribe});
       } else {
         // si el usuario no existe devolvemos un error
         res.status(400).send("Usuario no encontrado");

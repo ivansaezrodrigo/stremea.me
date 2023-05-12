@@ -3,9 +3,10 @@
         <div class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pt-24 -mb-24 w-full">
             <div class="z-10 border-gray-950 border-2 flex justify-center self-center flex-col 
             font-medium bg-primary-100 py-3 w-2/3 lg:w-2/3 max-w-5xl rounded-3xl border-b-4 border-primary-300 p-2 sm:p-10">
-            <h1 class="font-bold text-2xl text-center -mt-7 mb-3"><i>Cambio de contraseña</i></h1>
+            <h1 class="font-bold text-2xl text-center -mt-7 mb-3"><i>Perfil personal</i></h1>
                 <form id="formPerfil" class="flex flex-col " method="put" action="/user">
                     
+                    <% if(user.rol == "user") {%>
                     <div class="border-gray-950 flex justify-center self-center flex-col 
                     font-medium bg-primary-100 py-3 w-full rounded-3xl border-2 border-b-4 border-primary-300 p-2 sm:p-5 mb-5">
                             <div class="flex flex-col sm:flex-row w-full justify-evenly">
@@ -38,6 +39,38 @@
                             </div>
                             <span class="text-center w-full pt-4">No sabíamos cómo <b>llamar tu atención</b> para que nos apoyases en patreon <br>así que <b>te hemos dedicado un alias en Japonés</b> y un avatar <i>un poco troll</i>..</span>
                     </div>
+                    <% } else { %>
+                        
+                                <div class="flex flex-col sm:flex-row w-full justify-left">
+                                    <div class="flex flex-col w-full sm:w-1/2 sm:pr-2">
+                                        <label class="text-2xl rounded-md my-1.5 font-bold text-black" for="alias">Alias público</label>
+                                        <input title="Alias" class="border border-gray-200 rounded-lg pl-2 py-2
+                                        font-medium bg-white px-6 border-b-4 border-primary-300"  <% if(user.alias != undefined) {%> value="<%= user.alias %>" <% } %>  type="text" placeholder="Introduce tu correo" name="alias" id="alias">
+                                    </div>
+                                    <div class="flex flex-col md:flex-row w-fit">
+                                        <!-- <div class="flex flex-col max-w-80 w-fit pr-5 sm:pl-2">
+                                            <label class="text-2xl rounded-md my-1.5 font-bold text-black w-fit" for="image">Imagen</label>
+                                            <input class="hidden border border-gray-200 rounded-lg pl-2 py-2
+                                            font-medium bg-white px-6 border-b-4 border-primary-300" type="text" placeholder="Id imagen" name="image" id="image">
+                                        </div> -->
+                                        
+                                        <div class="flex flex-col h-20 mr-3">
+                                            <label class="text-2xl rounded-md my-1.5 font-bold text-black w-fit sm:ml-2" for="image">Imagen</label>
+                                            <a href="#"  class="sm:ml-2" title="Imagen de perfil aleatoria">
+                                            <div id="idImagenPerfilBtn"
+                                                class="flex justify-center p-2 w-20 h-11 mr-2 items-center bg-white rounded-lg border-2 border-b-4 active:mt-1 active:border-b-0 border-primary-300"
+                                            >
+                                                <img class="h-7 w-7" src="img/d20.svg" alt="Icono de dado" />
+                                            </div>
+                                        </a>
+                                        </div>
+                                        
+                                        <img class="imagenPerfil h-20 w-20 rounded-full bg-primary-100 self-center shadow-md"
+                                        src="img/avatars/0.jpg" alt="Imagen de perfil">
+                                    </div>
+                                </div>
+
+                    <% } %>
                     <div class="flex flex-col sm:flex-row w-full">
                         <div class="flex flex-col w-full sm:w-1/2 sm:pr-2">
                             <label class="text-2xl rounded-md my-1.5 font-bold text-black" for="twitter">Twitter</label>
@@ -72,7 +105,20 @@
                     border-b-4 border-primary-300 self-center w-full sm:w-1/2" href="">Guardar</button>
                 </form>
                 <hr class="w-48 h-0.5 mx-auto my-1 bg-gray-900 border-0 rounded">
-                <a class="inline self-center mt-5 pb-5 italic font-bold" href="/reset-password">¿Necesitas cambiar tu contraseña?</a>    
+                <div class="flex justify-center my-2">
+                    <div class="flex justify-center">
+                        <% if(user.newsletter == true) { %>
+                            <input class="inline self-center mr-1 italic font-bold" type="checkbox" id="newsletter" name="newsletter" checked>
+                            <% } else { %>
+                                <input class="inline self-center mr-1 italic font-bold" type="checkbox" id="newsletter" name="newsletter">
+                            <% } %>
+                            <label class="inline self-center mr-5 italic font-bold" for="newsletter">¿Quieres recibir notificaciones?</label>
+                            </div>
+                        <a class="inline self-center italic font-bold" href="/reset-password">¿Necesitas cambiar tu contraseña?</a>    
+
+                </div>
+                <hr class="w-48 h-0.5 mx-auto my-1 bg-gray-900 border-0 rounded">
+                
                 <a class="inline self-center font-normal italic text-red-600" href="/sayonara">Eliminar cuenta</a>    
             </div>
         </div>
@@ -115,22 +161,17 @@
       const twitch = document.getElementById('twitch').value;
       const url = document.getElementById('url').value;
       const instagram = document.getElementById('instagram').value;
-        
-      // Se envían los datos al servidor
-    //   axios.put('/user', {
-    //     alias,
-    //     image,
-    //     twitter,
-    //     twitch,
-    //     url,
-    //     instagram
-    //   })
+        const email = document.getElementById('email').value;
+        const newsletter = document.getElementById('newsletter').checked;
+
     axios.put('/user', {
         alias,
         twitter,
         twitch,
         url,
-        instagram
+        instagram,
+        email,
+        newsletter        
     })
       .then(response => {
         // Meter aqui un modal de que se ha actualizado correctamente

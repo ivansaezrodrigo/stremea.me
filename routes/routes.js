@@ -25,9 +25,11 @@ router.get('/miss-password', isNotAuth , vista.vistaOlvidoPassword);
 router.get('/banned', vista.vistaBanned);
 router.get('/kicked', vista.vistaKicked);
 router.get('/recovery', vista.vistaRecovery);
-router.get('/recovering/:token', isNotAuth ,vista.vistaRecovering);
 router.get('/recovered', vista.vistaRecovered);
-router.get('/unsuscribe' , vista.vistaUnsuscribe);
+
+router.get('/recovering/:token', isNotAuth ,vista.vistaRecovering);
+router.get('/unsubscribe/:token' , vista.vistaUnsuscribe);
+
 router.get('/new', isAuth , vista.vistaStreaming);
 
 

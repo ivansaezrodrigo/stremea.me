@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>StremeaMe <%- title %></title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="img/ico.png" type="image/x-icon" />
+    <link rel="icon" href="/img/ico.png" type="image/x-icon" />
     <script>
       tailwind.config = {
         theme: {
@@ -62,9 +62,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script>
       // si no existe una entrada en sesion storage que almacene el id de la imagen de perfil
-      if (!sessionStorage.getItem("idImagenPerfil")) {
+      if (!localStorage.getItem("idImagenPerfil")) {
         // se crea una entrada en sesion storage que almacene el id de la imagen de perfil con la cantidad de imagenes que hay en la carpeta imt/avatars/
-        sessionStorage.setItem(
+        localStorage.setItem(
           "idImagenPerfil",
           Math.floor(Math.random() * 10) + 1
         );
@@ -82,9 +82,10 @@
     console.log(imagenesPerfil);
     // se recorren todas las imagenes con la clase imagenPerfil y se les asigna el id de la imagen de perfil
     imagenesPerfil.forEach((imagen) => {
-      imagen.src = `img/avatars/${sessionStorage.getItem(
+      imagen.src = `/img/avatars/${localStorage.getItem(
         "idImagenPerfil"
       )}.jpg`;
     });
+
   </script>
 </html>

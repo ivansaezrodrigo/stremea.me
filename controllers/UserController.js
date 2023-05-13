@@ -176,6 +176,7 @@ const updateUser = async (req, res) => {
         user.twitch = req.body.twitch;
         user.instagram = req.body.instagram;
         user.newsletter = req.body.newsletter;
+        user.url = req.body.url;
 
         // si el usuario es mecenas actualizamos el campo alias y si no lo es no
         if (user.rol === "mecenas") {

@@ -8,6 +8,9 @@ require('dotenv').config();
 // Importamos path
 const path = require('path');
 
+// Importamos Peer
+const { ExpressPeerServer } = require("peer");
+
 // Importamos la dependencia de cookies
 const cookieParser = require('cookie-parser');
 
@@ -51,6 +54,20 @@ app.use(express.json());
 
 // Middleware que nos permite usar el body de la petición
 app.use(expressLayouts);
+
+
+// ######## Configuración de Peer ########
+
+// Creamos el servidor
+const server = app.listen(9000);
+
+const peerServer = ExpressPeerServer(server, {
+	path: "/myapp",
+});
+
+app.use("/peerjs", peerServer);
+
+// ######################################
 
 // Rutas
 app.use('/', router);

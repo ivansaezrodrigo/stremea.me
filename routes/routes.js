@@ -30,7 +30,7 @@ router.get('/recovered', vista.vistaRecovered);
 router.get('/recovering/:token', isNotAuth ,vista.vistaRecovering);
 router.get('/unsubscribe/:token' , vista.vistaUnsuscribe);
 
-router.get('/new', isAuth , vista.vistaStreaming);
+//router.get('/new', isAuth , vista.vistaStreaming);
 
 
 // -Ruta para darse de alta en la plataforma 
@@ -59,13 +59,10 @@ router.put('/user', isAuth ,controladorUser.updateUser);
 router.post('/sayonara', isAuth ,controladorUser.deleteUser);
 
 // -Ruta para crear una Room
-router.post('/create', isAuth ,controladorRoom.createRoom);
-
-// Ruta para unirse a una Room
-// router.post('/join', controladorRoom.joinRoom);
+router.get('/create', isAuth ,controladorRoom.createRoom);
 
 // -Ruta para unirse a una Room 
-router.get('/join/:codigo', controladorRoom.joinRoom);
+router.get('/room/:codigo', controladorRoom.joinRoom);
 
 // -Ruta para actualizar el code de una Room
 router.put('/refresh', isAuth , controladorRoom.updateCode);

@@ -16,7 +16,7 @@
           tus amigos con tan sólo un link.</span
         >
         <a
-          href="/new"
+          href="/create"
           class="hidden text-center text-2xl mt-4 text-white font-medium bg-primary-100 hover:bg-primary-200 active:border-none active:mt-5 py-2 w-96 rounded-3xl transition duration-300 border-b-4 border-primary-300 md:inline"
         >
           Generar sala
@@ -121,7 +121,15 @@
             timer: 8000,
             showConfirmButton: false
         })
-    <% } %>
+    <% } else if (typeof error !== 'undefined' && error == true) {%>
+        Swal.fire({
+            title: '¡Error!',
+            text: message,
+            icon: 'error',
+            timer: 8000,
+            showConfirmButton: false
+        })
+        <% } %>
     <% } catch (error) { %>
   <% } %>
 </script>

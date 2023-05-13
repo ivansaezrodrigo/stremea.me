@@ -133,11 +133,11 @@
 
         let id = Math.floor(Math.random() * 10) + 1;
         // mientras el id no sea el mismo que el que ya tiene
-        while (id == sessionStorage.getItem('idImagenPerfil')) {
+        while (id == localStorage.getItem('idImagenPerfil')) {
             id = Math.floor(Math.random() * 10) + 1;
         }
         // se cambia en sesion storage el valor de la imagen de perfil
-        sessionStorage.setItem('idImagenPerfil', id);
+        localStorage.setItem('idImagenPerfil', id);
 
         // se cambian la imagenes de perfil
         document.querySelectorAll('.imagenPerfil').forEach((element) => {

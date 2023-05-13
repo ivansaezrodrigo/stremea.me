@@ -3,53 +3,154 @@ const modeloRoom = require("../models").Room;
 const modeloUser = require("../models").User;
 const modeloRoomsUsers = require("../models").RoomsUsers;
 
+// importamos nanoid
 const nanoid = require("nanoid");
 
-const createRoom = async (req, res) => {
-  const { title, description, isPrivate, userId } = req.body;
-  try {
-    // si no es propietario de una sala ya existente, puede crear una nueva
-    const user = await modeloUser.findByPk(userId);
-    if (!user) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
-    const room = await modeloRoom.findOne({ where: { owner: userId } });
-    if (room) {
-      res
-        .status(403)
-        .json({ error: "User already owns a room", code: room.code });
-    }
-    // si no es propietario de una sala ya existente, puede crear una nueva
-    if (!room) {
-      // se crea un codigo aleatorio
-      let code = nanoid.nanoid();
-      // mientras que el codigo no exista en la base de datos, se crea la sala si el codigo ya existe, se crea uno nuevo y se vuelve a comprobar
-      while (await modeloRoom.findOne({ where: { code } })) {
-        code = nanoid.nanoid();
-      }
+// importamos jsonwebtoken
+const jwt = require("jsonwebtoken");
 
-      const newRoom = await modeloRoom.create({
-        code,
-        owner: userId,
-        title,
-        description,
-        private: isPrivate,
-      });
-      // se añade el usuario a la sala
-      newRoom.addUser(user);
-      res.status(201).json(newRoom);
+// const createRoom = async (req, res) => {
+//   const { title, description, isPrivate, userId } = req.body;
+//   try {
+//     // si no es propietario de una sala ya existente, puede crear una nueva
+//     const user = await modeloUser.findByPk(userId);
+//     if (!user) {
+//       res.status(404).json({ error: "User not found" });
+//       return;
+//     }
+//     const room = await modeloRoom.findOne({ where: { owner: userId } });
+//     if (room) {
+//       res
+//         .status(403)
+//         .json({ error: "User already owns a room", code: room.code });
+//     }
+//     // si no es propietario de una sala ya existente, puede crear una nueva
+//     if (!room) {
+//       // se crea un codigo aleatorio
+//       let code = nanoid.nanoid();
+//       // mientras que el codigo no exista en la base de datos, se crea la sala si el codigo ya existe, se crea uno nuevo y se vuelve a comprobar
+//       while (await modeloRoom.findOne({ where: { code } })) {
+//         code = nanoid.nanoid();
+//       }
+
+//       const newRoom = await modeloRoom.create({
+//         code,
+//         owner: userId,
+//         title,
+//         description,
+//         private: isPrivate,
+//       });
+//       // se añade el usuario a la sala
+//       newRoom.addUser(user);
+//       res.status(201).json(newRoom);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "Error creating room" });
+//   }
+// };
+
+const createRoom = async (req, res) => {
+  // Importamos las cookies con cookie parser
+  const token = req.cookies.jwt ;
+
+  // Verificamos el token
+  const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+
+  // Buscamos el usuario en la base de datos
+  const user = await modeloUser.findByPk(decoded.userId);
+
+  //si existe el usuario actualiza los campos que han sido modificados
+  if (user) {
+    try {
+      // si no es propietario de una sala ya existente, puede crear una nueva
+      const room = await modeloRoom.findOne({ where: { owner: user.id } });
+      if (room) {
+        res.redirect(`/room/${room.code}`);
+      }
+      // si no es propietario de una sala ya existente, puede crear una nueva
+      if (!room) {
+        // se crea un codigo aleatorio
+        let code = nanoid.nanoid();
+        // mientras que el codigo no exista en la base de datos, se crea la sala si el codigo ya existe, se crea uno nuevo y se vuelve a comprobar
+        while (await modeloRoom.findOne({ where: { code } })) {
+          code = nanoid.nanoid();
+        }
+
+        const newRoom = await modeloRoom.create({
+          code,
+          owner: user.id,
+          title: `👾 ¡Konichiwa chavales! - Disfrutad del streaming del tal ${user.alias} 🕹`,
+          description : "¡Bienvenidos!¡Esta es mi nueva sala de chat! Tomad asiento y disfrutad del streaming.",
+          private: false,
+        });
+        // se añade el usuario a la sala
+        newRoom.addUser(user);
+
+        // se redirige a la sala
+        return res.redirect(`/room/${newRoom.code}`);
+
+        //res.status(201).json(newRoom);
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ error: "Error creating room" });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Error creating room" });
+  } else {
+    return res.redirect("/login");
   }
 };
+
+
+// const joinRoom = async (req, res) => {
+//   // recibe el codigo de la sala por get y el id del usuario por body
+//   const { codigo } = req.params;
+//   const { userId } = req.body;
+//   try {
+//     // si el usuario no existe se devuelve un error
+//     const user = await modeloUser.findByPk(userId);
+//     if (!user) {
+//       res.status(404).json({ error: "User not found" });
+//     }
+
+//     // se busca la sala por el codigo
+//     const room = await modeloRoom.findOne({ where: { code: codigo } });
+//     if (room) {
+//       // si el usuario esta baneado de la sala, se devuelve un error
+//       const banned = await room.hasUser(userId, { through: { banned: 1 } });
+//       if (banned) {
+//         res.status(403).json({ error: "User is banned from this room" });
+//       }
+//       // se comprueba si el usuario ya está dentro de la sala y existe
+//       const joined = await room.hasUser(userId);
+//       if (joined) {
+//         res.status(200).json({ message: "User is already in this room" });
+//       }
+
+//       // si no está baneado ni dentro de la sala se añade a la sala
+//       await room.addUser(user);
+//       res.status(200).json({ message: "User joined successfully", room });
+//     } else {
+//       res.status(404).json({ error: "Room not found" });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "Error joining room" });
+//   }
+// };
 
 const joinRoom = async (req, res) => {
   // recibe el codigo de la sala por get y el id del usuario por body
   const { codigo } = req.params;
-  const { userId } = req.body;
+
+  // Importamos las cookies con cookie parser
+  const token = req.cookies.jwt ;
+
+  // Verificamos el token
+  const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+  
+  const userId = decoded.userId;
+
   try {
     // si el usuario no existe se devuelve un error
     const user = await modeloUser.findByPk(userId);
@@ -61,27 +162,33 @@ const joinRoom = async (req, res) => {
     const room = await modeloRoom.findOne({ where: { code: codigo } });
     if (room) {
       // si el usuario esta baneado de la sala, se devuelve un error
-      const banned = await room.hasUser(userId, { through: { banned: 1 } });
+      const banned = await room.hasUser({where: { id: userId }}, { through: { banned: 1 } });
       if (banned) {
-        res.status(403).json({ error: "User is banned from this room" });
+        return res.render("landing", { title: "", error: true , message:"User is banned from this room" });
       }
       // se comprueba si el usuario ya está dentro de la sala y existe
       const joined = await room.hasUser(userId);
       if (joined) {
-        res.status(200).json({ message: "User is already in this room" });
+        // transformamos el objeto usuario a variables para poder renderizarlo
+        const { alias, rol, twitter, instagram, twitch, url } = user;
+        const usuarioRender = { alias, rol, twitter, instagram, twitch, url };
+        console.log(url)
+        return res.render("streaming", { title: "- Streaming", room, usuarioRender });
       }
 
       // si no está baneado ni dentro de la sala se añade a la sala
       await room.addUser(user);
-      res.status(200).json({ message: "User joined successfully", room });
+      return res.status(200).json({ message: "User joined successfully", room });
     } else {
-      res.status(404).json({ error: "Room not found" });
+      return res.status(404).json({ error: "Room not found" });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Error joining room" });
+    return res.status(500).json({ error: "Error joining room" });
   }
 };
+
+
 
 const updateCode = async (req, res) => {
   const { userId } = req.body;
@@ -189,36 +296,47 @@ const updateRoom = async (req, res) => {
 
 const deleteRoom = async (req, res) => {
   try {
-    // obtenemos code y userId
-    const { code, userId } = req.body;
-    // si la sala existe y el usuario es el propietario de la sala puede eliminarla
-    if (await modeloRoom.findOne({ where: { code, owner: userId } })) {
-      await modeloRoom.destroy({ where: { code } });
-      res.status(200).send("Sala eliminada");
-    } else {
-      res.status(404).send("Sala no encontrada");
-    }
+ // Importamos las cookies con cookie parser
+ const token = req.cookies.jwt ;
+
+ // Verificamos el token
+ const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+ 
+ const userId = decoded.userId;
+
+ // si la sala existe y el usuario es el propietario de la sala puede eliminarla
+  const sala = await modeloRoom.findOne({ where: { owner: userId } });
+  if (sala) {
+    await sala.destroy();
+    return res.status(200).send("Sala eliminada");
+  } else {
+    return res.status(404).send("Sala no encontrada");
+  }
+
   } catch (error) {
     console.log(error);
-    res.status(500).send("Error al eliminar la sala");
+    return res.status(500).send("Error al eliminar la sala");
   }
 };
 
 const makePrivate = async (req, res) => {
   try {
-    // obtenemos code y userId
-    const { userId } = req.body;
-    // si la sala existe y el propietario es el usuario
+    // Importamos las cookies con cookie parser
+    const token = req.cookies.jwt ;
+
+    // Verificamos el token
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+    
+    const userId = decoded.userId;
+
+    // si la sala existe y el usuario es el propietario de la sala puede actualizarla
     const sala = await modeloRoom.findOne({ where: { owner: userId } });
-    const user = await modeloUser.findByPk(userId);
-    // si el usuario tiene el rol de "mecenas" puede hacer la sala privada
-    if (sala && user.rol == "mecenas") {
+    if (sala) {
       sala.private = !sala.private;
       await sala.save();
-      res.status(200).send("Sala actualizada");
-    } else {
-      res.status(401).json({ error: "No eres mecenas" });
+      res.status(200).send(sala.private);
     }
+
   } catch (error) {
     console.log(user);
     console.log(error);

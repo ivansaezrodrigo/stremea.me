@@ -1,504 +1,691 @@
 <main
-class="row-span-4 bg-gradient-to-t from-secondary-100 to-secondary-200 min-h-screen flex flex-col"
+  class="row-span-4 bg-gradient-to-t from-secondary-100 to-secondary-200 min-h-screen flex flex-col"
 >
-<!-- Streaming -->
-<div
-  class="bg-purple-500 w-full h-[60vh] lg:h-[78vh] resize-y flex items-center justify-center shadow-xl"
->
-  Aquí va el streaming
-</div>
-<div
-  class="-mb-16 flex flex-col justify-self-center content-center pt-14"
->
-  <!-- Aqui el titulo -->
-  <div
-    class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pb-2 w-full"
+  <!-- Streaming -->
+  <div id="divStreaming"
+    class="bg-purple-500 w-full h-[60vh] lg:h-[78vh] resize-y flex items-center justify-center shadow-xl"
   >
-    <div
-      class="flex justify-evenly self-center border-2 border-primary-300 flex-col sm:flex-row items-center font-medium bg-white py-2 w-5/6 lg:w-2/3 max-w-7xl rounded-3xl border-b-4 border-primary-300 p-5"
-    >
-      <h1 class="text-2xl font-bold text-left">
-        ON LIVE - OVERWATCH 2 🔥 MAIN SOMBRA DESDE LA BETA
-      </h1>
-      <div
-        class="flex justify-center self-center flex-col border-2 border-b-4 border-primary-300 font-medium bg-gray-300 py-1 w-fit max-w-7xl rounded-2xl p-10"
-      >
-        <div class="flex text-2xl font-bold text-center">
-          <div
-            class="flex justify-center w-11 h-11 mr-2 items-center bg-red-700 rounded-lg border-2 border-b-4 active:border-b-0 border-primary-300"
-          >
-            <a href="#">
-              <img src="img/chat.svg" alt="Icono del chat" />
-            </a>
-          </div>
-          <div
-            class="flex justify-center w-11 h-11 mr-2 items-center bg-red-700 rounded-lg border-2 border-b-4 active:border-b-0 border-primary-300"
-          >
-            <a href="#">
-              <img src="img/bombilla.svg" alt="Icono de una bombilla" />
-            </a>
-          </div>
-          <div
-            class="flex justify-center w-11 h-11 items-center bg-red-700 rounded-lg border-2 border-b-4 active:border-b-0 border-primary-300"
-          >
-            <a href="#">
-              <img src="img/ventana.svg" alt="Icono de ventana" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
+    Aquí va el streaming
   </div>
-  <!-- Descripción y usuario -->
   <div
-    class="flex justify-center self-center lg:flex-row flex-col w-full py-2"
+    class="z-10 -mb-16 flex flex-col justify-self-center content-center pt-14"
   >
+    <!-- Aqui el titulo -->
     <div
-      class="flex justify-center self-center border-2 border-primary-300 flex-col lg:flex-row font-medium bg-secondary-200 py-3 w-5/6 lg:w-2/3 max-w-7xl rounded-3xl border-b-4 border-primary-300 sm:p-5 sm:px-10"
+      class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pb-2 w-full"
     >
       <div
-        class="flex justify-center items-center h-48 mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-primary-100 py-3 w-full lg:w-[20.9em] max-w-7xl rounded-3xl border-primary-300 p-5 sm:mr-2"
+        class="flex justify-evenly self-center border-2 border-primary-300 flex-col sm:flex-row items-center font-medium bg-white py-2 w-5/6 lg:w-2/3 max-w-7xl rounded-3xl border-b-4 border-primary-300 p-5"
       >
-        <div class="flex flex-row w-full justify-center">
-          <img
-            class="imagenPerfil h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
-            src=""
-            alt=""
-          />
-          <div class="flex flex-col justify-center w-fit max-w-52">
-            <p
-              class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
-            >
-              NOMBRE USUARIO
-            </p>
+        <h1
+          class="text-3xl font-bold text-left pb-1 w-2/3 overflow-hidden text-ellipsis"
+          style="font-variant: all-small-caps"
+        >
+          <%- room.title %>
+        </h1>
+        <div
+          class="flex justify-center self-center flex-col border-2 border-b-4 border-primary-300 font-medium bg-gray-300 py-1 w-fit max-w-7xl rounded-2xl p-10"
+        >
+          <div class="flex text-2xl font-bold text-center">
             <div
-              class="flex justify-center self-left flex-col border-2 border-b-4 border-primary-300 font-medium bg-primary-300 py-1 w-fit max-w-7xl rounded-3xl p-5"
+              class="flex justify-center w-11 h-11 mr-2 items-center bg-red-700 rounded-lg border-2 border-b-4 active:border-b-0 border-primary-300"
             >
-              <div class="flex items-center">
-                <svg
-                  class="h-6 w-6 mr-2"
-                  width="25"
-                  height="26"
-                  viewBox="0 0 52 53"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M32.5 26.7705C32.5 28.0561 32.1188 29.3128 31.4046 30.3817C30.6903 31.4506 29.6752 32.2838 28.4874 32.7757C27.2997 33.2677 25.9928 33.3964 24.7319 33.1456C23.471 32.8948 22.3128 32.2757 21.4038 31.3667C20.4948 30.4577 19.8757 29.2995 19.6249 28.0386C19.3741 26.7777 19.5028 25.4708 19.9948 24.2831C20.4868 23.0953 21.3199 22.0802 22.3888 21.366C23.4577 20.6517 24.7144 20.2705 26 20.2705C27.7223 20.2759 29.3724 20.9624 30.5903 22.1802C31.8081 23.3981 32.4946 25.0482 32.5 26.7705ZM46.3125 17.833V35.708C46.3125 38.7248 45.1141 41.6181 42.9808 43.7513C40.8476 45.8846 37.9543 47.083 34.9375 47.083H17.0625C14.0457 47.083 11.1524 45.8846 9.01916 43.7513C6.88593 41.6181 5.6875 38.7248 5.6875 35.708V17.833C5.6875 14.8162 6.88593 11.9229 9.01916 9.78967C11.1524 7.65644 14.0457 6.45801 17.0625 6.45801H34.9375C37.9543 6.45801 40.8476 7.65644 42.9808 9.78967C45.1141 11.9229 46.3125 14.8162 46.3125 17.833ZM35.75 26.7705C35.75 24.8421 35.1782 22.9571 34.1068 21.3537C33.0355 19.7503 31.5127 18.5006 29.7312 17.7627C27.9496 17.0247 25.9892 16.8316 24.0979 17.2079C22.2066 17.5841 20.4693 18.5127 19.1057 19.8762C17.7421 21.2398 16.8135 22.9771 16.4373 24.8684C16.0611 26.7597 16.2542 28.7201 16.9922 30.5017C17.7301 32.2833 18.9798 33.806 20.5832 34.8773C22.1866 35.9487 24.0716 36.5205 26 36.5205C28.5859 36.5205 31.0658 35.4933 32.8943 33.6648C34.7228 31.8363 35.75 29.3564 35.75 26.7705ZM39 16.208C39 15.7259 38.857 15.2547 38.5892 14.8538C38.3214 14.453 37.9407 14.1405 37.4953 13.9561C37.0499 13.7716 36.5598 13.7233 36.087 13.8173C35.6141 13.9114 35.1798 14.1435 34.8389 14.4844C34.498 14.8253 34.2659 15.2596 34.1718 15.7325C34.0778 16.2053 34.1261 16.6954 34.3105 17.1408C34.495 17.5862 34.8075 17.9669 35.2083 18.2347C35.6091 18.5026 36.0804 18.6455 36.5625 18.6455C37.209 18.6455 37.829 18.3887 38.2861 17.9316C38.7432 17.4745 39 16.8545 39 16.208Z"
-                    fill="#F8F8F8"
-                  />
-                </svg>
-                <svg
-                  class="h-6 w-6 mr-2"
-                  width="25"
-                  height="26"
-                  viewBox="0 0 49 50"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    class="h-6 w-6"
-                    d="M45.8558 13.0206C44.2837 13.7352 42.5892 14.2048 40.8333 14.4293C42.63 13.3473 44.0183 11.6323 44.6717 9.57017C42.9771 10.591 41.0987 11.3056 39.1183 11.7139C37.5054 9.95809 35.2392 8.93726 32.6667 8.93726C27.8687 8.93726 23.9487 12.8573 23.9487 17.696C23.9487 18.3902 24.0304 19.0639 24.1733 19.6968C16.905 19.3293 10.4329 15.8381 6.125 10.5502C5.36958 11.8364 4.94083 13.3473 4.94083 14.9398C4.94083 17.9818 6.47208 20.6768 8.84042 22.2081C7.39083 22.2081 6.04333 21.7998 4.85917 21.1873V21.2485C4.85917 25.4952 7.88083 29.0477 11.8825 29.8439C10.5977 30.1955 9.24894 30.2444 7.94208 29.9868C8.49661 31.7273 9.58264 33.2503 11.0475 34.3416C12.5123 35.4329 14.2824 36.0377 16.1087 36.071C13.0128 38.5219 9.17524 39.8467 5.22667 39.8277C4.5325 39.8277 3.83833 39.7868 3.14417 39.7052C7.02333 42.196 11.6375 43.6456 16.5783 43.6456C32.6667 43.6456 41.5071 30.2931 41.5071 18.7168C41.5071 18.3289 41.5071 17.9614 41.4867 17.5735C43.2017 16.3485 44.6717 14.7968 45.8558 13.0206Z"
-                    fill="#F8F8F8"
-                  />
-                </svg>
-                <svg
-                  width="21"
-                  height="21"
-                  viewBox="0 0 36 36"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clip-path="url(#clip0_119_3156)">
-                    <path
-                      d="M27.5043 7.27572L24.7881 7.27572L24.7881 14.989L27.5043 14.989L27.5043 7.27572ZM20.0392 7.24267L17.3231 7.24267L17.3231 14.9595L20.0392 14.9595L20.0392 7.24267ZM8.49603 0.000487095L1.70947 6.42846L1.70948 29.5725L9.85377 29.5725L9.85377 36.0005L16.641 29.5725L22.0727 29.5725L34.2909 18.0005L34.2909 0.000482585L8.49603 0.000487095ZM31.5754 16.7173L26.1459 21.8585L20.7149 21.8585L15.9618 26.3585L15.9618 21.8585L9.85377 21.8585L9.85377 2.57252L31.5754 2.57252L31.5754 16.7173Z"
-                      fill="white"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_119_3156">
-                      <rect
-                        width="36"
-                        height="36"
-                        fill="white"
-                        transform="translate(0 0.000488281)"
-                      />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </div>
+              <a href="#" id="btnChat">
+                <img src="/img/chat.svg" alt="Icono del chat" />
+              </a>
+            </div>
+            <div
+              class="flex justify-center w-11 h-11 mr-2 items-center bg-red-700 rounded-lg border-2 border-b-4 active:border-b-0 border-primary-300"
+            >
+              <a href="#" id="btnDark">
+                <img src="/img/bombilla.svg" alt="Icono de una bombilla" />
+              </a>
+            </div>
+            <div
+              class="flex justify-center w-11 h-11 items-center bg-red-700 rounded-lg border-2 border-b-4 active:border-b-0 border-primary-300"
+            >
+              <a href="#" id="btnVentana">
+                <img src="/img/ventana.svg" alt="Icono de ventana" />
+              </a>
             </div>
           </div>
         </div>
-        <div class="flex mt-3">
-          <img class="h-5 w-5" src="img/link.svg" alt="Icono de link" /><a
-            href="#"
-            class="ml-2 whitespace-nowrap text-ellipsis overflow-hidden"
-            >http://www.ivansaezrodrigo.live/</a
-          >
-        </div>
       </div>
+    </div>
+    <!-- Descripción y usuario -->
+    <div
+      class="flex justify-center self-center lg:flex-row flex-col w-full py-2"
+    >
       <div
-        class="flex justify-start border-2 h-48 border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-3xl"
+        class="flex justify-center self-center border-2 border-primary-300 flex-col lg:flex-row font-medium bg-secondary-200 py-3 w-5/6 lg:w-2/3 max-w-7xl rounded-3xl border-b-4 border-primary-300 sm:p-5 sm:px-10"
       >
         <div
-          class="flex bg-gray-950 w-full rounded-t-2xl justify-between py-3 px-5"
+          class="flex justify-center items-center h-48 mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-primary-100 py-3 w-full lg:w-[20.9em] max-w-7xl rounded-3xl border-primary-300 p-5 sm:mr-2"
         >
-          <h3 class="text-2xl font-normal text-white italic">
-            Descripción
+          <div class="flex flex-row w-full justify-center">
+            <img
+              class="imagenPerfil h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
+              src=""
+              alt=""
+            />
+            <div class="flex flex-col justify-center w-fit max-w-52">
+              <p
+                class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
+              >
+                <%- usuarioRender.alias %>
+              </p>
+              <% if (usuarioRender.instagram != "" || usuarioRender.twitter !=
+              "" || usuarioRender.twitch != "") { %>
+              <div
+                class="flex justify-center self-left flex-col border-2 border-b-4 border-primary-300 font-medium bg-primary-300 py-1 w-fit max-w-7xl rounded-3xl p-5"
+              >
+                <div class="flex items-center">
+                  <% if (usuarioRender.instagram != "") { %>
+                  <a
+                    target="_blank"
+                    href="https://instagram.com/<%- usuarioRender.instagram%>"
+                  >
+                    <svg
+                      class="h-6 w-6 mr-2"
+                      width="25"
+                      height="26"
+                      viewBox="0 0 52 53"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M32.5 26.7705C32.5 28.0561 32.1188 29.3128 31.4046 30.3817C30.6903 31.4506 29.6752 32.2838 28.4874 32.7757C27.2997 33.2677 25.9928 33.3964 24.7319 33.1456C23.471 32.8948 22.3128 32.2757 21.4038 31.3667C20.4948 30.4577 19.8757 29.2995 19.6249 28.0386C19.3741 26.7777 19.5028 25.4708 19.9948 24.2831C20.4868 23.0953 21.3199 22.0802 22.3888 21.366C23.4577 20.6517 24.7144 20.2705 26 20.2705C27.7223 20.2759 29.3724 20.9624 30.5903 22.1802C31.8081 23.3981 32.4946 25.0482 32.5 26.7705ZM46.3125 17.833V35.708C46.3125 38.7248 45.1141 41.6181 42.9808 43.7513C40.8476 45.8846 37.9543 47.083 34.9375 47.083H17.0625C14.0457 47.083 11.1524 45.8846 9.01916 43.7513C6.88593 41.6181 5.6875 38.7248 5.6875 35.708V17.833C5.6875 14.8162 6.88593 11.9229 9.01916 9.78967C11.1524 7.65644 14.0457 6.45801 17.0625 6.45801H34.9375C37.9543 6.45801 40.8476 7.65644 42.9808 9.78967C45.1141 11.9229 46.3125 14.8162 46.3125 17.833ZM35.75 26.7705C35.75 24.8421 35.1782 22.9571 34.1068 21.3537C33.0355 19.7503 31.5127 18.5006 29.7312 17.7627C27.9496 17.0247 25.9892 16.8316 24.0979 17.2079C22.2066 17.5841 20.4693 18.5127 19.1057 19.8762C17.7421 21.2398 16.8135 22.9771 16.4373 24.8684C16.0611 26.7597 16.2542 28.7201 16.9922 30.5017C17.7301 32.2833 18.9798 33.806 20.5832 34.8773C22.1866 35.9487 24.0716 36.5205 26 36.5205C28.5859 36.5205 31.0658 35.4933 32.8943 33.6648C34.7228 31.8363 35.75 29.3564 35.75 26.7705ZM39 16.208C39 15.7259 38.857 15.2547 38.5892 14.8538C38.3214 14.453 37.9407 14.1405 37.4953 13.9561C37.0499 13.7716 36.5598 13.7233 36.087 13.8173C35.6141 13.9114 35.1798 14.1435 34.8389 14.4844C34.498 14.8253 34.2659 15.2596 34.1718 15.7325C34.0778 16.2053 34.1261 16.6954 34.3105 17.1408C34.495 17.5862 34.8075 17.9669 35.2083 18.2347C35.6091 18.5026 36.0804 18.6455 36.5625 18.6455C37.209 18.6455 37.829 18.3887 38.2861 17.9316C38.7432 17.4745 39 16.8545 39 16.208Z"
+                        fill="#F8F8F8"
+                      />
+                    </svg>
+                  </a>
+                  <% } %> <% if (usuarioRender.twitter != "") { %>
+                  <a
+                    target="_blank"
+                    href="https://twitter.com/<%- usuarioRender.twitter%>"
+                  >
+                    <svg
+                      class="h-6 w-6 mr-2"
+                      width="25"
+                      height="26"
+                      viewBox="0 0 49 50"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        class="h-6 w-6"
+                        d="M45.8558 13.0206C44.2837 13.7352 42.5892 14.2048 40.8333 14.4293C42.63 13.3473 44.0183 11.6323 44.6717 9.57017C42.9771 10.591 41.0987 11.3056 39.1183 11.7139C37.5054 9.95809 35.2392 8.93726 32.6667 8.93726C27.8687 8.93726 23.9487 12.8573 23.9487 17.696C23.9487 18.3902 24.0304 19.0639 24.1733 19.6968C16.905 19.3293 10.4329 15.8381 6.125 10.5502C5.36958 11.8364 4.94083 13.3473 4.94083 14.9398C4.94083 17.9818 6.47208 20.6768 8.84042 22.2081C7.39083 22.2081 6.04333 21.7998 4.85917 21.1873V21.2485C4.85917 25.4952 7.88083 29.0477 11.8825 29.8439C10.5977 30.1955 9.24894 30.2444 7.94208 29.9868C8.49661 31.7273 9.58264 33.2503 11.0475 34.3416C12.5123 35.4329 14.2824 36.0377 16.1087 36.071C13.0128 38.5219 9.17524 39.8467 5.22667 39.8277C4.5325 39.8277 3.83833 39.7868 3.14417 39.7052C7.02333 42.196 11.6375 43.6456 16.5783 43.6456C32.6667 43.6456 41.5071 30.2931 41.5071 18.7168C41.5071 18.3289 41.5071 17.9614 41.4867 17.5735C43.2017 16.3485 44.6717 14.7968 45.8558 13.0206Z"
+                        fill="#F8F8F8"
+                      />
+                    </svg>
+                  </a>
+                  <% } %> <% if (usuarioRender.twitch != "") { %>
+                  <a
+                    target="_blank"
+                    href="https://twitch.tv/<%- usuarioRender.twitch%>"
+                  >
+                    <svg
+                      width="21"
+                      height="21"
+                      viewBox="0 0 36 36"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_119_3156)">
+                        <path
+                          d="M27.5043 7.27572L24.7881 7.27572L24.7881 14.989L27.5043 14.989L27.5043 7.27572ZM20.0392 7.24267L17.3231 7.24267L17.3231 14.9595L20.0392 14.9595L20.0392 7.24267ZM8.49603 0.000487095L1.70947 6.42846L1.70948 29.5725L9.85377 29.5725L9.85377 36.0005L16.641 29.5725L22.0727 29.5725L34.2909 18.0005L34.2909 0.000482585L8.49603 0.000487095ZM31.5754 16.7173L26.1459 21.8585L20.7149 21.8585L15.9618 26.3585L15.9618 21.8585L9.85377 21.8585L9.85377 2.57252L31.5754 2.57252L31.5754 16.7173Z"
+                          fill="white"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_119_3156">
+                          <rect
+                            width="36"
+                            height="36"
+                            fill="white"
+                            transform="translate(0 0.000488281)"
+                          />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </a>
+                  <% } %>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+          <div class="flex mt-3">
+            <% if (usuarioRender.url != null || usuarioRender.url != "" ) { %>
+            <img class="h-5 w-5" src="/img/link.svg" alt="Icono de link" /><a
+              target="_blank"
+              href="<%- usuarioRender.url %>"
+              class="ml-2 whitespace-nowrap text-ellipsis overflow-hidden"
+              ><%- usuarioRender.url %></a
+            >
+            <% } %>
+          </div>
+        </div>
+        <div
+          class="flex justify-start border-2 h-48 border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-3xl"
+        >
+          <div
+            class="flex bg-gray-950 w-full rounded-t-2xl justify-between py-3 px-5"
+          >
+            <h3 class="text-2xl font-normal text-white italic">Descripción</h3>
+            <a href=""><img src="/img/lapiz.svg" alt="Icono de editar" /></a>
+          </div>
+          <p class="px-5 py-1 h-30 overflow-auto text-ellipsis">
+            <%- room.description %>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Chat y lista de usuarios -->
+    <div
+      class="mt-2 flex justify-center self-center flex-col-reverse lg:flex-row font-medium w-5/6 lg:w-2/3 max-w-7xl rounded-3xl"
+    >
+      <!-- Lista de usuarios -->
+      <div
+        class="flex justify-start items-center h-[35em] mb-2 sm:mb-0 border-2 border-b-4 self-center flex-col font-medium bg-gray-100 py-3 w-full lg:w-1/3 max-w-7xl rounded-3xl border-primary-300 p-5 sm:mr-2"
+      >
+        <div class="flex justify-between w-full px-4 pb-1">
+          <h3
+            class="text-2xl font-bold text-center text-black w-full pl-3 italic"
+          >
+            Usuarios
           </h3>
-          <a href=""><img src="img/lapiz.svg" alt="Icono de editar" /></a>
         </div>
-        <p class="px-5 py-1 h-30 overflow-auto text-ellipsis">
-          El presente Política de Privacidad establece los términos en que
-          Stremea.me usa y protege la información que es proporcionada por
-          sus usuarios al momento de utilizar su sitio web. 
-        </p>
-      </div>
-    </div>
-  </div>
-  <!-- Chat y lista de usuarios -->
-  <div
-    class="mt-2 flex justify-center self-center flex-col-reverse lg:flex-row font-medium w-5/6 lg:w-2/3 max-w-7xl rounded-3xl"
-  >
-    <!-- Lista de usuarios -->
-    <div
-      class="flex justify-start items-center h-[35em] mb-2 sm:mb-0 border-2 border-b-4 self-center flex-col font-medium bg-gray-100 py-3 w-full lg:w-1/3 max-w-7xl rounded-3xl border-primary-300 p-5 sm:mr-2"
-    >
-      <div class="flex justify-between w-full px-4 pb-1">
-        <h3
-          class="text-2xl font-bold text-left text-black w-full pl-3 italic"
+        <!-- Usuario inicio-->
+        <div
+          class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5"
         >
-          Usuarios
-        </h3>
-        <a href="#">
-          <img src="img/candado.svg" alt="candado" />
-        </a>
-      </div>
-      ---------------------
-      <!-- Usuario inicio-->
-      <div
-        class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5"
-      >
-        <div class="flex flex-row w-full justify-center">
-          <img
-            class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
-            src="img/avatars/0.jpg"
-            alt=""
-          />
-          <div class="flex flex-col justify-center w-fit max-w-52">
-            <p
-              class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
-            >
-              Jumanch
-            </p>
-            <form class="flex flex-col" action="post">
-              <input
-                class="hidden border rounded-lg pl-2 py-2 font-medium bg-white px-6 border-b-4 border-primary-300"
-                type="id"
-                name="id"
-                id="id"
-              />
-              <button
-                class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2"
-                href=""
+          <div class="flex flex-row w-full justify-center">
+            <img
+              class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
+              src="/img/avatars/0.jpg"
+              alt=""
+            />
+            <div class="flex flex-col justify-center w-fit max-w-52">
+              <p
+                class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
               >
-                ECHAR
-              </button>
-            </form>
+                Jumanch
+              </p>
+              <form class="flex flex-col" action="post">
+                <input
+                  class="hidden border rounded-lg pl-2 py-2 font-medium bg-white px-6 border-b-4 border-primary-300"
+                  type="id"
+                  name="id"
+                  id="id"
+                />
+                <button
+                  class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2"
+                  href=""
+                >
+                  ECHAR
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Usuario fin -->
-      <!-- Usuario inicio-->
-      <div
-        class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5"
-      >
-        <div class="flex flex-row w-full justify-center">
-          <img
-            class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
-            src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
-            alt=""
-          />
-          <div class="flex flex-col justify-center w-fit max-w-52">
-            <p
-              class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
-            >
-              Usuario 1
-            </p>
-            <form class="flex flex-col" action="post">
-              <input
-                class="hidden border border-gray-200 rounded-lg pl-2 py-2 font-medium bg-white px-6 border-b-4 border-primary-300"
-                type="id"
-                name="id"
-                id="id"
-              />
-              <button
-                class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2"
-                href=""
+        <!-- Usuario fin -->
+        <!-- Usuario inicio-->
+        <div
+          class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5"
+        >
+          <div class="flex flex-row w-full justify-center">
+            <img
+              class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
+              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
+              alt=""
+            />
+            <div class="flex flex-col justify-center w-fit max-w-52">
+              <p
+                class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
               >
-                ECHAR
-              </button>
-            </form>
+                Usuario 1
+              </p>
+              <form class="flex flex-col" action="post">
+                <input
+                  class="hidden border border-gray-200 rounded-lg pl-2 py-2 font-medium bg-white px-6 border-b-4 border-primary-300"
+                  type="id"
+                  name="id"
+                  id="id"
+                />
+                <button
+                  class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2"
+                  href=""
+                >
+                  ECHAR
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Usuario fin -->
-      <!-- Usuario inicio-->
-      <div
-        class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5"
-      >
-        <div class="flex flex-row w-full justify-center">
-          <img
-            class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
-            src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
-            alt=""
-          />
-          <div class="flex flex-col justify-center w-fit max-w-52">
-            <p
-              class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
-            >
-              Usuario 2
-            </p>
-            <form class="flex flex-col" action="post">
-              <input
-                class="hidden border border-gray-200 rounded-lg pl-2 py-2 font-medium bg-white px-6 border-b-4 border-primary-300"
-                type="id"
-                name="id"
-                id="id"
-              />
-              <button
-                class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2"
-                href=""
+        <!-- Usuario fin -->
+        <!-- Usuario inicio-->
+        <div
+          class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5"
+        >
+          <div class="flex flex-row w-full justify-center">
+            <img
+              class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
+              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
+              alt=""
+            />
+            <div class="flex flex-col justify-center w-fit max-w-52">
+              <p
+                class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
               >
-                ECHAR
-              </button>
-            </form>
+                Usuario 2
+              </p>
+              <form class="flex flex-col" action="post">
+                <input
+                  class="hidden border border-gray-200 rounded-lg pl-2 py-2 font-medium bg-white px-6 border-b-4 border-primary-300"
+                  type="id"
+                  name="id"
+                  id="id"
+                />
+                <button
+                  class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2"
+                  href=""
+                >
+                  ECHAR
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Usuario fin -->
-      <!-- Usuario inicio-->
-      <div
-        class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5"
-      >
-        <div class="flex flex-row w-full justify-center">
-          <img
-            class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
-            src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
-            alt=""
-          />
-          <div class="flex flex-col justify-center w-fit max-w-52">
-            <p
-              class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
-            >
-              Usuario 3
-            </p>
-            <form class="flex flex-col" action="post">
-              <input
-                class="hidden border border-gray-200 rounded-lg pl-2 py-2 font-medium bg-white px-6 border-b-4 border-primary-300"
-                type="id"
-                name="id"
-                id="id"
-              />
-              <button
-                class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2"
-                href=""
+        <!-- Usuario fin -->
+        <!-- Usuario inicio-->
+        <div
+          class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5"
+        >
+          <div class="flex flex-row w-full justify-center">
+            <img
+              class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
+              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
+              alt=""
+            />
+            <div class="flex flex-col justify-center w-fit max-w-52">
+              <p
+                class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
               >
-                ECHAR
-              </button>
-            </form>
+                Usuario 3
+              </p>
+              <form class="flex flex-col" action="post">
+                <input
+                  class="hidden border border-gray-200 rounded-lg pl-2 py-2 font-medium bg-white px-6 border-b-4 border-primary-300"
+                  type="id"
+                  name="id"
+                  id="id"
+                />
+                <button
+                  class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2"
+                  href=""
+                >
+                  ECHAR
+                </button>
+              </form>
+            </div>
           </div>
         </div>
+        <!-- Usuario fin -->
       </div>
-      <!-- Usuario fin -->
-    </div>
-    <!-- Chat -->
-    <div
-      class="flex justify-between border-2 w-full h-[35rem] border-b-4 border-primary-300 self-center flex-col font-medium bg-white lg:w-2/3 max-w-7xl rounded-3xl border-primary-300"
-    >
+      <!-- Chat -->
       <div
-        class="flex bg-white items-center w-full border-b-2 border-primary-300 rounded-t-3xl justify-between py-3 px-5"
+        class="flex justify-between border-2 w-full h-[35rem] border-b-4 border-primary-300 self-center flex-col font-medium bg-white lg:w-2/3 max-w-7xl rounded-3xl border-primary-300"
       >
-        <h3 class="text-2xl font-normal text-black italic">
-          <b>Room CODE:</b> A4F0-12S8-428E-S31P-R9L0
-        </h3>
-        <a href="#">
-          <img
-            class="w-7 h-7"
-            src="img/share.svg"
-            alt="Icono de compartir"
-          />
-        </a>
-      </div>
-      <!-- Comentarios -->
-      <div class="flex flex-col h-[26rem] bg-slate-500 justify-end overflow-y-scroll">
+        <div
+          class="flex bg-white items-center w-full border-b-2 border-primary-300 rounded-t-3xl justify-between py-3 px-5"
+        >
+          <div class="flex content-center items-center">
+            <div
+              class="flex justify-center w-11 h-11 ml-2 items-center bg-gray-900 rounded-xl border-2 border-b-4 active:border-b-0 border-primary-300"
+            >
+              <a href="#" id="btnPrivate">
+                <% if (!room.private) { %>
+                <img
+                  id="imgPrivate"
+                  class="w-8 h-8"
+                  src="/img/candado.svg"
+                  alt="candado"
+                />
+                <% } else { %>
+                <img
+                  id="imgPrivate"
+                  class="w-8 h-8"
+                  src="/img/candado2.svg"
+                  alt="candado"
+                />
+                <% } %>
+              </a>
+            </div>
+            <div
+              class="flex justify-center w-11 h-11 mx-2 items-center bg-gray-900 rounded-xl border-2 border-b-4 active:border-b-0 border-primary-300"
+            >
+              <a href="#" id="btnReload">
+                <img
+                  class="w-7 h-7"
+                  src="/img/reload.svg"
+                  alt="Icono de refrescar sala"
+                />
+              </a>
+            </div>
+            <h3 class="text-2xl font-normal text-black italic">
+              <b>Room CODE:</b> <%- room.code %>
+            </h3>
+          </div>
+          <a href="#" id="btnCompartir">
+            <img src="/img/share.svg" alt="Icono de compartir" />
+          </a>
+        </div>
+        <!-- Comentarios -->
+        <div id="divComentarios"
+          class="flex flex-col h-[26rem] bg-slate-500 justify-end overflow-y-scroll"
+        >
           <!-- Comentario propio -->
-          <div class="flex flex-row min-h-6 h-max w-full justify-end items-end my-2">
-              <div
+          <div
+            class="flex flex-row min-h-6 h-max w-full justify-end items-end my-2"
+          >
+            <div
               class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
-              >
+            >
               <div
-                  class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
+                class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
               >
-                  <h3 class="text-xl font-normal text-white italic">
-                  Usuario 4
-                  </h3>
+                <h3 class="text-xl font-normal text-white italic">Usuario 4</h3>
               </div>
               <p class="px-5 py-1 h-max text-ellipsis">
-                  Hola caracola
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit repellendus porro corporis asperiores natus neque error modi odit facilis, pariatur nam iste illum sed ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
+                Hola caracola Lorem ipsum, dolor sit amet consectetur
+                adipisicing elit. Sit repellendus porro corporis asperiores
+                natus neque error modi odit facilis, pariatur nam iste illum sed
+                ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
               </p>
-              </div>
-              <img
-                  class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
-                  src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
-                  alt=""
-              />
-          </div>
-          <!-- Comentario ajeno -->
-          <div class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2">
-          <div
-          class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
-          >
-          <div
-              class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
-          >
-              <h3 class="text-xl font-normal text-white italic">
-              Usuario 0
-              </h3>
-          </div>
-          <p class="px-5 py-1 h-max text-ellipsis">
-              Hola caracola
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit repellendus porro corporis asperiores natus neque error modi odit facilis, pariatur nam iste illum sed ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
-          </p>
-          </div>
-          <img
+            </div>
+            <img
               class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
               src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
               alt=""
-          />
+            />
+          </div>
+          <!-- Comentario ajeno -->
+          <div
+            class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2"
+          >
+            <div
+              class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
+            >
+              <div
+                class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
+              >
+                <h3 class="text-xl font-normal text-white italic">Usuario 0</h3>
+              </div>
+              <p class="px-5 py-1 h-max text-ellipsis">
+                Hola caracola Lorem ipsum, dolor sit amet consectetur
+                adipisicing elit. Sit repellendus porro corporis asperiores
+                natus neque error modi odit facilis, pariatur nam iste illum sed
+                ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
+              </p>
+            </div>
+            <img
+              class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
+              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
+              alt=""
+            />
           </div>
 
           <!-- Borrar \/-->
-                      <!-- Comentario ajeno -->
-                      <div class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2">
-                          <div
-                          class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
-                          >
-                          <div
-                              class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
-                          >
-                              <h3 class="text-xl font-normal text-white italic">
-                              Jumanch
-                              </h3>
-                          </div>
-                          <p class="px-5 py-1 h-max text-ellipsis">
-                              Hola caracola
-                              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit repellendus porro corporis asperiores natus neque error modi odit facilis, pariatur nam iste illum sed ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
-                          </p>
-                          </div>
-                          <img
-                              class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
-                              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
-                              alt=""
-                          />
-                          </div>
-                          <!-- Comentario ajeno -->
-                      <div class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2">
-                          <div
-                          class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
-                          >
-                          <div
-                              class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
-                          >
-                              <h3 class="text-xl font-normal text-white italic">
-                              Jumanch
-                              </h3>
-                          </div>
-                          <p class="px-5 py-1 h-max text-ellipsis">
-                              Hola caracola
-                              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit repellendus porro corporis asperiores natus neque error modi odit facilis, pariatur nam iste illum sed ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
-                          </p>
-                          </div>
-                          <img
-                              class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
-                              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
-                              alt=""
-                          />
-                          </div>
-                          <!-- Comentario ajeno -->
-                      <div class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2">
-                          <div
-                          class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
-                          >
-                          <div
-                              class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
-                          >
-                              <h3 class="text-xl font-normal text-white italic">
-                              Jumanch
-                              </h3>
-                          </div>
-                          <p class="px-5 py-1 h-max text-ellipsis">
-                              Hola caracola
-                              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit repellendus porro corporis asperiores natus neque error modi odit facilis, pariatur nam iste illum sed ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
-                          </p>
-                          </div>
-                          <img
-                              class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
-                              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
-                              alt=""
-                          />
-                          </div>
-                                          <!-- Comentario ajeno -->
-                      <div class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2">
-                          <div
-                          class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
-                          >
-                          <div
-                              class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
-                          >
-                              <h3 class="text-xl font-normal text-white italic">
-                              Jumanch
-                              </h3>
-                          </div>
-                          <p class="px-5 py-1 h-max text-ellipsis">
-                              Hola caracola
-                              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit repellendus porro corporis asperiores natus neque error modi odit facilis, pariatur nam iste illum sed ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
-                          </p>
-                          </div>
-                          <img
-                              class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
-                              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
-                              alt=""
-                          />
-                          </div>
-              <!-- Borrar /\ -->
-
-      </div>
-
-      <form class="flex flex-col" action="post">
-        <div class="flex items-center px-5">
-          <input
-            class="border border-gray-200 rounded-2xl pl-2 mr-2 h-14 w-full font-medium bg-white px-6 border-b-4 border-primary-300"
-            type="text"
-            placeholder="Introduce un comentario"
-            name="comentario"
-            id="comentario"
-          />
-          <input class="hidden" type="file" name="archivo" id="archivo" />
-          <button
-            class="my-5 w-fit py-2 px-4 text-lg text-black font-bold bg-gray-500 hover:bg-gray-200 active:border-none active:mt-6 rounded-xl transition duration-300 border-b-4 border-primary-300 self-center bg-primary-200"
-            href=""
+          <!-- Comentario ajeno -->
+          <div
+            class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2"
           >
-            <img src="img/enviar.svg" alt="Botón de enviar" />
-          </button>
+            <div
+              class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
+            >
+              <div
+                class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
+              >
+                <h3 class="text-xl font-normal text-white italic">Jumanch</h3>
+              </div>
+              <p class="px-5 py-1 h-max text-ellipsis">
+                Hola caracola Lorem ipsum, dolor sit amet consectetur
+                adipisicing elit. Sit repellendus porro corporis asperiores
+                natus neque error modi odit facilis, pariatur nam iste illum sed
+                ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
+              </p>
+            </div>
+            <img
+              class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
+              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
+              alt=""
+            />
+          </div>
+          <!-- Comentario ajeno -->
+          <div
+            class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2"
+          >
+            <div
+              class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
+            >
+              <div
+                class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
+              >
+                <h3 class="text-xl font-normal text-white italic">Jumanch</h3>
+              </div>
+              <p class="px-5 py-1 h-max text-ellipsis">
+                Hola caracola Lorem ipsum, dolor sit amet consectetur
+                adipisicing elit. Sit repellendus porro corporis asperiores
+                natus neque error modi odit facilis, pariatur nam iste illum sed
+                ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
+              </p>
+            </div>
+            <img
+              class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
+              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
+              alt=""
+            />
+          </div>
+          <!-- Comentario ajeno -->
+          <div
+            class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2"
+          >
+            <div
+              class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
+            >
+              <div
+                class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
+              >
+                <h3 class="text-xl font-normal text-white italic">Jumanch</h3>
+              </div>
+              <p class="px-5 py-1 h-max text-ellipsis">
+                Hola caracola Lorem ipsum, dolor sit amet consectetur
+                adipisicing elit. Sit repellendus porro corporis asperiores
+                natus neque error modi odit facilis, pariatur nam iste illum sed
+                ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
+              </p>
+            </div>
+            <img
+              class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
+              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
+              alt=""
+            />
+          </div>
+          <!-- Comentario ajeno -->
+          <div
+            class="flex flex-row-reverse min-h-6 h-max w-full justify-end items-end my-2"
+          >
+            <div
+              class="flex justify-start border-2 h-max border-b-2 border-primary-300 self-center flex-col font-medium bg-white w-full lg:w-3/4 max-w-7xl rounded-xl border-primary-300"
+            >
+              <div
+                class="flex bg-chat-v12 border-b-2 border-gray-950 w-full rounded-t-lg justify-between py-1 px-5"
+              >
+                <h3 class="text-xl font-normal text-white italic">Jumanch</h3>
+              </div>
+              <p class="px-5 py-1 h-max text-ellipsis">
+                Hola caracola Lorem ipsum, dolor sit amet consectetur
+                adipisicing elit. Sit repellendus porro corporis asperiores
+                natus neque error modi odit facilis, pariatur nam iste illum sed
+                ratione? Excepturi, voluptatum nihil. Maiores, doloremque.
+              </p>
+            </div>
+            <img
+              class="h-12 w-12 rounded-full bg-primary-100 shadow-md mx-2"
+              src="https://i.kym-cdn.com/photos/images/facebook/001/431/201/40f.png"
+              alt=""
+            />
+          </div>
+          <!-- Borrar /\ -->
         </div>
-      </form>
+
+        <form class="flex flex-col" action="post">
+          <div class="flex items-center px-5">
+            <input
+              class="border border-gray-200 rounded-2xl pl-2 mr-2 h-14 w-full font-medium bg-white px-6 border-b-4 border-primary-300"
+              type="text"
+              placeholder="Introduce un comentario"
+              name="comentario"
+              id="comentario"
+            />
+            <input class="hidden" type="file" name="archivo" id="archivo" />
+            <button
+              class="my-5 w-fit py-2 px-4 text-lg text-black font-bold bg-gray-500 hover:bg-gray-200 active:border-none active:mt-6 rounded-xl transition duration-300 border-b-4 border-primary-300 self-center bg-primary-200"
+              href=""
+            >
+              <img src="/img/enviar.svg" alt="Botón de enviar" />
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+    <!-- <hr class="mt-6 w-1/2 h-1 mx-auto my-1 bg-gray-800 border-0 rounded ">
+          <hr class="mt-6 w-1/3 h-1 mx-auto my-1 bg-gray-700 border-0 rounded "> -->
   </div>
-  <!-- <hr class="mt-6 w-1/2 h-1 mx-auto my-1 bg-gray-800 border-0 rounded ">
-  <hr class="mt-6 w-1/3 h-1 mx-auto my-1 bg-gray-700 border-0 rounded "> -->
-</div>
-<img src="img/wave-gris.svg" alt="Ola gris" />
+  <img src="/img/wave-gris.svg" alt="Ola gris" />
 </main>
+<script>
+  var dark = false;
+  const main = document.querySelector("main");
+  const nav = document.querySelector("nav");
+  const btnReload = document.getElementById("btnReload");
+  const btnPrivate = document.getElementById("btnPrivate");
+  const btnDark = document.getElementById("btnDark");
+  const btnVentana = document.getElementById("btnVentana");
+  const btnChat = document.getElementById("btnChat");
+  const divStreaming = document.getElementById("divStreaming");
+  const divComentarios = document.getElementById("divComentarios");
+  const imgPrivate = document.getElementById("imgPrivate");
+  const btnCompartir = document.getElementById("btnCompartir");
+
+  // cuando se pulse el botón de recargar, se hará una petición axios a la ruta /refresh con put
+  btnReload.addEventListener("click", (e) => {
+    e.preventDefault();
+    axios
+      .delete("/destroy")
+      .then((response) => {
+        // si la respuesta es correcta, se redirige a create
+        if (response.status == 200) {
+          window.location.href = "/create";
+        } else {
+          console.log("Error al recargar");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
+  // cuando se pulse el botón de privado, se hará una petición axios a la ruta /private con put
+  btnPrivate.addEventListener("click", (e) => {
+    e.preventDefault();
+    axios
+      .put("/private")
+      .then((response) => {
+        // si el response.data es true se cambiará la imagen del img de dentro a candado2
+        if (response.data) {
+          imgPrivate.src = "/img/candado2.svg";
+        } else {
+          imgPrivate.src = "/img/candado.svg";
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
+  // cuando se pulse el botón de dark se alternara eliminando las clases bg-gradient-to-t from-secondary-100 to-secondary-200 y se añadira la clase bg-[#282828] al main
+  btnDark.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    // si la variable dark es true se añadiran las clases y se cambiará a false
+    if (dark) {
+      nav.classList.add("bg-secondary-200");
+      nav.classList.remove("bg-[#838083]");
+      main.classList.add(
+        "bg-gradient-to-t",
+        "from-secondary-100",
+        "to-secondary-200"
+      );
+      dark = false;
+      // si la variable dark es false se eliminaran las clases y se cambiará a true
+    } else {
+      nav.classList.remove("bg-secondary-200");
+      nav.classList.add("bg-[#838083]");
+      main.classList.remove(
+        "bg-gradient-to-t",
+        "from-secondary-100",
+        "to-secondary-200"
+      );
+      main.classList.add("bg-[#838083]");
+      dark = true;
+    }
+  });
+  
+  // cuando se pulse el botón de ventana se abrirá una nueva ventana con divStreaming
+  btnVentana.addEventListener("click", (e) => {
+    e.preventDefault();
+    // la ventana no tendrá barra de navegación, ni barra de estado, ni barra de menú, ni barra de herramientas, ni barra de desplazamiento, ni bordes, ni barra de título y se llamara la ventana StremeaMe y el nombre del usuario
+    ventana = window.open(
+      "",
+      "StremeaMe",
+      "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
+    );
+    // se escribirá el contenido del divStreaming en la ventana
+    ventana.document.write(divStreaming.innerHTML);
+  });
+
+  // cuando se pulse el botón de chat se abrirá una nueva ventana con divComentarios
+  btnChat.addEventListener("click", (e) => {
+    e.preventDefault();
+    // la ventana tendrá el mismo estilo que el divComentarios
+    ventana = window.open(
+      "",
+      "StremeaMe",
+      "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
+    );
+    // se escribirá el contenido del divComentarios en la ventana
+    ventana.document.write(divComentarios.innerHTML);
+
+  });
+
+// cuando se pulse el botón de compartir se abrira un modal con el enlace de la página
+btnCompartir.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  Swal.fire({
+    title: "Compartir",
+    html: "<div class='flex flex-col items-center'><img class='h-fit w-20' src='/img/mascota.png'><br>Este es el enlace de tu streaming:<br><b>" + window.location.href + "</b></div>",
+    showCancelButton: true,
+    cancelButtonText: "Cerrar",
+    confirmButtonText: "Copiar",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      // se copia el enlace al portapapeles
+      navigator.clipboard.writeText(window.location.href);
+    }
+  });
+});
+
+</script>

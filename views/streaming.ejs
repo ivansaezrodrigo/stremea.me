@@ -2,7 +2,8 @@
   class="row-span-4 bg-gradient-to-t from-secondary-100 to-secondary-200 min-h-screen flex flex-col"
 >
   <!-- Streaming -->
-  <div id="divStreaming"
+  <div
+    id="divStreaming"
     class="bg-purple-500 w-full h-[60vh] lg:h-[78vh] resize-y flex items-center justify-center shadow-xl"
   >
     Aquí va el streaming
@@ -17,7 +18,7 @@
       <div
         class="flex justify-evenly self-center border-2 border-primary-300 flex-col sm:flex-row items-center font-medium bg-white py-2 w-5/6 lg:w-2/3 max-w-7xl rounded-3xl border-b-4 border-primary-300 p-5"
       >
-        <h1
+        <h1 id="streamingTitle"
           class="text-3xl font-bold text-left pb-1 w-2/3 overflow-hidden text-ellipsis"
           style="font-variant: all-small-caps"
         >
@@ -155,15 +156,33 @@
               <% } %>
             </div>
           </div>
-          <div class="flex mt-3">
+          <div class="flex flex-col mt-3">
             <% if (usuarioRender.url != null || usuarioRender.url != "" ) { %>
-            <img class="h-5 w-5" src="/img/link.svg" alt="Icono de link" /><a
-              target="_blank"
-              href="<%- usuarioRender.url %>"
-              class="ml-2 whitespace-nowrap text-ellipsis overflow-hidden"
-              ><%- usuarioRender.url %></a
-            >
+            <div class="flex">
+              <img class="h-5 w-5" src="/img/link.svg" alt="Icono de link" /><a
+                target="_blank"
+                href="<%- usuarioRender.url %>"
+                class="ml-2 whitespace-nowrap text-ellipsis overflow-hidden"
+                ><%- usuarioRender.url %></a
+              >
+            </div>
             <% } %>
+            <div class="flex mt-1">
+              <a
+                id="btnEditar"
+                class="mr-2 text-center mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-1 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-1"
+                href=""
+              >
+                Editar sala
+              </a>
+              <a
+                id="btnCerrar"
+                class="text-center mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-1 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-1"
+                href=""
+              >
+                Cerrar sala
+              </a>
+            </div>
           </div>
         </div>
         <div
@@ -173,9 +192,8 @@
             class="flex bg-gray-950 w-full rounded-t-2xl justify-between py-3 px-5"
           >
             <h3 class="text-2xl font-normal text-white italic">Descripción</h3>
-            <a href=""><img src="/img/lapiz.svg" alt="Icono de editar" /></a>
           </div>
-          <p class="px-5 py-1 h-30 overflow-auto text-ellipsis">
+          <p id="streamingDescription" class="px-5 py-1 h-30 overflow-auto text-ellipsis">
             <%- room.description %>
           </p>
         </div>
@@ -382,7 +400,8 @@
           </a>
         </div>
         <!-- Comentarios -->
-        <div id="divComentarios"
+        <div
+          id="divComentarios"
           class="flex flex-col h-[26rem] bg-slate-500 justify-end overflow-y-scroll"
         >
           <!-- Comentario propio -->
@@ -566,126 +585,201 @@
   <img src="/img/wave-gris.svg" alt="Ola gris" />
 </main>
 <script>
-  var dark = false;
-  const main = document.querySelector("main");
-  const nav = document.querySelector("nav");
-  const btnReload = document.getElementById("btnReload");
-  const btnPrivate = document.getElementById("btnPrivate");
-  const btnDark = document.getElementById("btnDark");
-  const btnVentana = document.getElementById("btnVentana");
-  const btnChat = document.getElementById("btnChat");
-  const divStreaming = document.getElementById("divStreaming");
-  const divComentarios = document.getElementById("divComentarios");
-  const imgPrivate = document.getElementById("imgPrivate");
-  const btnCompartir = document.getElementById("btnCompartir");
+    var dark = false;
+    const main = document.querySelector("main");
+    const nav = document.querySelector("nav");
+    const btnReload = document.getElementById("btnReload");
+    const btnPrivate = document.getElementById("btnPrivate");
+    const btnDark = document.getElementById("btnDark");
+    const btnVentana = document.getElementById("btnVentana");
+    const btnChat = document.getElementById("btnChat");
+    const divStreaming = document.getElementById("divStreaming");
+    const divComentarios = document.getElementById("divComentarios");
+    const imgPrivate = document.getElementById("imgPrivate");
+    const btnCompartir = document.getElementById("btnCompartir");
+    const btnEditar = document.getElementById("btnEditar");
+    const btnCerrar = document.getElementById("btnCerrar");
+    const streamingDescription = document.getElementById(
+      "streamingDescription"
+    );
+    const streamingTitle = document.getElementById("streamingTitle");
 
-  // cuando se pulse el botón de recargar, se hará una petición axios a la ruta /refresh con put
-  btnReload.addEventListener("click", (e) => {
-    e.preventDefault();
-    axios
-      .delete("/destroy")
-      .then((response) => {
-        // si la respuesta es correcta, se redirige a create
+    // cuando se pulse el botón de recargar, se hará una petición axios a la ruta /refresh con put
+    btnReload.addEventListener("click", (e) => {
+      e.preventDefault();
+      axios
+        .delete("/destroy")
+        .then((response) => {
+          // si la respuesta es correcta, se redirige a create
+          if (response.status == 200) {
+            window.location.href = "/create";
+          } else {
+            console.log("Error al recargar");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+
+    // cuando se pulse el botón de privado, se hará una petición axios a la ruta /private con put
+    btnPrivate.addEventListener("click", (e) => {
+      e.preventDefault();
+      axios
+        .put("/private")
+        .then((response) => {
+          // si el response.data es true se cambiará la imagen del img de dentro a candado2
+          if (response.data) {
+            imgPrivate.src = "/img/candado2.svg";
+          } else {
+            imgPrivate.src = "/img/candado.svg";
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+
+    // cuando se pulse el botón de dark se alternara eliminando las clases bg-gradient-to-t from-secondary-100 to-secondary-200 y se añadira la clase bg-[#282828] al main
+    btnDark.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // si la variable dark es true se añadiran las clases y se cambiará a false
+      if (dark) {
+        nav.classList.add("bg-secondary-200");
+        nav.classList.remove("bg-[#838083]");
+        main.classList.add(
+          "bg-gradient-to-t",
+          "from-secondary-100",
+          "to-secondary-200"
+        );
+        dark = false;
+        // si la variable dark es false se eliminaran las clases y se cambiará a true
+      } else {
+        nav.classList.remove("bg-secondary-200");
+        nav.classList.add("bg-[#838083]");
+        main.classList.remove(
+          "bg-gradient-to-t",
+          "from-secondary-100",
+          "to-secondary-200"
+        );
+        main.classList.add("bg-[#838083]");
+        dark = true;
+      }
+    });
+
+    // cuando se pulse el botón de ventana se abrirá una nueva ventana con divStreaming
+    btnVentana.addEventListener("click", (e) => {
+      e.preventDefault();
+      // la ventana no tendrá barra de navegación, ni barra de estado, ni barra de menú, ni barra de herramientas, ni barra de desplazamiento, ni bordes, ni barra de título y se llamara la ventana StremeaMe y el nombre del usuario
+      ventana = window.open(
+        "",
+        "StremeaMe",
+        "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
+      );
+      // se escribirá el contenido del divStreaming en la ventana
+      ventana.document.write(divStreaming.innerHTML);
+    });
+
+    // cuando se pulse el botón de chat se abrirá una nueva ventana con divComentarios
+    btnChat.addEventListener("click", (e) => {
+      e.preventDefault();
+      // la ventana tendrá el mismo estilo que el divComentarios
+      ventana = window.open(
+        "",
+        "StremeaMe",
+        "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
+      );
+      // se escribirá el contenido del divComentarios en la ventana
+      ventana.document.write(divComentarios.innerHTML);
+    });
+
+    // cuando se pulse el botón de cerrar sala se hará una petición axios a la ruta /destroy con put
+    btnCerrar.addEventListener("click", (e) => {
+      e.preventDefault();
+      axios
+        .delete("/destroy")
+        .then((response) => {
+          // si la respuesta es correcta, se redirige a create
+          if (response.status == 200) {
+            window.location.href = "/";
+          } else {
+            console.log("Error al cerrar la sala");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+
+
+    // cuando se pulse el botón de compartir se abrira un modal con el enlace de la página
+    btnCompartir.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      Swal.fire({
+        title: "Compartir",
+        html:
+          "<div class='flex flex-col items-center'><img class='h-fit w-20' src='/img/mascota.png'><br>Este es el enlace de tu streaming:<br><b>" +
+          window.location.href +
+          "</b></div>",
+        showCancelButton: true,
+        cancelButtonText: "Cerrar",
+        confirmButtonText: "Copiar",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          // se copia el enlace al portapapeles
+          navigator.clipboard.writeText(window.location.href);
+        }
+      });
+    });
+
+
+    
+    // cuando se pulse el botón de editar se abrira un modal con el formulario de editar/
+    btnEditar.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const { value: formValues } = await Swal.fire({
+      title: 'Editar sala',
+      html:
+      `<input id='inputTitulo' value='${streamingTitle.innerText}' class='w-80 mb-2 p-2 rounded border-2 border-secondary-200' type='text' name='titulo' placeholder='Título' required>
+        `+
+        `<textarea id='inputDescripcion' rows=4 class='w-80 mb-2 p-2 rounded border-2 border-secondary-200' name='descripcion' placeholder='Descripción' required>${streamingDescription.innerText}</textarea>`,
+      focusConfirm: false,
+      confirmButtonText: 'Guardar',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      preConfirm: () => {
+        return [
+          document.getElementById('inputTitulo').value,
+          document.getElementById('inputDescripcion').value
+        ]
+      }
+    })
+    
+    if (formValues) {
+     // Swal.fire(JSON.stringify(formValues))
+     // se envia el formulario con axios
+      axios.put('/room', {
+        titulo: formValues[0],
+        descripcion: formValues[1]
+      }).then((response) => {
+        // si la respuesta es correcta, se actualiza el html
         if (response.status == 200) {
-          window.location.href = "/create";
+          streamingTitle.innerText = formValues[0];
+          streamingDescription.innerText = formValues[1];
         } else {
-          console.log("Error al recargar");
+          // si la respuesta es incorrecta, se muestra un mensaje de error
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Algo ha ido mal!',
+          })
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-
-  // cuando se pulse el botón de privado, se hará una petición axios a la ruta /private con put
-  btnPrivate.addEventListener("click", (e) => {
-    e.preventDefault();
-    axios
-      .put("/private")
-      .then((response) => {
-        // si el response.data es true se cambiará la imagen del img de dentro a candado2
-        if (response.data) {
-          imgPrivate.src = "/img/candado2.svg";
-        } else {
-          imgPrivate.src = "/img/candado.svg";
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-
-  // cuando se pulse el botón de dark se alternara eliminando las clases bg-gradient-to-t from-secondary-100 to-secondary-200 y se añadira la clase bg-[#282828] al main
-  btnDark.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    // si la variable dark es true se añadiran las clases y se cambiará a false
-    if (dark) {
-      nav.classList.add("bg-secondary-200");
-      nav.classList.remove("bg-[#838083]");
-      main.classList.add(
-        "bg-gradient-to-t",
-        "from-secondary-100",
-        "to-secondary-200"
-      );
-      dark = false;
-      // si la variable dark es false se eliminaran las clases y se cambiará a true
-    } else {
-      nav.classList.remove("bg-secondary-200");
-      nav.classList.add("bg-[#838083]");
-      main.classList.remove(
-        "bg-gradient-to-t",
-        "from-secondary-100",
-        "to-secondary-200"
-      );
-      main.classList.add("bg-[#838083]");
-      dark = true;
     }
-  });
-  
-  // cuando se pulse el botón de ventana se abrirá una nueva ventana con divStreaming
-  btnVentana.addEventListener("click", (e) => {
-    e.preventDefault();
-    // la ventana no tendrá barra de navegación, ni barra de estado, ni barra de menú, ni barra de herramientas, ni barra de desplazamiento, ni bordes, ni barra de título y se llamara la ventana StremeaMe y el nombre del usuario
-    ventana = window.open(
-      "",
-      "StremeaMe",
-      "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
-    );
-    // se escribirá el contenido del divStreaming en la ventana
-    ventana.document.write(divStreaming.innerHTML);
-  });
 
-  // cuando se pulse el botón de chat se abrirá una nueva ventana con divComentarios
-  btnChat.addEventListener("click", (e) => {
-    e.preventDefault();
-    // la ventana tendrá el mismo estilo que el divComentarios
-    ventana = window.open(
-      "",
-      "StremeaMe",
-      "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
-    );
-    // se escribirá el contenido del divComentarios en la ventana
-    ventana.document.write(divComentarios.innerHTML);
+    })
 
-  });
-
-// cuando se pulse el botón de compartir se abrira un modal con el enlace de la página
-btnCompartir.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  Swal.fire({
-    title: "Compartir",
-    html: "<div class='flex flex-col items-center'><img class='h-fit w-20' src='/img/mascota.png'><br>Este es el enlace de tu streaming:<br><b>" + window.location.href + "</b></div>",
-    showCancelButton: true,
-    cancelButtonText: "Cerrar",
-    confirmButtonText: "Copiar",
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      // se copia el enlace al portapapeles
-      navigator.clipboard.writeText(window.location.href);
-    }
-  });
-});
 
 </script>

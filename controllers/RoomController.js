@@ -52,7 +52,7 @@ const jwt = require("jsonwebtoken");
 
 const createRoom = async (req, res) => {
   // Importamos las cookies con cookie parser
-  const token = req.cookies.jwt ;
+  const token = req.cookies.jwt;
 
   // Verificamos el token
   const decoded = await jwt.verify(token, process.env.SECRET_KEY);
@@ -81,7 +81,8 @@ const createRoom = async (req, res) => {
           code,
           owner: user.id,
           title: `👾 ¡Konichiwa chavales! - Disfrutad del streaming del tal ${user.alias} 🕹`,
-          description : "¡Bienvenidos!¡Esta es mi nueva sala de chat! Tomad asiento y disfrutad del streaming.",
+          description:
+            "¡Bienvenidos!¡Esta es mi nueva sala de chat! Tomad asiento y disfrutad del streaming.",
           private: false,
         });
         // se añade el usuario a la sala
@@ -100,7 +101,6 @@ const createRoom = async (req, res) => {
     return res.redirect("/login");
   }
 };
-
 
 // const joinRoom = async (req, res) => {
 //   // recibe el codigo de la sala por get y el id del usuario por body
@@ -140,18 +140,17 @@ const createRoom = async (req, res) => {
 // };
 
 const joinRoom = async (req, res) => {
-  // recibe el codigo de la sala por get y el id del usuario por body
-  const { codigo } = req.params;
-
-  // Importamos las cookies con cookie parser
-  const token = req.cookies.jwt ;
-
-  // Verificamos el token
-  const decoded = await jwt.verify(token, process.env.SECRET_KEY);
-  
-  const userId = decoded.userId;
-
   try {
+    // recibe el codigo de la sala por get y el id del usuario por body
+    const { codigo } = req.params;
+
+    // Importamos las cookies con cookie parser
+    const token = req.cookies.jwt;
+
+    // Verificamos el token
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+
+    const userId = decoded.userId;
     // si el usuario no existe se devuelve un error
     const user = await modeloUser.findByPk(userId);
     if (!user) {
@@ -162,9 +161,16 @@ const joinRoom = async (req, res) => {
     const room = await modeloRoom.findOne({ where: { code: codigo } });
     if (room) {
       // si el usuario esta baneado de la sala, se devuelve un error
-      const banned = await room.hasUser({where: { id: userId }}, { through: { banned: 1 } });
+      const banned = await room.hasUser(
+        { where: { id: userId } },
+        { through: { banned: 1 } }
+      );
       if (banned) {
-        return res.render("landing", { title: "", error: true , message:"User is banned from this room" });
+        return res.render("landing", {
+          title: "",
+          error: true,
+          message: "User is banned from this room",
+        });
       }
       // se comprueba si el usuario ya está dentro de la sala y existe
       const joined = await room.hasUser(userId);
@@ -172,13 +178,19 @@ const joinRoom = async (req, res) => {
         // transformamos el objeto usuario a variables para poder renderizarlo
         const { alias, rol, twitter, instagram, twitch, url } = user;
         const usuarioRender = { alias, rol, twitter, instagram, twitch, url };
-        console.log(url)
-        return res.render("streaming", { title: "- Streaming", room, usuarioRender });
+        console.log(url);
+        return res.render("streaming", {
+          title: "- Streaming",
+          room,
+          usuarioRender,
+        });
       }
 
       // si no está baneado ni dentro de la sala se añade a la sala
       await room.addUser(user);
-      return res.status(200).json({ message: "User joined successfully", room });
+      return res
+        .status(200)
+        .json({ message: "User joined successfully", room });
     } else {
       return res.status(404).json({ error: "Room not found" });
     }
@@ -187,8 +199,6 @@ const joinRoom = async (req, res) => {
     return res.status(500).json({ error: "Error joining room" });
   }
 };
-
-
 
 const updateCode = async (req, res) => {
   const { userId } = req.body;
@@ -271,22 +281,37 @@ const getRoomByCode = async (req, res) => {
 
 const updateRoom = async (req, res) => {
   try {
-    // obtenemos la sala por el codigo y el usuario por el id
-    const { userId } = req.body;
+    // Importamos las cookies con cookie parser
+    const token = req.cookies.jwt;
 
-    // si la sala existe y el usuario es el propietario de la sala puede actualizarla
-    const sala = await modeloRoom.findOne({ where: { owner: userId } });
-    if (sala) {
-      if (req.body.title && req.body.title !== sala.title) {
-        sala.title = req.body.title;
+    // Verificamos el token
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
+
+    const userId = decoded.userId;
+    // si el usuario no existe se devuelve un error
+    const user = await modeloUser.findByPk(userId);
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+    }
+
+    // se busca la sala asociada al usuario
+    const room = await modeloRoom.findOne({ where: { owner: userId } });
+
+    if (room) {
+      // si la sala existe y el usuario es el propietario de la sala puede actualizarla
+      const sala = await modeloRoom.findOne({ where: { owner: userId } });
+      if (sala) {
+        if (req.body.titulo && req.body.titulo !== sala.title) {
+          sala.title = req.body.titulo;
+        }
+        if (req.body.descripcion && req.body.descripcion !== sala.description) {
+          sala.description = req.body.descripcion;
+        }
+        await sala.save();
+        res.status(200).send();
+      } else {
+        res.status(404).send("Sala no encontrada");
       }
-      if (req.body.description && req.body.description !== sala.description) {
-        sala.description = req.body.description;
-      }
-      await sala.save();
-      res.status(200).send("Sala actualizada");
-    } else {
-      res.status(404).send("Sala no encontrada");
     }
   } catch (error) {
     console.log(error);
@@ -296,23 +321,32 @@ const updateRoom = async (req, res) => {
 
 const deleteRoom = async (req, res) => {
   try {
- // Importamos las cookies con cookie parser
- const token = req.cookies.jwt ;
+    // Importamos las cookies con cookie parser
+    const token = req.cookies.jwt;
 
- // Verificamos el token
- const decoded = await jwt.verify(token, process.env.SECRET_KEY);
- 
- const userId = decoded.userId;
+    // Verificamos el token
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
 
- // si la sala existe y el usuario es el propietario de la sala puede eliminarla
-  const sala = await modeloRoom.findOne({ where: { owner: userId } });
-  if (sala) {
-    await sala.destroy();
-    return res.status(200).send("Sala eliminada");
-  } else {
-    return res.status(404).send("Sala no encontrada");
-  }
+    const userId = decoded.userId;
+    // si el usuario no existe se devuelve un error
+    const user = await modeloUser.findByPk(userId);
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+    }
 
+    // se busca la sala asociada al usuario
+    const room = await modeloRoom.findOne({ where: { owner: userId } });
+
+    if (room) {
+      // si la sala existe y el usuario es el propietario de la sala puede eliminarla
+      const sala = await modeloRoom.findOne({ where: { owner: userId } });
+      if (sala) {
+        await sala.destroy();
+        return res.status(200).send("Sala eliminada");
+      } else {
+        return res.status(404).send("Sala no encontrada");
+      }
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).send("Error al eliminar la sala");
@@ -322,11 +356,11 @@ const deleteRoom = async (req, res) => {
 const makePrivate = async (req, res) => {
   try {
     // Importamos las cookies con cookie parser
-    const token = req.cookies.jwt ;
+    const token = req.cookies.jwt;
 
     // Verificamos el token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
-    
+
     const userId = decoded.userId;
 
     // si la sala existe y el usuario es el propietario de la sala puede actualizarla
@@ -336,7 +370,6 @@ const makePrivate = async (req, res) => {
       await sala.save();
       res.status(200).send(sala.private);
     }
-
   } catch (error) {
     console.log(user);
     console.log(error);
@@ -356,7 +389,7 @@ const banUser = async (req, res) => {
     const joined = await sala.hasUser(banId);
     if (sala && user && joined) {
       // cambia el parametro banned del usuario con la id banId a true | url de la info: https://sequelize.org/master/manual/model-querying-basics.html
-      modeloRoomsUsers.update( { banned: true }, { where: { userId: banId } } );
+      modeloRoomsUsers.update({ banned: true }, { where: { userId: banId } });
 
       res.status(200).send("Usuario baneado");
     } else {

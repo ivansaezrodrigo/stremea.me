@@ -129,6 +129,14 @@ const vistaStreaming = function (req, res) {
   res.render("streaming", { title: "- Generar sala" });
 };
 
+const vistaStreamer = function (req, res) {
+  res.render("streamer", { title: "- Retransmitir en sala" });
+};
+
+const vistaViewer = function (req, res) {
+  res.render("viewer", { title: "- Ver sala" });
+};
+
 const vistaRecovering = function (req, res) {
   res.render("recovering", {
     title: "- Recuperar contraseña",
@@ -191,4 +199,6 @@ module.exports = {
   vistaUnsuscribe,
   vistaStreaming,
   vistaRecovering,
+  vistaStreamer,
+  vistaViewer,
 };

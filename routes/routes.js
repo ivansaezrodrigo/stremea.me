@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 
+// importamos wrtc
+const webrtc = require("wrtc");
+
 // Importamos los controladores
 const controladorUser = require('../controllers/UserController');
 const controladorRoom = require('../controllers/RoomController');
@@ -26,6 +29,9 @@ router.get('/banned', vista.vistaBanned);
 router.get('/kicked', vista.vistaKicked);
 router.get('/recovery', vista.vistaRecovery);
 router.get('/recovered', vista.vistaRecovered);
+
+router.get('/streamer', isAuth , vista.vistaStreamer);
+router.get('/viewer', isAuth , vista.vistaViewer);
 
 router.get('/recovering/:token', isNotAuth ,vista.vistaRecovering);
 router.get('/unsubscribe/:token' , vista.vistaUnsuscribe);
@@ -61,6 +67,10 @@ router.post('/sayonara', isAuth ,controladorUser.deleteUser);
 // -Ruta para crear una Room
 router.get('/create', isAuth ,controladorRoom.createRoom);
 
+// -Ruta para ver un streaming
+router.get('/streaming', isAuth ,vista.vistaStreamer);
+
+
 // -Ruta para unirse a una Room 
 router.get('/room/:codigo', controladorRoom.joinRoom);
 
@@ -76,6 +86,62 @@ router.post('/recovering', isNotAuth ,controladorUser.recoveryPassword);
 // -Ruta de confirmación de recuperación con el token
 router.post('/recovery', controladorUser.confirmToken);
 
+// WEBRTC ################################
+let senderStream; // Declarar senderStream en un ámbito más amplio
+
+function handleTrackEvent(e, peer) {
+    senderStream = e.streams[0];
+};
+
+router.post("/consumer", async ({ body }, res) => {
+    const peer = new webrtc.RTCPeerConnection({
+        iceServers: [
+            {
+                urls: "stun:stun.stunprotocol.org"
+            }
+        ]
+    });
+    const desc = new webrtc.RTCSessionDescription(body.sdp);
+    await peer.setRemoteDescription(desc);
+
+    // Verificar si senderStream está definido antes de utilizarlo
+    if (senderStream) {
+        senderStream.getTracks().forEach(track => peer.addTrack(track, senderStream));
+    }
+
+    const answer = await peer.createAnswer();
+    await peer.setLocalDescription(answer);
+    const payload = {
+        sdp: peer.localDescription
+    }
+
+    res.json(payload);
+});
+
+router.post('/broadcast', async ({ body }, res) => {
+    const peer = new webrtc.RTCPeerConnection({
+        iceServers: [
+            {
+                urls: "stun:stun.stunprotocol.org"
+            }
+        ]
+    });
+    peer.ontrack = (e) => handleTrackEvent(e, peer);
+    const desc = new webrtc.RTCSessionDescription(body.sdp);
+    await peer.setRemoteDescription(desc);
+
+    const answer = await peer.createAnswer();
+    await peer.setLocalDescription(answer);
+    const payload = {
+        sdp: peer.localDescription
+    }
+
+    res.json(payload);
+});
+
+
+
+//######################################
 
 
 

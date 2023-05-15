@@ -1,0 +1,99 @@
+<main
+  class="row-span-4 bg-gradient-to-t from-secondary-100 to-secondary-200 min-h-screen flex flex-col"
+>
+  <!-- Streaming -->
+  <div
+    id="divStreaming"
+    class="flex flex-col bg-purple-500 w-full h-[60vh] lg:h-[78vh] resize-y flex items-center justify-center shadow-xl"
+  >
+    <video id="localVideo"></video>
+    <video id="remoteVideo"></video>
+    <p id="myPeer"></p>
+    <input id="remotePeerId" type="text" />
+    <button id="btnCall">CALL</button>
+    <a id="btnRetransmitir" href="">Retransmitir</a>
+  </div>
+  <img src="/img/wave-gris.svg" alt="Ola gris" />
+</main>
+<script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+<script>
+
+
+ // Elementos HTML
+const localVideo = document.getElementById("localVideo");
+const remoteVideo = document.getElementById("remoteVideo");
+const btnStreaming = document.getElementById("btnStreaming");
+const myPeer = document.getElementById("myPeer");
+const remotePeerId = document.getElementById("remotePeerId");
+const btnCall = document.getElementById("btnCall");
+
+let localStream;
+// Streaming
+// Se crea un objeto Peer para la comunicación
+var peer = new Peer();
+
+peer.on("open", function (id) {
+  // Se muestra el ID del usuario
+  myPeer.innerText = id;
+});
+
+// cuando clicamos en el botón de retransmitir capturamos el escritorio
+// btnRetransmitir.addEventListener("click", function (e) {
+//   // Captura del escritorio con Screen Capture API
+//   e.preventDefault();
+//   navigator.mediaDevices
+//     .getDisplayMedia({
+//       video: true,
+//       audio: true,
+//     })
+//     .then((stream) => {
+//       localStream = stream;
+//       const videoElement = document.getElementById("localVideo");
+//       videoElement.srcObject = stream;
+//       videoElement.onloadedmetadata = (e) => videoElement.play();
+//     })
+//     .catch(function (err) {
+//       console.log(err);
+//     });
+// });
+
+
+// Captura del escritorio con Screen Capture API
+// navigator.mediaDevices
+//   .getDisplayMedia({
+//     video: true,
+//     audio: true,
+//   })
+//   .then((stream) => {
+//     localStream = stream;
+//     const videoElement = document.getElementById("localVideo");
+//     videoElement.srcObject = stream;
+//     videoElement.onloadedmetadata = (e) => videoElement.play();
+//   })
+//   .catch(function (err) {
+//     console.log(err);
+//   });
+
+btnCall.addEventListener("click", function () {
+  const remotePeer = remotePeerId.value;
+  // Realizar llamada
+  const call = peer.call(remotePeer);
+  call.on("stream", function (stream) {
+    const videoElement = document.getElementById("remoteVideo");
+    videoElement.srcObject = stream;
+    videoElement.onloadedmetadata = (e) => videoElement.play();
+  });
+});
+
+// Manejo de llamadas entrantes
+peer.on("call", function (call) {
+  // Contestar llamada
+  // call.answer(localStream);
+  call.on("stream", function (stream) {
+    const videoElement = document.getElementById("remoteVideo");
+    videoElement.srcObject = stream;
+    videoElement.onloadedmetadata = (e) => videoElement.play();
+  });
+});
+
+</script>

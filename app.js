@@ -5,6 +5,9 @@ const express = require('express');
 // Importamos las variables de entorno
 require('dotenv').config();
 
+// Importamos webRTC #####################
+const webrtc = require("wrtc");
+
 // Importamos path
 const path = require('path');
 
@@ -54,7 +57,6 @@ app.use(express.json());
 
 // Middleware que nos permite usar el body de la petición
 app.use(expressLayouts);
-
 
 // ######## Configuración de Peer ########
 

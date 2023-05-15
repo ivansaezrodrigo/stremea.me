@@ -846,22 +846,22 @@ btnCall.addEventListener("click", function () {
   const remotePeer = remotePeerId.value;
   // Realizar llamada
   const call = peer.call(remotePeer, localStream);
-  // call.on("stream", function (stream) {
-  //   const videoElement = document.getElementById("remoteVideo");
-  //   videoElement.srcObject = stream;
-  //   videoElement.onloadedmetadata = (e) => videoElement.play();
-  // });
+  call.on("stream", function (stream) {
+    const videoElement = document.getElementById("remoteVideo");
+    videoElement.srcObject = stream;
+    videoElement.onloadedmetadata = (e) => videoElement.play();
+  });
 });
 
 // Manejo de llamadas entrantes
 peer.on("call", function (call) {
   // Contestar llamada
   call.answer(localStream);
-  // call.on("stream", function (stream) {
-  //   const videoElement = document.getElementById("remoteVideo");
-  //   videoElement.srcObject = stream;
-  //   videoElement.onloadedmetadata = (e) => videoElement.play();
-  // });
+  call.on("stream", function (stream) {
+    const videoElement = document.getElementById("remoteVideo");
+    videoElement.srcObject = stream;
+    videoElement.onloadedmetadata = (e) => videoElement.play();
+  });
 });
 
 </script>

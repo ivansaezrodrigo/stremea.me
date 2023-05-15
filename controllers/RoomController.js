@@ -160,6 +160,14 @@ const joinRoom = async (req, res) => {
     // se busca la sala por el codigo
     const room = await modeloRoom.findOne({ where: { code: codigo } });
     if (room) {
+      // si la sala es privada y el usuario no es el propietario, se devuelve un error
+      if (room.private && room.owner !== userId) {
+        return res.render("landing", {
+          title: "",
+          error: true,
+          message: "Room is private",
+        });
+      }
       // si el usuario esta baneado de la sala, se devuelve un error
       const banned = await room.hasUser(
         { where: { id: userId } },
@@ -192,7 +200,8 @@ const joinRoom = async (req, res) => {
         .status(200)
         .json({ message: "User joined successfully", room });
     } else {
-      return res.status(404).json({ error: "Room not found" });
+      //return res.status(404).json({ error: "Room not found" });
+      return res.render("landing", { title: "", error: true , message: "Room not available" });
     }
   } catch (error) {
     console.log(error);

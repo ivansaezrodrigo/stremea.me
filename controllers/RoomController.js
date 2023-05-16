@@ -144,8 +144,25 @@ const joinRoom = async (req, res) => {
     // recibe el codigo de la sala por get y el id del usuario por body
     const { codigo } = req.params;
 
+
     // Importamos las cookies con cookie parser
     const token = req.cookies.jwt;
+
+    // se busca la sala por el codigo
+    const room = await modeloRoom.findOne({ where: { code: codigo } });
+
+    // se busca el propietario de la sala
+    const propietario = await modeloUser.findByPk(room.owner);
+
+    // capturamos si no llega el token
+    if (!token) {
+      return res.render("streaming", {
+        title: "Streaming",
+        room: room,
+        usuarioRender: propietario,
+        viewer: true,
+      });
+    }
 
     // Verificamos el token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
@@ -157,8 +174,7 @@ const joinRoom = async (req, res) => {
       res.status(404).json({ error: "User not found" });
     }
 
-    // se busca la sala por el codigo
-    const room = await modeloRoom.findOne({ where: { code: codigo } });
+
     if (room) {
       // si la sala es privada y el usuario no es el propietario, se devuelve un error
       if (room.private && room.owner !== userId) {

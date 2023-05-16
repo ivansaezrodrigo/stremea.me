@@ -4,64 +4,17 @@
   <!-- Streaming -->
   <div
     id="divStreaming"
-    class="flex flex-col bg-primary-300 w-full h-[60vh] lg:h-[78vh] resize-y flex items-center justify-center shadow-xl"
+    class="flex flex-col bg-purple-500 w-full h-[60vh] lg:h-[78vh] resize-y flex items-center justify-center shadow-xl"
   >
-    <video poster="/img/poster.png" autoplay id="video" class="h-full w-auto" controls></video>
-  </div>
-  <div class="flex flex-col justify-center items-center p-4 w-full">
-    <% if(typeof viewer !== 'undefined' && viewer == true) { %>
-    <button class="font-bold mx-2" id="my-button">View Stream</button>
-    <button class="font-bold mx-2" id="stop-button">Stop Stream</button>
-
-    <% } else { %>
-      <div class="flex w-full flex-col justify-center md:flex-row  lg:w-2/3 max-w-7xl sm:px-14">
-        <button class="font-bold mx-2 my-5 text-lg bg-primary-100 text-black hover:bg-primary-200 active:border-none active:mt-6
-      py-2 rounded-lg transition duration-300  
-      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="my-button">Retransmitir</button>
-      <button class="font-bold mx-2 my-5 text-lg text-white  bg-red-700 hover:bg-red-800 active:border-none active:mt-6
-      py-2 rounded-lg transition duration-300  
-      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="stop-button">Parar Stream</button>
-      <button class="font-bold mx-2 my-5 text-lg text-white  bg-gray-700 hover:bg-gray-900 active:border-none active:mt-6
-      py-2 rounded-lg transition duration-300  
-      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="hidden-button">Esconder Stream</button>
-  
-      </div>
-      <div class="flex justify-center items-center w-full w-5/6 lg:w-2/3 max-w-7xl">
-        <!-- Combo box con bitrates 3000,4000,6000,10000,18000-->
-        <span class="mx-2 my-5 text-xl text-black font-bold max-w-xs">Bitrate: </span>
-        <select id="bitrate" class="font-bold my-5 text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-6
-        py-2 rounded-lg transition duration-300  
-        border-b-4 border-primary-300 self-center w-full sm:w-1/6 max-w-xs">
-          <option value="300">300Kb</option>
-          <option value="7500">7.500Kb</option>
-          <option value="12500">15.00Kb</option>
-          <option value="25000">25.000Kb</option>
-          <option value="50000">50.000Kb</option>
-          <option value="100000">100.000Kb</option>
-          <option value="200000">200.000Kb</option>
-          <option value="1000000" selected>1M</option>
-          <option value="2000000">2M</option>
-          <option value="3000000">3M</option>
-          <option value="6000000">6M</option>
-          <option value="10000000">10M</option>
-        </select>
-        <!-- Combobox con fps 15,24,30, 60 y 120-->
-        <span class="ml-14 mx-2 my-5 text-xl text-black font-bold max-w-xs">Framerate: </span><select id="fps" class="font-bold mx-2 my-5 text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-6
-        py-2 rounded-lg transition duration-300  
-        border-b-4 border-primary-300 self-center w-full sm:w-1/6 max-w-xs">
-          <option value="2">2 FPS</option>
-          <option value="15">15 FPS</option>
-          <option value="24">24 FPS</option>
-          <option value="30" selected>30 FPS</option>
-          <option value="60">60 FPS</option>
-          <option value="120">120 FPS</option>
-        </select>
-
-      </div>
-    <% } %>
+    <video id="localVideo"></video>
+    <video id="remoteVideo"></video>
+    <p id="myPeer"></p>
+    <input id="remotePeerId" type="text" />
+    <button id="btnCall">CALL</button>
+    <a id="btnRetransmitir" href="">Retransmitir</a>
   </div>
   <div
-    class="z-10 -mb-16 flex flex-col justify-self-center content-center"
+    class="z-10 -mb-16 flex flex-col justify-self-center content-center pt-14"
   >
     <!-- Aqui el titulo -->
     <div
@@ -95,13 +48,13 @@
                 <img src="/img/bombilla.svg" alt="Icono de una bombilla" />
               </a>
             </div>
-            <!-- <div
+            <div
               class="flex justify-center w-11 h-11 items-center bg-red-700 rounded-lg border-2 border-b-4 active:border-b-0 border-primary-300"
             >
               <a href="#" id="btnVentana">
                 <img src="/img/ventana.svg" alt="Icono de ventana" />
               </a>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -220,7 +173,6 @@
               >
             </div>
             <% } %>
-            <% if (room.creator == usuarioRender.id) { %>
             <div class="flex mt-1">
               <a
                 id="btnEditar"
@@ -237,7 +189,6 @@
                 Cerrar sala
               </a>
             </div>
-            <% } %>
           </div>
         </div>
         <div
@@ -417,7 +368,6 @@
           class="flex bg-white items-center w-full border-b-2 border-primary-300 rounded-t-3xl justify-between py-3 px-5"
         >
           <div class="flex content-center items-center">
-            <% if (room.creator == usuarioRender.id) { %>
             <div
               class="flex justify-center w-11 h-11 ml-2 items-center bg-gray-900 rounded-xl border-2 border-b-4 active:border-b-0 border-primary-300"
             >
@@ -438,7 +388,6 @@
                 />
                 <% } %>
               </a>
-              
             </div>
             <div
               class="flex justify-center w-11 h-11 mx-2 items-center bg-gray-900 rounded-xl border-2 border-b-4 active:border-b-0 border-primary-300"
@@ -451,7 +400,6 @@
                 />
               </a>
             </div>
-            <% } %>
             <h3 class="text-2xl font-normal text-black italic">
               <b>Room CODE:</b> <%- room.code %>
             </h3>
@@ -646,183 +594,21 @@
   <img src="/img/wave-gris.svg" alt="Ola gris" />
 </main>
 <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-<% if(typeof viewer !== 'undefined' && viewer == true) { %>
 <script>
-  window.onload = () => {
-    document.getElementById("my-button").onclick = () => {
-      init();
-    };
-  };
-  async function init() {
-    const peer = createPeer();
-    peer.addTransceiver("video", {
-      direction: "recvonly",
-      codecs: [
-        {
-          mimeType: "video/AV1X",
-          clockRate: 90000,
-          parameters: {
-            "profile-id": 2,
-            "level-id": 10,
-          },
-        },
-      ],
-    });
-  }
-
-  function createPeer() {
-    const peer = new RTCPeerConnection({
-      iceServers: [
-        {
-          urls: "stun:stun.stunprotocol.org",
-        },
-      ],
-    });
-    peer.ontrack = handleTrackEvent;
-    peer.onnegotiationneeded = () => handleNegotiationNeededEvent(peer);
-
-    return peer;
-  }
-
-  async function handleNegotiationNeededEvent(peer) {
-    const offer = await peer.createOffer();
-    await peer.setLocalDescription(offer);
-    const payload = {
-      sdp: peer.localDescription,
-    };
-
-    const { data } = await axios.post("/consumer", payload);
-    const desc = new RTCSessionDescription(data.sdp);
-    peer.setRemoteDescription(desc).catch((e) => console.log(e));
-  }
-
-  function handleTrackEvent(e) {
-    document.getElementById("video").srcObject = e.streams[0];
-  }
-</script>
-<% } else {%>
-<script>
-  const btnReload = document.getElementById("btnReload");
-  const btnPrivate = document.getElementById("btnPrivate");
-  const btnEditar = document.getElementById("btnEditar");
-  const btnCerrar = document.getElementById("btnCerrar");
-const video = document.getElementById("video");
-let bitrate = 1000000; // Valor inicial del bitrate (en bits por segundo)
-let fps = 30; // Valor inicial de los FPS
-let sender;
-
-const bitrateCombo = document.getElementById("bitrate");
-const fpsCombo = document.getElementById("fps");
-
-// Según el bitrate del combobox se cambia el valor del bitrate
-bitrateCombo.onchange = () => {
-  changeBitrate(bitrateCombo.value);
-};
-
-// Según el FPS del combobox se cambia el valor del FPS
-fpsCombo.onchange = () => {
-  changeFPS(fpsCombo.value);
-};
-
-// Función para cambiar el bitrate
-function changeBitrate(newBitrate) {
-  bitrate = parseInt(newBitrate);
-  if (sender && sender.track) {
-    const parameters = sender.getParameters();
-    const newParameters = { ...parameters };
-    newParameters.encodings[0].maxBitrate = bitrate;
-    sender.setParameters(newParameters)
-      .then(() => console.log("Bitrate changed successfully."))
-      .catch((error) => console.error("Failed to change bitrate:", error));
-  }
-}
-
-
-// Función para cambiar los FPS
-function changeFPS(newFPS) {
-  fps = parseInt(newFPS);
-  video.srcObject.getVideoTracks()[0].applyConstraints({ frameRate: fps });
-}
-
-window.onload = () => {
-  document.getElementById("my-button").onclick = () => {
-    init();
-  };
-};
-
-async function init() {
-  const stream = await navigator.mediaDevices.getDisplayMedia({
-    video: {
-      frameRate: { ideal: fps },
-      width: { ideal: 1920 },
-      height: { ideal: 1080 },
-    },
-    audio: true,
-  });
-  video.srcObject = stream;
-  const peer = createPeer();
-  stream.getTracks().forEach((track) => {
-    peer.addTrack(track, stream);
-    if (track.kind === "video") {
-      sender = peer.getSenders().find((s) => s.track === track);
-    }
-  });
-}
-
-function createPeer() {
-  const peer = new RTCPeerConnection({
-    iceServers: [
-      {
-        urls: "stun:stun.stunprotocol.org",
-      },
-    ],
-  });
-  peer.onnegotiationneeded = () => handleNegotiationNeededEvent(peer);
-
-  return peer;
-}
-
-async function handleNegotiationNeededEvent(peer) {
-  const offer = await peer.createOffer();
-  await peer.setLocalDescription(offer);
-  const payload = {
-    sdp: peer.localDescription,
-  };
-
-  const { data } = await axios.post("/broadcast", payload);
-  const desc = new RTCSessionDescription(data.sdp);
-  peer.setRemoteDescription(desc).catch((e) => console.log(e));
-}
-
-// cuando se presione hidden button se oculta el streaming
-document.getElementById("hidden-button").onclick = () => {
-  video.classList.toggle("hidden");
-  document.getElementById("hidden-button").textContent = video.classList.contains("hidden")
-    ? "Mostrar streaming"
-    : "Ocultar streaming";
-};
-
-</script>
-<% } %>
-<script>
-  // cuando se presione stop button se para el streaming
-  document.getElementById("stop-button").onclick = () => {
-    video.srcObject.getTracks().forEach((track) => track.stop());
-  };
-
-  // Variables
   var dark = false;
   const main = document.querySelector("main");
   const nav = document.querySelector("nav");
+  const btnReload = document.getElementById("btnReload");
+  const btnPrivate = document.getElementById("btnPrivate");
   const btnDark = document.getElementById("btnDark");
-  // const btnVentana = document.getElementById("btnVentana");
+  const btnVentana = document.getElementById("btnVentana");
   const btnChat = document.getElementById("btnChat");
   const divStreaming = document.getElementById("divStreaming");
   const divComentarios = document.getElementById("divComentarios");
   const imgPrivate = document.getElementById("imgPrivate");
   const btnCompartir = document.getElementById("btnCompartir");
-
+  const btnEditar = document.getElementById("btnEditar");
+  const btnCerrar = document.getElementById("btnCerrar");
   const streamingDescription = document.getElementById("streamingDescription");
   const streamingTitle = document.getElementById("streamingTitle");
 
@@ -890,18 +676,18 @@ document.getElementById("hidden-button").onclick = () => {
     }
   });
 
-  // // cuando se pulse el botón de ventana se abrirá una nueva ventana con divStreaming
-  // btnVentana.addEventListener("click", (e) => {
-  //   e.preventDefault();
-  //   // la ventana no tendrá barra de navegación, ni barra de estado, ni barra de menú, ni barra de herramientas, ni barra de desplazamiento, ni bordes, ni barra de título y se llamara la ventana StremeaMe y el nombre del usuario
-  //   ventana = window.open(
-  //     "",
-  //     "StremeaMe",
-  //     "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
-  //   );
-  //   // se escribirá el contenido del divStreaming en la ventana
-  //   ventana.document.write(divStreaming.innerHTML);
-  // });
+  // cuando se pulse el botón de ventana se abrirá una nueva ventana con divStreaming
+  btnVentana.addEventListener("click", (e) => {
+    e.preventDefault();
+    // la ventana no tendrá barra de navegación, ni barra de estado, ni barra de menú, ni barra de herramientas, ni barra de desplazamiento, ni bordes, ni barra de título y se llamara la ventana StremeaMe y el nombre del usuario
+    ventana = window.open(
+      "",
+      "StremeaMe",
+      "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
+    );
+    // se escribirá el contenido del divStreaming en la ventana
+    ventana.document.write(divStreaming.innerHTML);
+  });
 
   // cuando se pulse el botón de chat se abrirá una nueva ventana con divComentarios
   btnChat.addEventListener("click", (e) => {
@@ -1000,4 +786,82 @@ document.getElementById("hidden-button").onclick = () => {
         });
     }
   });
+
+ // Elementos HTML
+const localVideo = document.getElementById("localVideo");
+const remoteVideo = document.getElementById("remoteVideo");
+const btnStreaming = document.getElementById("btnStreaming");
+const myPeer = document.getElementById("myPeer");
+const remotePeerId = document.getElementById("remotePeerId");
+const btnCall = document.getElementById("btnCall");
+
+let localStream;
+// Streaming
+// Se crea un objeto Peer para la comunicación
+var peer = new Peer();
+
+peer.on("open", function (id) {
+  // Se muestra el ID del usuario
+  myPeer.innerText = id;
+});
+
+// cuando clicamos en el botón de retransmitir capturamos el escritorio
+btnRetransmitir.addEventListener("click", function (e) {
+  // Captura del escritorio con Screen Capture API
+  e.preventDefault();
+  navigator.mediaDevices
+    .getDisplayMedia({
+      video: true,
+      audio: true,
+    })
+    .then((stream) => {
+      localStream = stream;
+      const videoElement = document.getElementById("localVideo");
+      videoElement.srcObject = stream;
+      videoElement.onloadedmetadata = (e) => videoElement.play();
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+});
+
+
+// Captura del escritorio con Screen Capture API
+// navigator.mediaDevices
+//   .getDisplayMedia({
+//     video: true,
+//     audio: true,
+//   })
+//   .then((stream) => {
+//     localStream = stream;
+//     const videoElement = document.getElementById("localVideo");
+//     videoElement.srcObject = stream;
+//     videoElement.onloadedmetadata = (e) => videoElement.play();
+//   })
+//   .catch(function (err) {
+//     console.log(err);
+//   });
+
+btnCall.addEventListener("click", function () {
+  const remotePeer = remotePeerId.value;
+  // Realizar llamada
+  const call = peer.call(remotePeer, localStream);
+  // call.on("stream", function (stream) {
+  //   const videoElement = document.getElementById("remoteVideo");
+  //   videoElement.srcObject = stream;
+  //   videoElement.onloadedmetadata = (e) => videoElement.play();
+  // });
+});
+
+// Manejo de llamadas entrantes
+peer.on("call", function (call) {
+  // Contestar llamada
+  call.answer(localStream);
+  // call.on("stream", function (stream) {
+  //   const videoElement = document.getElementById("remoteVideo");
+  //   videoElement.srcObject = stream;
+  //   videoElement.onloadedmetadata = (e) => videoElement.play();
+  // });
+});
+
 </script>

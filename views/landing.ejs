@@ -27,13 +27,13 @@
           src="/img/ilustración.png"
           alt="Ilustración robot con ordenadores"
         />
-        <form action="#" class="mb-2 bg-white rounded-lg">
+        <form id="busqueda-landing" action="#" class="mb-2 bg-white rounded-lg">
           <div
             class="relative flex items-center overflow-hidden border border-gray-200 rounded-lg"
           >
-            <input
+            <input id="busqueda"
               class="w-full px-3 py-2 text-base leading-normal transition duration-150 ease-in-out bg-white appearance-none focus:outline-none"
-              type="email"
+              type="text"
               placeholder="0000-0000-0000-0000"
             />
             <button
@@ -105,6 +105,26 @@
   <img class="sm:-mt-36" src="/img/wave-gris.svg" alt="Ola gris" />
 </main>
 <script>
+  const busqueda_landing = document.getElementById('busqueda-landing');
+  const input = busqueda_landing.querySelector('input');
+  const value = input.value;
+
+  // Por cada letra que se envie se comprueba si existe en la bbdd y si es así se redirige a la sala
+  busqueda_landing.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (value.length > 5) {
+      window.location.href = `/room/${value}`;
+    } else {
+      Swal.fire({
+        title: '¡Error!',
+        text: 'El código introducido no es válido.',
+        icon: 'error',
+        timer: 8000,
+        showConfirmButton: false,
+      });
+    }
+  });
+
   <% try { %>
     <% if (typeof updated !== 'undefined' && updated) { %>
         Swal.fire({

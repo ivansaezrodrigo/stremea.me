@@ -3,6 +3,9 @@ const modeloRoom = require("../models").Room;
 const modeloUser = require("../models").User;
 const modeloRoomsUsers = require("../models").RoomsUsers;
 
+// importamos localStorage
+const localStorage = require("localStorage")
+
 // importamos nanoid
 const nanoid = require("nanoid");
 
@@ -144,18 +147,35 @@ const joinRoom = async (req, res) => {
     // recibe el codigo de la sala por get y el id del usuario por body
     const { codigo } = req.params;
 
-
-    // Importamos las cookies con cookie parser
-    const token = req.cookies.jwt;
-
     // se busca la sala por el codigo
     const room = await modeloRoom.findOne({ where: { code: codigo } });
-
+    
+    if (room === null) {
+      return res.render("landing", {
+        title: "",
+        error: true,
+        message: "La sala ya no existe",
+      });
+    }
     // se busca el propietario de la sala
     const propietario = await modeloUser.findByPk(room.owner);
 
-    // capturamos si no llega el token
-    if (!token) {
+    // si no tiene la cookie de jwt se redirige a logi
+
+    console.log(req.cookies.jwt);
+
+    if (!req.cookies.jwt) {
+      // se le guarda un token al usuario para que pueda chatear
+      const tokenChat = jwt.sign({userEmail: 'Nobody' , room:codigo }, process.env.SECRET_KEY, {
+        expiresIn: "4h",
+      });
+      
+      // se le guarda un token al usuario para que pueda chatear en las cookies
+      res.cookie("jwtChat", tokenChat, {
+        httpOnly: false,
+        maxAge: 14400000,
+      });
+
       return res.render("streaming", {
         title: "Streaming",
         room: room,
@@ -163,6 +183,10 @@ const joinRoom = async (req, res) => {
         viewer: true,
       });
     }
+
+
+    // Importamos las cookies con cookie parser
+    const token = req.cookies.jwt;
 
     // Verificamos el token
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
@@ -200,21 +224,44 @@ const joinRoom = async (req, res) => {
       const joined = await room.hasUser(userId);
       if (joined) {
         // transformamos el objeto usuario a variables para poder renderizarlo
-        const { alias, rol, twitter, instagram, twitch, url } = user;
+        const { id,alias, rol, twitter, instagram, twitch, url } = user;
         const usuarioRender = { alias, rol, twitter, instagram, twitch, url };
-        console.log(url);
+        console.log(alias + 'añadido a la sala');
+        
+        // se le guarda un token al usuario para que pueda chatear
+        const tokenChat = jwt.sign({ id:id, rol,alias , userEmail: user.email , room:codigo }, process.env.SECRET_KEY, {
+          expiresIn: "4h",
+        });
+        
+        // se le guarda un token al usuario para que pueda chatear en las cookies
+        res.cookie("jwtChat", tokenChat, {
+          httpOnly: false,
+          maxAge: 14400000,
+        });
+        
+
+      }
+      
+      // si el usuairo es el usuario no es propietario de la sala 
+      if (room.owner !== userId) {
         return res.render("streaming", {
-          title: "- Streaming",
-          room,
-          usuarioRender,
+          title: "Streaming",
+          room: room,
+          usuarioRender: user,
+          viewer: true,
         });
       }
 
       // si no está baneado ni dentro de la sala se añade a la sala
       await room.addUser(user);
-      return res
-        .status(200)
-        .json({ message: "User joined successfully", room });
+      return res.render("streaming", {
+            title: "Streaming",
+            room: room,
+            usuarioRender: propietario,
+            viewer: false,
+          });
+    
+
     } else {
       //return res.status(404).json({ error: "Room not found" });
       return res.render("landing", { title: "", error: true , message: "Room not available" });

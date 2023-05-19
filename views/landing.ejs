@@ -143,13 +143,24 @@
         })
     <% } else if (typeof error !== 'undefined' && error == true) {%>
         Swal.fire({
-            title: '¡Error!',
-            text: message,
+            title: '¡Vaya!',
+            text: '<%- message %>',
             icon: 'error',
             timer: 8000,
             showConfirmButton: false
         })
         <% } %>
+        <% if (typeof error !== 'undefined' && error) { %>
+        Swal.fire({
+            title: '¡Vaya!',
+            text: '<%- message %>',
+            icon: 'error',
+            timer: 8000,
+            showConfirmButton: false
+        })   
+        <% } %>
     <% } catch (error) { %>
-  <% } %>
+        
+    <% } %>
+
 </script>

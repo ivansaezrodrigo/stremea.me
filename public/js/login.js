@@ -1,7 +1,9 @@
+// se obtienen los campos
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const form = document.getElementById("formulario-login");
 
+// se captura el evento submit del formulario
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -29,6 +31,7 @@ form.addEventListener("submit", (e) => {
         password: password.value,
       })
       .then((response) => {
+         // Si el usuario es correcto, se redirige a la página principal
         if (response.status == 200) {
           window.location.href = "/";
         } else {
@@ -41,6 +44,7 @@ form.addEventListener("submit", (e) => {
         }
       })
       .catch((error) => {
+         // Si el usuario no es correcto, se muestra un mensaje de error
         Swal.fire({
           icon: "warning",
           title: "Atención",

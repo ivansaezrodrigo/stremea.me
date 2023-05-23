@@ -5,11 +5,11 @@ const password2 = document.getElementById("password2");
 const formulario = document.getElementById("formulario-registro");
 
 // captuar el evento submit del formulario
-
 formulario.addEventListener("submit", (e) => {
   e.preventDefault();
   // comprobar que los campos no estén vacíos
   if (email.value == "" || password.value == "" || password2.value == "") {
+    // mostrar un mensaje de error
     Swal.fire({
       icon: "warning",
       title: "Atención",
@@ -18,6 +18,7 @@ formulario.addEventListener("submit", (e) => {
     });
     // comprobar que las contraseñas sean iguales
   } else if (password.value != password2.value && password.value.length <= 8) {
+    // mostrar un mensaje de error
     Swal.fire({
       icon: "warning",
       title: "Atención",
@@ -34,6 +35,7 @@ formulario.addEventListener("submit", (e) => {
           password2: password2.value,
         })
         .then((res) => {
+            // si el usuario se ha registrado correctamente, se redirige a la página principal
           if (res.status == 200) {
             window.location.href = "/";
           } else {
@@ -45,7 +47,7 @@ formulario.addEventListener("submit", (e) => {
           }
         })
         .catch((error) => {
-          console.log(error);
+          // si el usuario no se ha registrado correctamente, se muestra un mensaje de error
           Swal.fire({
             icon: "error",
             title: "Oops..!",
@@ -53,7 +55,8 @@ formulario.addEventListener("submit", (e) => {
           });
         });
     } catch (error) {
-      console.log(error);
+      // si falla se recarga la página
+        window.location.reload();
     }
   }
 });

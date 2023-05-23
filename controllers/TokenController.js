@@ -1,8 +1,6 @@
 // Importamos el modelo
 const modeloToken = require("../models").Token;
 
-// Metodos para el CRUD
-
 // Metodo para crear un token
 const createToken = async (req, res) => {
   try {

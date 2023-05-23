@@ -5,7 +5,7 @@ const express = require('express');
 // Importamos las variables de entorno
 require('dotenv').config();
 
-// Importamos webRTC #####################
+// Importamos webRTC 
 const webrtc = require("wrtc");
 
 // Importamos path
@@ -26,9 +26,6 @@ const router = require('./routes/routes.js');
 // Usamos express
 const app = express();
 
-// Importamos tailwindcss
-const tailwindcss = require('tailwindcss');
-
 // Importamos http para poder usar socket.io
 const http = require('http');
 const server = http.createServer(app);
@@ -43,48 +40,38 @@ const bodyparser = require('body-parser');
 // Usamos cookie-parser
 app.use(cookieParser());
 
+
+// Socket.io - Configuración
+
 // Importamos la función para obtener los datos del usuario
 const { datosUsuario, usuariosRoom, joinUser, userLeave, getRoomUsers} = require('./helpers/socketio.js');
 
-// io.on('connection', (socket) => {
-//     socket.on('chat', (msg) => {
-//         //console.log(msg)
-//         console.log('message: ' + msg.comentario + ' jwtChat:' + msg.jwtChat);
-//         io.emit('chat', msg);
-//     });
-// });
-
-
-
 var botName = "StremeaMe Bot";
 
+// Cuando se conecte un usuario
 io.on("connection", (socket) => {
-
-
+    // a la escucha de echar a un usuario por el admin
     socket.on("echar", (msg) => {
-        // se envia un mensaje al servidor para que expulse al usuario
-        //socket.emit('echar', { idUsuario, idStreaming });
-        //console.log(msg)
         io.emit("echar", msg);
     });
 
+    // a la escucha de unirse a una sala
     socket.on("joinRoom", ({ jwtChat, avatar }) => {
-        
+        // Obtenemos los datos del usuario
         const {usuario, roomCode} = datosUsuario(jwtChat,socket.id);
         socket.join(roomCode);
 
         //cogemos a la hora que se conecta el usuario
         var fecha = new Date();
         var horaActual = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-
-        //console.log("Usuario " + usuario.alias + " se ha unido a la sala " + roomCode);
         
+        // Añadimos el usuario a la sala
         joinUser(socket.id, usuario.alias, roomCode, usuario.id, avatar);
   
-      // Welcome current user
-      socket.emit("message", {name:botName+' - '+horaActual, message:"¡Bienvenido a StreameaMe!", avatar:'0'});
+      // Damos la bienvenida al usuario
+      socket.emit("message", {name:botName+' - '+horaActual, message:"¡Bienvenido a a la sala de chat!", avatar:'0'});
   
-      // Broadcast when a user connects
+      // Avisamos a los demás usuarios de que se ha unido un usuario
       socket.broadcast
         .to(roomCode)
         .emit(
@@ -92,21 +79,22 @@ io.on("connection", (socket) => {
           {name:botName+' - '+horaActual, message:`${usuario.alias} has joined the chat`, avatar: '0'}
         );
   
-      // Send users and room info
+      // Enviamos la información de los usuarios que hay en la sala a todos los usuarios que están en la sala
       io.to(roomCode).emit("roomUsers", {
         room: roomCode,
         users: getRoomUsers(roomCode),
       });
     });
   
-    // Listen for chatMessage
+    // Escuchamos los mensajes del chat
     socket.on("chatMessage", (msg) => {
-        //cogemos a la hora que se conecta el usuario
+        //cogemos a la hora que se envia el mensaje
         let fecha = new Date();
         let horaActual = fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
 
+      // Obtenemos los datos del usuario que ha enviado el mensaje
     const {usuario, roomCode} = datosUsuario(msg.jwtChat,socket.id);
-    //console.log(msg.socketId)
+    // Enviamos el mensaje a todos los usuarios de la sala excepto al que lo ha enviado
     if (usuario.rol == "mecenas") {
       io.to(roomCode).emit("message", {name:usuario.alias+' - '+horaActual, message:msg.comentario, avatar:usuario.id, socketId:msg.socketId});
     } else {
@@ -115,18 +103,21 @@ io.on("connection", (socket) => {
 }
     );
     
-    // Runs when client disconnects
+    // Cuando un usuario se desconecta
     socket.on("disconnect", () => {
 
+      // Obtenemos los datos del usuario que se ha desconectado
         const {user, roomCode} = userLeave(socket.id);
-        
+      
+        // Si el usuario existe
       if (user) {
+        // Avisamos a los demás usuarios de que se ha desconectado un usuario
         io.to(roomCode).emit(
           "message",
           {name:botName+' - '+horaActual, message:`${usuario.alias} has left the chat`, avatar: '0'}
         );
   
-        // Send users and room info
+        // Enviamos la información de los usuarios que hay en la sala a todos los usuarios que están en la sala
         io.to(roomCode).emit("roomUsers", {
             room: roomCode,
             users: getRoomUsers(roomCode),

@@ -6,69 +6,98 @@
     id="divStreaming"
     class="flex flex-col bg-primary-300 w-full h-[60vh] lg:h-[78vh] resize-y flex items-center justify-center shadow-xl"
   >
-    <video poster="/img/poster.png" autoplay id="video" class="h-full w-auto" controls></video>
+    <video
+      poster="/img/poster.png"
+      autoplay
+      id="video"
+      class="h-full w-auto"
+      controls
+    ></video>
   </div>
   <div class="flex flex-col justify-center items-center p-4 w-full">
     <% if(typeof viewer !== 'undefined' && viewer == true) { %>
-    <div class="flex w-full flex-col justify-center md:flex-row  lg:w-2/3 max-w-7xl sm:px-14">
-      <button class="font-bold mx-2 my-5 text-lg bg-primary-100 text-black hover:bg-primary-200 active:border-none active:mt-6
-      py-2 rounded-lg transition duration-300  
-      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="my-button">View Stream</button>
-      <button class="font-bold mx-2 my-5 text-lg text-white  bg-red-700 hover:bg-red-800 active:border-none active:mt-6
-      py-2 rounded-lg transition duration-300  
-      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="stop-button">Stop Stream</button>
+    <div
+      class="flex w-full flex-col justify-center md:flex-row lg:w-2/3 max-w-7xl sm:px-14"
+    >
+      <button
+        class="font-bold mx-2 my-5 text-lg bg-primary-100 text-black hover:bg-primary-200 active:border-none active:mt-6 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg"
+        id="my-button"
+      >
+        View Stream
+      </button>
+      <button
+        class="font-bold mx-2 my-5 text-lg text-white bg-red-700 hover:bg-red-800 active:border-none active:mt-6 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg"
+        id="stop-button"
+      >
+        Stop Stream
+      </button>
     </div>
 
     <% } else { %>
-      <div class="flex w-full flex-col justify-center md:flex-row  lg:w-2/3 max-w-7xl sm:px-14">
-        <button class="font-bold mx-2 my-5 text-lg bg-primary-100 text-black hover:bg-primary-200 active:border-none active:mt-6
-      py-2 rounded-lg transition duration-300  
-      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="my-button">Retransmitir</button>
-      <button class="font-bold mx-2 my-5 text-lg text-white  bg-red-700 hover:bg-red-800 active:border-none active:mt-6
-      py-2 rounded-lg transition duration-300  
-      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="stop-button">Parar Stream</button>
-      <button class="font-bold mx-2 my-5 text-lg text-white  bg-gray-700 hover:bg-gray-900 active:border-none active:mt-6
-      py-2 rounded-lg transition duration-300  
-      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="hidden-button">Esconder Stream</button>
-  
-      </div>
-      <div class="flex justify-center items-center w-full w-5/6 lg:w-2/3 max-w-7xl">
-        <!-- Combo box con bitrates 3000,4000,6000,10000,18000-->
-        <span class="mx-2 my-5 text-xl text-black font-bold max-w-xs">Bitrate: </span>
-        <select id="bitrate" class="font-bold my-5 text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-6
-        py-2 rounded-lg transition duration-300  
-        border-b-4 border-primary-300 self-center w-full sm:w-1/6 max-w-xs">
-          <option value="300">300Kb</option>
-          <option value="7500">7.500Kb</option>
-          <option value="12500">15.00Kb</option>
-          <option value="25000">25.000Kb</option>
-          <option value="50000">50.000Kb</option>
-          <option value="100000">100.000Kb</option>
-          <option value="200000">200.000Kb</option>
-          <option value="1000000" selected>1M</option>
-          <option value="2000000">2M</option>
-          <option value="3000000">3M</option>
-          <option value="6000000">6M</option>
-          <option value="10000000">10M</option>
-        </select>
-        <!-- Combobox con fps 15,24,30, 60 y 120-->
-        <span class="ml-14 mx-2 my-5 text-xl text-black font-bold max-w-xs">Framerate: </span><select id="fps" class="font-bold mx-2 my-5 text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-6
-        py-2 rounded-lg transition duration-300  
-        border-b-4 border-primary-300 self-center w-full sm:w-1/6 max-w-xs">
-          <option value="2">2 FPS</option>
-          <option value="15">15 FPS</option>
-          <option value="24">24 FPS</option>
-          <option value="30" selected>30 FPS</option>
-          <option value="60">60 FPS</option>
-          <option value="120">120 FPS</option>
-        </select>
-
-      </div>
+    <div
+      class="flex w-full flex-col justify-center md:flex-row lg:w-2/3 max-w-7xl sm:px-14"
+    >
+      <button
+        class="font-bold mx-2 my-5 text-lg bg-primary-100 text-black hover:bg-primary-200 active:border-none active:mt-6 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg"
+        id="my-button"
+      >
+        Retransmitir
+      </button>
+      <button
+        class="font-bold mx-2 my-5 text-lg text-white bg-red-700 hover:bg-red-800 active:border-none active:mt-6 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg"
+        id="stop-button"
+      >
+        Parar Stream
+      </button>
+      <button
+        class="font-bold mx-2 my-5 text-lg text-white bg-gray-700 hover:bg-gray-900 active:border-none active:mt-6 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg"
+        id="hidden-button"
+      >
+        Esconder Stream
+      </button>
+    </div>
+    <div
+      class="flex justify-center items-center w-full w-5/6 lg:w-2/3 max-w-7xl"
+    >
+      <!-- Combo box con bitrates 3000,4000,6000,10000,18000-->
+      <span class="mx-2 my-5 text-xl text-black font-bold max-w-xs"
+        >Bitrate:
+      </span>
+      <select
+        id="bitrate"
+        class="font-bold my-5 text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-6 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center w-full sm:w-1/6 max-w-xs"
+      >
+        <option value="300">300Kb</option>
+        <option value="7500">7.500Kb</option>
+        <option value="12500">15.00Kb</option>
+        <option value="25000">25.000Kb</option>
+        <option value="50000">50.000Kb</option>
+        <option value="100000">100.000Kb</option>
+        <option value="200000">200.000Kb</option>
+        <option value="1000000" selected>1M</option>
+        <option value="2000000">2M</option>
+        <option value="3000000">3M</option>
+        <option value="6000000">6M</option>
+        <option value="10000000">10M</option>
+      </select>
+      <!-- Combobox con fps 15,24,30, 60 y 120-->
+      <span class="ml-14 mx-2 my-5 text-xl text-black font-bold max-w-xs"
+        >Framerate: </span
+      ><select
+        id="fps"
+        class="font-bold mx-2 my-5 text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-6 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center w-full sm:w-1/6 max-w-xs"
+      >
+        <option value="2">2 FPS</option>
+        <option value="15">15 FPS</option>
+        <option value="24">24 FPS</option>
+        <option value="30" selected>30 FPS</option>
+        <option value="60">60 FPS</option>
+        <option value="120">120 FPS</option>
+      </select>
+    </div>
     <% } %>
   </div>
-  <div
-    class="z-10 -mb-16 flex flex-col justify-self-center content-center"
-  >
+  <div class="z-10 -mb-16 flex flex-col justify-self-center content-center">
     <!-- Aqui el titulo -->
     <div
       class="flex justify-center self-center lg:flex-row sm:flex-col flex-col pb-2 w-full"
@@ -123,18 +152,23 @@
           class="flex justify-center items-center h-48 mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-primary-100 py-3 w-full lg:w-[20.9em] max-w-7xl rounded-3xl border-primary-300 p-5 sm:mr-2"
         >
           <div class="flex flex-row w-full justify-center">
-            <img id="imgStreamer"
-              class=" h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
+            <img
+              id="imgStreamer"
+              class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4"
               src="/img/avatars/disc.jpg"
               alt=""
             />
             <div class="flex flex-col justify-center w-fit max-w-52">
-              <p id="aliasStreamer"
+              <p
+                id="aliasStreamer"
                 class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis"
               >
                 <%- usuarioRender.alias %>
               </p>
-              <% if  (usuarioRender.instagram && usuarioRender.instagram.trim() != "" || usuarioRender.twitter && usuarioRender.twitter.trim() != "" || usuarioRender.twitch && usuarioRender.twitch.trim() != "") { %>
+              <% if (usuarioRender.instagram && usuarioRender.instagram.trim()
+              != "" || usuarioRender.twitter && usuarioRender.twitter.trim() !=
+              "" || usuarioRender.twitch && usuarioRender.twitch.trim() != "") {
+              %>
               <div
                 class="flex justify-center self-left flex-col border-2 border-b-4 border-primary-300 font-medium bg-primary-300 py-1 w-fit max-w-7xl rounded-3xl p-5"
               >
@@ -158,7 +192,8 @@
                       />
                     </svg>
                   </a>
-                  <% } %> <% if (usuarioRender.twitter && usuarioRender.twitter.trim()) { %>
+                  <% } %> <% if (usuarioRender.twitter &&
+                  usuarioRender.twitter.trim()) { %>
                   <a
                     target="_blank"
                     href="https://twitter.com/<%- usuarioRender.twitter%>"
@@ -178,7 +213,8 @@
                       />
                     </svg>
                   </a>
-                  <% } %> <% if (usuarioRender.twitch && usuarioRender.twitch.trim()) { %>
+                  <% } %> <% if (usuarioRender.twitch &&
+                  usuarioRender.twitch.trim()) { %>
                   <a
                     target="_blank"
                     href="https://twitch.tv/<%- usuarioRender.twitch%>"
@@ -215,7 +251,8 @@
             </div>
           </div>
           <div class="flex flex-col mt-3">
-            <% if (usuarioRender.url != null && usuarioRender.url.trim() != "" ) { %>
+            <% if (usuarioRender.url != null && usuarioRender.url.trim() != "" )
+            { %>
             <div class="flex">
               <img class="h-5 w-5" src="/img/link.svg" alt="Icono de link" /><a
                 target="_blank"
@@ -224,8 +261,7 @@
                 ><%- usuarioRender.url %></a
               >
             </div>
-            <% } %>
-            <% if(typeof viewer !== 'undefined' && viewer != true) { %>
+            <% } %> <% if(typeof viewer !== 'undefined' && viewer != true) { %>
             <div class="flex mt-1">
               <a
                 id="btnEditar"
@@ -263,7 +299,8 @@
       </div>
     </div>
     <!-- Chat y lista de usuarios -->
-    <div id="chatYlistaDeUsuarios"
+    <div
+      id="chatYlistaDeUsuarios"
       class="mt-2 flex justify-center self-center flex-col-reverse lg:flex-row font-medium w-5/6 lg:w-2/3 max-w-7xl rounded-3xl"
     >
       <!-- Lista de usuarios -->
@@ -276,11 +313,11 @@
           >
             Usuarios
           </h3>
-          <div class="w-full h-[30rem] flex flex-col overflow-y-scroll" id="listaDeUsuarios" >
-
-          </div>
-            
-          </div>
+          <div
+            class="w-full h-[30rem] flex flex-col overflow-y-scroll"
+            id="listaDeUsuarios"
+          ></div>
+        </div>
       </div>
       <!-- Chat -->
       <div
@@ -311,7 +348,6 @@
                 />
                 <% } %>
               </a>
-              
             </div>
             <div
               class="flex justify-center w-11 h-11 mx-2 items-center bg-gray-900 rounded-xl border-2 border-b-4 active:border-b-0 border-primary-300"
@@ -325,8 +361,11 @@
               </a>
             </div>
             <% } %>
-            <h3  class="text-2xl font-normal text-black italic">
-              <b>Room CODE: </b><span id="room_code" class="cursor-pointer"><%- room.code %></span>
+            <h3 class="text-2xl font-normal text-black italic">
+              <b>Room CODE: </b
+              ><span id="room_code" class="cursor-pointer"
+                ><%- room.code %></span
+              >
             </h3>
           </div>
           <a href="#" id="btnCompartir">
@@ -337,9 +376,7 @@
         <div
           id="divComentarios"
           class="flex flex-col h-[26rem] bg-slate-500 justify-end overflow-y-scroll"
-        >
-
-        </div>
+        ></div>
 
         <form id="formulario_comentarios" class="flex flex-col" action="post">
           <div class="flex items-center px-5">
@@ -350,8 +387,14 @@
               name="comentario"
               id="formulario_inputComentario"
             />
-            <input class="hidden" type="file" name="archivo" id="formulario_inputArchivo" />
-            <button id="btnEnviar"
+            <input
+              class="hidden"
+              type="file"
+              name="archivo"
+              id="formulario_inputArchivo"
+            />
+            <button
+              id="btnEnviar"
               class="my-5 w-fit py-2 px-4 text-lg text-black font-bold bg-gray-500 hover:bg-gray-200 active:border-none active:mt-6 rounded-xl transition duration-300 border-b-4 border-primary-300 self-center bg-primary-200"
               href=""
             >
@@ -361,22 +404,24 @@
         </form>
       </div>
     </div>
-    <!-- <hr class="mt-6 w-1/2 h-1 mx-auto my-1 bg-gray-800 border-0 rounded ">
-          <hr class="mt-6 w-1/3 h-1 mx-auto my-1 bg-gray-700 border-0 rounded "> -->
   </div>
   <img src="/img/wave-gris.svg" alt="Ola gris" />
 </main>
 <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<% // si el usuario no es el dueño de la sala se muestra un tipo de javascript diferente %> 
 <% if(typeof viewer !== 'undefined' && viewer == true) { %>
 <script>
+  // al cargar la página se ejecuta la función init
   window.onload = () => {
     document.getElementById("my-button").onclick = () => {
       init();
     };
   };
+  // función que crea la conexión
   async function init() {
     const peer = createPeer();
+    // se añade el stream de video y audio al peer
     peer.addTransceiver("video", {
       direction: "recvonly",
       codecs: [
@@ -391,6 +436,118 @@
       ],
     });
   }
+  // función que crea el peer
+  function createPeer() {
+    // se crea el peer con la configuración de stun
+    const peer = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: "stun:stun.stunprotocol.org",
+        },
+      ],
+    });
+    // se añade el stream de video y audio al peer
+    peer.ontrack = handleTrackEvent;
+    // se crea la oferta y se envía al servidor
+    peer.onnegotiationneeded = () => handleNegotiationNeededEvent(peer);
+
+    return peer;
+  }
+
+  // función que crea la oferta y la envía al servidor
+  async function handleNegotiationNeededEvent(peer) {
+    // se crea la oferta
+    const offer = await peer.createOffer();
+    // se establece la oferta como local
+    await peer.setLocalDescription(offer);
+    // se envía la oferta al servidor
+    const payload = {
+      sdp: peer.localDescription,
+    };
+
+    // se envía la oferta al servidor
+    const { data } = await axios.post("/consumer", payload);
+    // se recibe la respuesta del servidor
+    const desc = new RTCSessionDescription(data.sdp);
+    // se establece la respuesta como remota
+    peer.setRemoteDescription(desc).catch((e) => console.log(e));
+  }
+
+  // función que añade el stream de video y audio al html
+  function handleTrackEvent(e) {
+    document.getElementById("video").srcObject = e.streams[0];
+  }
+</script>
+<% // si el usuario es el dueño de la sala se muestra un tipo de javascript diferente %> 
+<% } else {%>
+<script>
+  // se obtienen los elementos del html
+  const btnPrivate = document.getElementById("btnPrivate");
+  const btnReload = document.getElementById("btnReload");
+  const btnEditar = document.getElementById("btnEditar");
+  const btnCerrar = document.getElementById("btnCerrar");
+  const video = document.getElementById("video");
+  let bitrate = 1000000; // Valor inicial del bitrate (en bits por segundo)
+  let fps = 30; // Valor inicial de los FPS
+  let sender;
+
+  const bitrateCombo = document.getElementById("bitrate");
+  const fpsCombo = document.getElementById("fps");
+
+  // Según el bitrate del combobox se cambia el valor del bitrate
+  bitrateCombo.onchange = () => {
+    changeBitrate(bitrateCombo.value);
+  };
+
+  // Según el FPS del combobox se cambia el valor del FPS
+  fpsCombo.onchange = () => {
+    changeFPS(fpsCombo.value);
+  };
+
+  // Función para cambiar el bitrate
+  function changeBitrate(newBitrate) {
+    bitrate = parseInt(newBitrate);
+    if (sender && sender.track) {
+      const parameters = sender.getParameters();
+      const newParameters = { ...parameters };
+      newParameters.encodings[0].maxBitrate = bitrate;
+      sender
+        .setParameters(newParameters)
+        .then(() => console.log("Bitrate changed successfully."))
+        .catch((error) => console.error("Failed to change bitrate:", error));
+    }
+  }
+
+  // Función para cambiar los FPS
+  function changeFPS(newFPS) {
+    fps = parseInt(newFPS);
+    video.srcObject.getVideoTracks()[0].applyConstraints({ frameRate: fps });
+  }
+
+  window.onload = () => {
+    document.getElementById("my-button").onclick = () => {
+      init();
+    };
+  };
+
+  async function init() {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: {
+        frameRate: { ideal: fps },
+        width: { ideal: 1920 },
+        height: { ideal: 1080 },
+      },
+      audio: true,
+    });
+    video.srcObject = stream;
+    const peer = createPeer();
+    stream.getTracks().forEach((track) => {
+      peer.addTrack(track, stream);
+      if (track.kind === "video") {
+        sender = peer.getSenders().find((s) => s.track === track);
+      }
+    });
+  }
 
   function createPeer() {
     const peer = new RTCPeerConnection({
@@ -400,7 +557,6 @@
         },
       ],
     });
-    peer.ontrack = handleTrackEvent;
     peer.onnegotiationneeded = () => handleNegotiationNeededEvent(peer);
 
     return peer;
@@ -413,118 +569,21 @@
       sdp: peer.localDescription,
     };
 
-    const { data } = await axios.post("/consumer", payload);
+    const { data } = await axios.post("/broadcast", payload);
     const desc = new RTCSessionDescription(data.sdp);
     peer.setRemoteDescription(desc).catch((e) => console.log(e));
   }
 
-  function handleTrackEvent(e) {
-    document.getElementById("video").srcObject = e.streams[0];
-  }
-</script>
-<% } else {%>
-<script>
-  const btnPrivate = document.getElementById("btnPrivate");
-  const btnReload = document.getElementById("btnReload");
-  const btnEditar = document.getElementById("btnEditar");
-  const btnCerrar = document.getElementById("btnCerrar");
-const video = document.getElementById("video");
-let bitrate = 1000000; // Valor inicial del bitrate (en bits por segundo)
-let fps = 30; // Valor inicial de los FPS
-let sender;
-
-const bitrateCombo = document.getElementById("bitrate");
-const fpsCombo = document.getElementById("fps");
-
-// Según el bitrate del combobox se cambia el valor del bitrate
-bitrateCombo.onchange = () => {
-  changeBitrate(bitrateCombo.value);
-};
-
-// Según el FPS del combobox se cambia el valor del FPS
-fpsCombo.onchange = () => {
-  changeFPS(fpsCombo.value);
-};
-
-// Función para cambiar el bitrate
-function changeBitrate(newBitrate) {
-  bitrate = parseInt(newBitrate);
-  if (sender && sender.track) {
-    const parameters = sender.getParameters();
-    const newParameters = { ...parameters };
-    newParameters.encodings[0].maxBitrate = bitrate;
-    sender.setParameters(newParameters)
-      .then(() => console.log("Bitrate changed successfully."))
-      .catch((error) => console.error("Failed to change bitrate:", error));
-  }
-}
-
-
-// Función para cambiar los FPS
-function changeFPS(newFPS) {
-  fps = parseInt(newFPS);
-  video.srcObject.getVideoTracks()[0].applyConstraints({ frameRate: fps });
-}
-
-window.onload = () => {
-  document.getElementById("my-button").onclick = () => {
-    init();
-  };
-};
-
-async function init() {
-  const stream = await navigator.mediaDevices.getDisplayMedia({
-    video: {
-      frameRate: { ideal: fps },
-      width: { ideal: 1920 },
-      height: { ideal: 1080 },
-    },
-    audio: true,
-  });
-  video.srcObject = stream;
-  const peer = createPeer();
-  stream.getTracks().forEach((track) => {
-    peer.addTrack(track, stream);
-    if (track.kind === "video") {
-      sender = peer.getSenders().find((s) => s.track === track);
-    }
-  });
-}
-
-function createPeer() {
-  const peer = new RTCPeerConnection({
-    iceServers: [
-      {
-        urls: "stun:stun.stunprotocol.org",
-      },
-    ],
-  });
-  peer.onnegotiationneeded = () => handleNegotiationNeededEvent(peer);
-
-  return peer;
-}
-
-async function handleNegotiationNeededEvent(peer) {
-  const offer = await peer.createOffer();
-  await peer.setLocalDescription(offer);
-  const payload = {
-    sdp: peer.localDescription,
+  // cuando se presione hidden button se oculta el streaming
+  document.getElementById("hidden-button").onclick = () => {
+    video.classList.toggle("hidden");
+    document.getElementById("hidden-button").textContent =
+      video.classList.contains("hidden")
+        ? "Mostrar streaming"
+        : "Ocultar streaming";
   };
 
-  const { data } = await axios.post("/broadcast", payload);
-  const desc = new RTCSessionDescription(data.sdp);
-  peer.setRemoteDescription(desc).catch((e) => console.log(e));
-}
-
-// cuando se presione hidden button se oculta el streaming
-document.getElementById("hidden-button").onclick = () => {
-  video.classList.toggle("hidden");
-  document.getElementById("hidden-button").textContent = video.classList.contains("hidden")
-    ? "Mostrar streaming"
-    : "Ocultar streaming";
-};
-
-// cuando se pulse el botón de recargar, se hará una petición axios a la ruta /refresh con put
+  // cuando se pulse el botón de recargar, se hará una petición axios a la ruta /refresh con put
   btnReload.addEventListener("click", (e) => {
     e.preventDefault();
     axios
@@ -560,7 +619,6 @@ document.getElementById("hidden-button").onclick = () => {
       });
   });
 
-
   // cuando se pulse el botón de cerrar sala se hará una petición axios a la ruta /destroy con put
   btnCerrar.addEventListener("click", (e) => {
     e.preventDefault();
@@ -578,7 +636,7 @@ document.getElementById("hidden-button").onclick = () => {
         console.log(error);
       });
   });
-  
+
   // cuando se pulse el botón de editar se abrira un modal con el formulario de editar/
   btnEditar.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -623,37 +681,70 @@ document.getElementById("hidden-button").onclick = () => {
         });
     }
   });
-
-
 </script>
 <% } %>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  const imgStreamer = document.getElementById("imgStreamer");
+    const imgStreamer = document.getElementById("imgStreamer");
 
-  // al hacer click en room_code se copia en el portapapeles la ruta html de la sala
-  const room_code = document.getElementById("room_code");
-  room_code.addEventListener("click", () => {
-    navigator.clipboard.writeText(window.location.href);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Código copiado",
-      showConfirmButton: false,
-      timer: 1500,
+    // al hacer click en room_code se copia en el portapapeles la ruta html de la sala
+    const room_code = document.getElementById("room_code");
+    room_code.addEventListener("click", () => {
+      navigator.clipboard.writeText(window.location.href);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Código copiado",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     });
-  });
-  
 
-  function myComment(name, message, avatarUrl) {
+
+    function myComment(name, message, avatarUrl) {
+      const commentDiv = document.createElement("div");
+      commentDiv.classList.add("flex", "flex-row", "min-h-6", "h-max", "w-full", "justify-end", "items-end", "my-2");
+
+      const commentContainer = document.createElement("div");
+      commentContainer.classList.add("flex", "justify-start", "border-2", "h-max", "border-b-2", "border-primary-300", "self-center", "flex-col", "font-medium", "bg-white", "w-full", "lg:w-3/4", "max-w-7xl", "rounded-xl", "border-primary-300");
+
+      const commentHeader = document.createElement("div");
+      commentHeader.classList.add("flex", `bg-chat-v${localStorage.getItem('idImagenPerfil')}`, "border-b-2", "border-gray-950", "w-full", "rounded-t-lg", "justify-between", "py-1", "px-5");
+
+      const commentAuthor = document.createElement("h3");
+      commentAuthor.classList.add("text-xl", "font-normal", "text-white", "italic");
+      commentAuthor.textContent = name;
+
+      const commentContent = document.createElement("p");
+      commentContent.classList.add("px-5", "py-1", "h-max", "text-ellipsis");
+      commentContent.textContent = message;
+
+      const avatarImg = document.createElement("img");
+      avatarImg.classList.add("imagenPerfil","h-12", "w-12", "rounded-full", "bg-primary-100", "shadow-md", "mx-2");
+      avatarImg.src = '/img/avatars/'+localStorage.getItem('idImagenPerfil')+'.jpg';
+      avatarImg.alt = "Imagen de perfil";
+
+      commentHeader.appendChild(commentAuthor);
+      commentContainer.appendChild(commentHeader);
+      commentContainer.appendChild(commentContent);
+      commentDiv.appendChild(commentContainer);
+      commentDiv.appendChild(avatarImg);
+
+    return commentDiv;
+  }
+
+
+    function hisComment(name, message, avatarUrl) {
+
+
     const commentDiv = document.createElement("div");
-    commentDiv.classList.add("flex", "flex-row", "min-h-6", "h-max", "w-full", "justify-end", "items-end", "my-2");
+    commentDiv.classList.add("flex", "flex-row-reverse", "min-h-6", "h-max", "w-full", "justify-end", "items-end", "my-2");
 
     const commentContainer = document.createElement("div");
     commentContainer.classList.add("flex", "justify-start", "border-2", "h-max", "border-b-2", "border-primary-300", "self-center", "flex-col", "font-medium", "bg-white", "w-full", "lg:w-3/4", "max-w-7xl", "rounded-xl", "border-primary-300");
 
     const commentHeader = document.createElement("div");
-    commentHeader.classList.add("flex", `bg-chat-v${localStorage.getItem('idImagenPerfil')}`, "border-b-2", "border-gray-950", "w-full", "rounded-t-lg", "justify-between", "py-1", "px-5");
+    commentHeader.classList.add("flex", `bg-chat-v${avatarUrl}`, "border-b-2", "border-gray-950", "w-full", "rounded-t-lg", "justify-between", "py-1", "px-5");
 
     const commentAuthor = document.createElement("h3");
     commentAuthor.classList.add("text-xl", "font-normal", "text-white", "italic");
@@ -664,8 +755,8 @@ document.getElementById("hidden-button").onclick = () => {
     commentContent.textContent = message;
 
     const avatarImg = document.createElement("img");
-    avatarImg.classList.add("imagenPerfil","h-12", "w-12", "rounded-full", "bg-primary-100", "shadow-md", "mx-2");
-    avatarImg.src = '/img/avatars/'+localStorage.getItem('idImagenPerfil')+'.jpg';
+    avatarImg.classList.add("h-12", "w-12", "rounded-full", "bg-primary-100", "shadow-md", "mx-2");
+    avatarImg.src = '/img/avatars/'+avatarUrl+'.jpg';
     avatarImg.alt = "Imagen de perfil";
 
     commentHeader.appendChild(commentAuthor);
@@ -674,336 +765,297 @@ document.getElementById("hidden-button").onclick = () => {
     commentDiv.appendChild(commentContainer);
     commentDiv.appendChild(avatarImg);
 
-  return commentDiv;
-}
-
-
-  function hisComment(name, message, avatarUrl) {
-
-
-  const commentDiv = document.createElement("div");
-  commentDiv.classList.add("flex", "flex-row-reverse", "min-h-6", "h-max", "w-full", "justify-end", "items-end", "my-2");
-
-  const commentContainer = document.createElement("div");
-  commentContainer.classList.add("flex", "justify-start", "border-2", "h-max", "border-b-2", "border-primary-300", "self-center", "flex-col", "font-medium", "bg-white", "w-full", "lg:w-3/4", "max-w-7xl", "rounded-xl", "border-primary-300");
-
-  const commentHeader = document.createElement("div");
-  commentHeader.classList.add("flex", `bg-chat-v${avatarUrl}`, "border-b-2", "border-gray-950", "w-full", "rounded-t-lg", "justify-between", "py-1", "px-5");
-
-  const commentAuthor = document.createElement("h3");
-  commentAuthor.classList.add("text-xl", "font-normal", "text-white", "italic");
-  commentAuthor.textContent = name;
-
-  const commentContent = document.createElement("p");
-  commentContent.classList.add("px-5", "py-1", "h-max", "text-ellipsis");
-  commentContent.textContent = message;
-
-  const avatarImg = document.createElement("img");
-  avatarImg.classList.add("h-12", "w-12", "rounded-full", "bg-primary-100", "shadow-md", "mx-2");
-  avatarImg.src = '/img/avatars/'+avatarUrl+'.jpg';
-  avatarImg.alt = "Imagen de perfil";
-
-  commentHeader.appendChild(commentAuthor);
-  commentContainer.appendChild(commentHeader);
-  commentContainer.appendChild(commentContent);
-  commentDiv.appendChild(commentContainer);
-  commentDiv.appendChild(avatarImg);
-
-  return commentDiv;
-}
-
-  function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
-  for(let i = 0; i <ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
+    return commentDiv;
   }
-  return "";
-}
 
-  function generarListaDeUsuarios(usuarios) {
-  let html = '';
+    function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
 
-  usuarios.forEach((usuario) => {
-    const { alias, socketId , id, avatar } = usuario;
-    
-    // se genera un elemento HTML por cada elemento del array
-    const elementoHTML = `
-      <div id=${id} class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5">
-        <div class="flex flex-row w-full justify-center">
-          <img class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4" src="/img/avatars/${avatar}.jpg" alt="">
-          <div class="flex flex-col justify-center w-fit max-w-52">
-            <p class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis">
-              ${alias}
-            </p>
-            <% if(typeof viewer !== 'undefined' && viewer != true) { %>
-            <form class="formulario-echar" class="flex flex-col" action="post" onsubmit="echarUsuario(event, this)">
-              <input class="hidden" name="id" value="${id}">
-              <button class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2" href="">
-                ECHAR
-              </button>
-            </form>
-            <% } %>
+    function generarListaDeUsuarios(usuarios) {
+    let html = '';
+
+    usuarios.forEach((usuario) => {
+      const { alias, socketId , id, avatar } = usuario;
+
+      // se genera un elemento HTML por cada elemento del array
+      const elementoHTML = `
+        <div id=${id} class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5">
+          <div class="flex flex-row w-full justify-center">
+            <img class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4" src="/img/avatars/${avatar}.jpg" alt="">
+            <div class="flex flex-col justify-center w-fit max-w-52">
+              <p class="text-xl font-bold italic w-fit max-w-[10em] ml-1 overflow-hidden text-ellipsis">
+                ${alias}
+              </p>
+              <% if(typeof viewer !== 'undefined' && viewer != true) { %>
+              <form class="formulario-echar" class="flex flex-col" action="post" onsubmit="echarUsuario(event, this)">
+                <input class="hidden" name="id" value="${id}">
+                <button class="mt-1 w-full text-lg text-white font-bold bg-red-700 hover:bg-gray-200 active:border-none active:mt-2 py-2 rounded-lg transition duration-300 border-b-4 border-primary-300 self-center px-2" href="">
+                  ECHAR
+                </button>
+              </form>
+              <% } %>
+            </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
 
-    html += elementoHTML;
-  });
-
-  // devuelve la lista completa
-  listaDeUsuarios.innerHTML = html;
-}
-
-
-  // Usamos socket.io
-  const socket = io();
-
-  const listaDeUsuarios = document.getElementById("listaDeUsuarios");
-  const formulario_inputComentario = document.getElementById("formulario_inputComentario");
-  const formulario_comentarios = document.getElementById("formulario_comentarios");
-  const formulario_inputArchivo = document.getElementById("formulario_inputArchivo");
-
-  const aliasStreamer = document.getElementById("aliasStreamer").textContent.trim(); 
-
-  // codigo de la sala desde la url
-
-  const btnEnviar = document.getElementById("btnEnviar");
-
-  const jwtChat = getCookie("jwtChat");
-
-  // cuando se presione el botón de enviar, se enviara en socket.io 
-  formulario_comentarios.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const comentario = formulario_inputComentario.value;
-    // sacamos el jwt de la cookie
-    
-    if (!comentario) {
-      return false;
-    }
-    
-    socket.emit("chatMessage", { comentario, jwtChat, avatar: localStorage.getItem('idImagenPerfil'), socketId: socket.id});
-
-    // Clear input
-    formulario_inputComentario.value = '';
-    formulario_inputComentario.focus();
-
-  });
-
-  // Join chatroom
-  socket.emit('joinRoom', { jwtChat, avatar: localStorage.getItem('idImagenPerfil')});
-
-  // Get room and users
-  socket.on('roomUsers', ({ room, users }) => {
-    console.log('users: '+JSON.stringify(users));
-    var users = users;
-    
-    <% if (usuarioRender.rol != 'mecenas') { %>
-    for (let i = 0; i < users.length; i++) {
-      if(users[i].alias == aliasStreamer){
-        imgStreamer.src = '/img/avatars/'+users[i].avatar+'.jpg';
-        
-        // se eliminar de la lista de usuarios el usuario streamer
-        users.splice(i, 1);
-
-      }
-    }
-    generarListaDeUsuarios(users);
-    <% } %>
-  });
-
-  // Recibimos el mensaje de echar usuario
-  socket.on('echar', (data) => {
-    console.log('data: '+JSON.stringify(data));
-    if(data.idUsuario == socket.id){
-      window.location.href = '/kicked';
-    }
-  });
-
-  // Message from server
-  socket.on('message', (data) => {
-  // console.log('data:',data)
-  const { name, message, avatar, socketId} = data;
-  if(socketId == socket.id){
-    const commentDiv = myComment(name, message, avatar);
-    divComentarios.appendChild(commentDiv);
-  }else{
-  const commentDiv = hisComment(name, message, avatar);
-  divComentarios.appendChild(commentDiv);
-  }
-  // Scroll down
-  formulario_comentarios.scrollTop = formulario_comentarios.scrollHeight;
-});
-
-
-  // cuando se presione stop button se para el streaming
-  document.getElementById("stop-button").onclick = () => {
-    video.srcObject.getTracks().forEach((track) => track.stop());
-  };
-
-  // Variables
-  var dark = false;
-  const main = document.querySelector("main");
-  const nav = document.querySelector("nav");
-  const btnDark = document.getElementById("btnDark");
-  // const btnVentana = document.getElementById("btnVentana");
-  const btnChat = document.getElementById("btnChat");
-  const chatYlistaDeUsuarios = document.getElementById("chatYlistaDeUsuarios");
-  const divStreaming = document.getElementById("divStreaming");
-  const divComentarios = document.getElementById("divComentarios");
-  const imgPrivate = document.getElementById("imgPrivate");
-  const btnCompartir = document.getElementById("btnCompartir");
-
-  const streamingDescription = document.getElementById("streamingDescription");
-  const streamingTitle = document.getElementById("streamingTitle");
-
-
-  // cuando se pulse el botón de dark se alternara eliminando las clases bg-gradient-to-t from-secondary-100 to-secondary-200 y se añadira la clase bg-[#282828] al main
-  btnDark.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    // si la variable dark es true se añadiran las clases y se cambiará a false
-    if (dark) {
-      nav.classList.add("bg-secondary-200");
-      nav.classList.remove("bg-[#838083]");
-      main.classList.add(
-        "bg-gradient-to-t",
-        "from-secondary-100",
-        "to-secondary-200"
-      );
-      dark = false;
-      // si la variable dark es false se eliminaran las clases y se cambiará a true
-    } else {
-      nav.classList.remove("bg-secondary-200");
-      nav.classList.add("bg-[#838083]");
-      main.classList.remove(
-        "bg-gradient-to-t",
-        "from-secondary-100",
-        "to-secondary-200"
-      );
-      main.classList.add("bg-[#838083]");
-      dark = true;
-    }
-  });
-
-  // // cuando se pulse el botón de ventana se abrirá una nueva ventana con divStreaming
-  // btnVentana.addEventListener("click", (e) => {
-  //   e.preventDefault();
-  //   // la ventana no tendrá barra de navegación, ni barra de estado, ni barra de menú, ni barra de herramientas, ni barra de desplazamiento, ni bordes, ni barra de título y se llamara la ventana StremeaMe y el nombre del usuario
-  //   ventana = window.open(
-  //     "",
-  //     "StremeaMe",
-  //     "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
-  //   );
-  //   // se escribirá el contenido del divStreaming en la ventana
-  //   ventana.document.write(divStreaming.innerHTML);
-  // });
-
-  // cuando se pulse el botón de chat se abrirá una nueva ventana con divComentarios
-  btnChat.addEventListener("click", (e) => {
-    e.preventDefault();
-    
-    // se ocultara o mostrara chatYlistaDeUsuarios
-    if (chatYlistaDeUsuarios.classList.contains("hidden")) {
-      chatYlistaDeUsuarios.classList.remove("hidden");
-    } else {
-      chatYlistaDeUsuarios.classList.add("hidden");
-    }
-  });
-
-
-  // cuando se pulse el botón de compartir se abrira un modal con el enlace de la página
-  btnCompartir.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    Swal.fire({
-      title: "Compartir",
-      html:
-        "<div class='flex flex-col items-center'><img class='h-fit w-20' src='/img/mascota.png'><br>Este es el enlace de tu streaming:<br><b>" +
-        window.location.href +
-        "</b></div>",
-      showCancelButton: true,
-      cancelButtonText: "Cerrar",
-      confirmButtonText: "Copiar",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        // se copia el enlace al portapapeles
-        navigator.clipboard.writeText(window.location.href);
-      }
+      html += elementoHTML;
     });
-  });
+
+    // devuelve la lista completa
+    listaDeUsuarios.innerHTML = html;
+  }
 
 
+    // Usamos socket.io
+    const socket = io();
 
+    const listaDeUsuarios = document.getElementById("listaDeUsuarios");
+    const formulario_inputComentario = document.getElementById("formulario_inputComentario");
+    const formulario_comentarios = document.getElementById("formulario_comentarios");
+    const formulario_inputArchivo = document.getElementById("formulario_inputArchivo");
 
+    const aliasStreamer = document.getElementById("aliasStreamer").textContent.trim();
 
-  
-  <% if (room.owner == usuarioRender.id) { %>
-    function echarUsuario(event, formulario) {
-      event.preventDefault();     
-      
-      // se obtiene el id del usuario a echar
-      const idUsuario = formulario.id.value;
+    // codigo de la sala desde la url
 
-      socket.on('echar', ({ echarIdUsuario }) => {  
-        // si el id del usuario a echar es igual al id del usuario que ha pulsado el botón de echar se ejecutará el siguiente código
-        if (echarIdUsuario == idUsuario) {
+    const btnEnviar = document.getElementById("btnEnviar");
 
-          let users = users.filter(user => user.id != idUsuario);
-    
-          // actualizamos la lista de usuarios
-         generarListaDeUsuarios(users);
+    const jwtChat = getCookie("jwtChat");
 
-                   // se muestra un mensaje de confirmación
-                   //Swal.fire("¡Echado!", "", "success");
+    // cuando se presione el botón de enviar, se enviara en socket.io
+    formulario_comentarios.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const comentario = formulario_inputComentario.value;
+      // sacamos el jwt de la cookie
+
+      if (!comentario) {
+        return false;
+      }
+
+      socket.emit("chatMessage", { comentario, jwtChat, avatar: localStorage.getItem('idImagenPerfil'), socketId: socket.id});
+
+      // Clear input
+      formulario_inputComentario.value = '';
+      formulario_inputComentario.focus();
+
+    });
+
+    // Join chatroom
+    socket.emit('joinRoom', { jwtChat, avatar: localStorage.getItem('idImagenPerfil')});
+
+    // Get room and users
+    socket.on('roomUsers', ({ room, users }) => {
+      console.log('users: '+JSON.stringify(users));
+      var users = users;
+
+      <% if (usuarioRender.rol != 'mecenas') { %>
+      for (let i = 0; i < users.length; i++) {
+        if(users[i].alias == aliasStreamer){
+          imgStreamer.src = '/img/avatars/'+users[i].avatar+'.jpg';
+
+          // se eliminar de la lista de usuarios el usuario streamer
+          users.splice(i, 1);
 
         }
+      }
+      generarListaDeUsuarios(users);
+      <% } %>
+    });
+
+    // Recibimos el mensaje de echar usuario
+    socket.on('echar', (data) => {
+      console.log('data: '+JSON.stringify(data));
+      if(data.idUsuario == socket.id){
+        window.location.href = '/kicked';
+      }
+    });
+
+    // Message from server
+    socket.on('message', (data) => {
+    // console.log('data:',data)
+    const { name, message, avatar, socketId} = data;
+    if(socketId == socket.id){
+      const commentDiv = myComment(name, message, avatar);
+      divComentarios.appendChild(commentDiv);
+    }else{
+    const commentDiv = hisComment(name, message, avatar);
+    divComentarios.appendChild(commentDiv);
+    }
+    // Scroll down
+    formulario_comentarios.scrollTop = formulario_comentarios.scrollHeight;
   });
 
 
-  // se muestra un modal con dos opciones banear o echar
-  Swal.fire({
-    title: "¿Qué quieres hacer?",
-    showDenyButton: true,
-    showConfirmButton: false,
-    showCancelButton: true,
-    confirmButtonText: `Echar`,
-    denyButtonText: `Echar`,
-  }).then(async (result) => {
-    // si se pulsa echar se ejecutará el siguiente código
-    if (result.isDenied) {
-      // se envia un mensaje al usuario para que sepa que ha sido expulsado
-      //socket.emit('message', { name: 'StremeaMe', message: 'Has sido expulsado de la sala', avatar: '', socketId: idUsuario });
-      // se envia un mensaje al servidor para que expulse al usuario
-      socket.emit('echar', { idUsuario });
+    // cuando se presione stop button se para el streaming
+    document.getElementById("stop-button").onclick = () => {
+      video.srcObject.getTracks().forEach((track) => track.stop());
+    };
+
+    // Variables
+    var dark = false;
+    const main = document.querySelector("main");
+    const nav = document.querySelector("nav");
+    const btnDark = document.getElementById("btnDark");
+    // const btnVentana = document.getElementById("btnVentana");
+    const btnChat = document.getElementById("btnChat");
+    const chatYlistaDeUsuarios = document.getElementById("chatYlistaDeUsuarios");
+    const divStreaming = document.getElementById("divStreaming");
+    const divComentarios = document.getElementById("divComentarios");
+    const imgPrivate = document.getElementById("imgPrivate");
+    const btnCompartir = document.getElementById("btnCompartir");
+
+    const streamingDescription = document.getElementById("streamingDescription");
+    const streamingTitle = document.getElementById("streamingTitle");
+
+
+    // cuando se pulse el botón de dark se alternara eliminando las clases bg-gradient-to-t from-secondary-100 to-secondary-200 y se añadira la clase bg-[#282828] al main
+    btnDark.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // si la variable dark es true se añadiran las clases y se cambiará a false
+      if (dark) {
+        nav.classList.add("bg-secondary-200");
+        nav.classList.remove("bg-[#838083]");
+        main.classList.add(
+          "bg-gradient-to-t",
+          "from-secondary-100",
+          "to-secondary-200"
+        );
+        dark = false;
+        // si la variable dark es false se eliminaran las clases y se cambiará a true
+      } else {
+        nav.classList.remove("bg-secondary-200");
+        nav.classList.add("bg-[#838083]");
+        main.classList.remove(
+          "bg-gradient-to-t",
+          "from-secondary-100",
+          "to-secondary-200"
+        );
+        main.classList.add("bg-[#838083]");
+        dark = true;
+      }
+    });
+
+    // // cuando se pulse el botón de ventana se abrirá una nueva ventana con divStreaming
+    // btnVentana.addEventListener("click", (e) => {
+    //   e.preventDefault();
+    //   // la ventana no tendrá barra de navegación, ni barra de estado, ni barra de menú, ni barra de herramientas, ni barra de desplazamiento, ni bordes, ni barra de título y se llamara la ventana StremeaMe y el nombre del usuario
+    //   ventana = window.open(
+    //     "",
+    //     "StremeaMe",
+    //     "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
+    //   );
+    //   // se escribirá el contenido del divStreaming en la ventana
+    //   ventana.document.write(divStreaming.innerHTML);
+    // });
+
+    // cuando se pulse el botón de chat se abrirá una nueva ventana con divComentarios
+    btnChat.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // se ocultara o mostrara chatYlistaDeUsuarios
+      if (chatYlistaDeUsuarios.classList.contains("hidden")) {
+        chatYlistaDeUsuarios.classList.remove("hidden");
+      } else {
+        chatYlistaDeUsuarios.classList.add("hidden");
+      }
+    });
+
+
+    // cuando se pulse el botón de compartir se abrira un modal con el enlace de la página
+    btnCompartir.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      Swal.fire({
+        title: "Compartir",
+        html:
+          "<div class='flex flex-col items-center'><img class='h-fit w-20' src='/img/mascota.png'><br>Este es el enlace de tu streaming:<br><b>" +
+          window.location.href +
+          "</b></div>",
+        showCancelButton: true,
+        cancelButtonText: "Cerrar",
+        confirmButtonText: "Copiar",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          // se copia el enlace al portapapeles
+          navigator.clipboard.writeText(window.location.href);
+        }
+      });
+    });
+
+
+
+
+
+
+    <% if (room.owner == usuarioRender.id) { %>
+      function echarUsuario(event, formulario) {
+        event.preventDefault();
+
+        // se obtiene el id del usuario a echar
+        const idUsuario = formulario.id.value;
+
+        socket.on('echar', ({ echarIdUsuario }) => {
+          // si el id del usuario a echar es igual al id del usuario que ha pulsado el botón de echar se ejecutará el siguiente código
+          if (echarIdUsuario == idUsuario) {
+
+            let users = users.filter(user => user.id != idUsuario);
+
+            // actualizamos la lista de usuarios
+           generarListaDeUsuarios(users);
+
+                     // se muestra un mensaje de confirmación
+                     //Swal.fire("¡Echado!", "", "success");
+
+          }
+    });
+
+
+    // se muestra un modal con dos opciones banear o echar
+    Swal.fire({
+      title: "¿Qué quieres hacer?",
+      showDenyButton: true,
+      showConfirmButton: false,
+      showCancelButton: true,
+      confirmButtonText: `Echar`,
+      denyButtonText: `Echar`,
+    }).then(async (result) => {
+      // si se pulsa echar se ejecutará el siguiente código
+      if (result.isDenied) {
+        // se envia un mensaje al usuario para que sepa que ha sido expulsado
+        //socket.emit('message', { name: 'StremeaMe', message: 'Has sido expulsado de la sala', avatar: '', socketId: idUsuario });
+        // se envia un mensaje al servidor para que expulse al usuario
+        socket.emit('echar', { idUsuario });
+        // se muestra un mensaje de confirmación
+        //Swal.fire("Echado!", "", "success");
+
+        // eliminamos del html el usuario expulsado
+        listaDeUsuarios.removeChild(document.getElementById(idUsuario));
+
+
+
+
       // se muestra un mensaje de confirmación
-      //Swal.fire("Echado!", "", "success");
-      
-      // eliminamos del html el usuario expulsado
-      listaDeUsuarios.removeChild(document.getElementById(idUsuario));
+      Swal.fire("¡Echado!", "", "success");
+
+      }
+    });
+  }
 
 
-
-
-    // se muestra un mensaje de confirmación
-    Swal.fire("¡Echado!", "", "success");
-
-    } 
-  });
-}
-
-  
-  <% } %>
-
-
-
-
+    <% } %>
 </script>

@@ -1,6 +1,11 @@
+// Se obtiene el formulario
 const form = document.getElementById("formulario-delete");
+
+// Se le asigna un evento al formulario
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+
+    // se obtiene el alias
   const aliasDelete = document.getElementById("aliasDelete").value;
 
   // se revisa que el campo no esté vacío
@@ -23,6 +28,7 @@ form.addEventListener("submit", (event) => {
       });
       return;
     } else {
+        // se envían los datos al servidor
       axios
         .post("/sayonara", { aliasDelete })
         .then((response) => {
@@ -31,13 +37,14 @@ form.addEventListener("submit", (event) => {
             title: "Ha sido un placer!",
             text: "Usuario eliminado correctamente",
           });
+          // se redirige a la página principal
           setTimeout(() => {
             window.location.href = "/";
           }, 3000);
         })
 
         .catch((error) => {
-          console.log(error);
+          // se muestra un mensaje de error
           Swal.fire({
             icon: "error",
             title: "Oops...",

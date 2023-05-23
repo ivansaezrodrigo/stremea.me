@@ -2,7 +2,7 @@
 
 // Importamos el modelo de usuario
 const modeloUser = require("../models").User;
-
+// importamos joi
 const { type } = require("@hapi/joi/lib/extend");
 // Importamos jwt
 const jwt = require("jsonwebtoken");

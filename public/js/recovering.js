@@ -31,6 +31,7 @@ formulario.addEventListener("submit", (e) => {
       text: "Las contraseñas no coinciden",
       confirmButtonText: "Aceptar",
     });
+    // se comprueba que las contraseñas tengan al menos 8 caracteres
   } else if (password.value.length < 8 || password2.value.length < 8) {
     // se muestra un mensaje de error
     Swal.fire({

@@ -105,6 +105,7 @@
   <img class="sm:-mt-36" src="/img/wave-gris.svg" alt="Ola gris" />
 </main>
 <script>
+  // se obtienen los elementos del DOM
   const busqueda_landing = document.getElementById('busqueda-landing');
   const codigo_busqueda = document.getElementById('busqueda');
 
@@ -120,6 +121,7 @@
         }
       })
       .catch((err) => {
+        // si no existe la sala se muestra un mensaje de error
         Swal.fire({
           title: '¡Error!',
           text: 'El código introducido no es válido.',
@@ -130,6 +132,7 @@
       });
   });
 
+  // si llega algun parametro en la cabecera se muestra el mensaje correspondiente
   <% try { %>
     <% if (typeof updated !== 'undefined' && updated) { %>
         Swal.fire({
@@ -165,7 +168,8 @@
         })   
         <% } %>
     <% } catch (error) { %>
-        
+        // se redirige al landing si algo falla
+        window.location.href = '/';
     <% } %>
 
 </script>

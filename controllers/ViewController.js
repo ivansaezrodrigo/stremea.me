@@ -4,6 +4,9 @@ const modeloUser = require("../models").User;
 // importamos jsonwebtoken
 const jwt = require("jsonwebtoken");
 
+
+// Renderizamos cada una de las vistas de la aplicación dependiendo de la ruta
+
 const vistaPrincipal = function (req, res) {
   res.render("layout");
 };
@@ -24,6 +27,7 @@ const vistaRegister = function (req, res) {
   res.render("register", { title: "- Registro" });
 };
 
+// se renderiza la vista del perfil del usuario con todos sus datos
 const vistaPerfil = async function (req, res) {
   try {
     // Importamos las cookies con cookie parser
@@ -34,6 +38,7 @@ const vistaPerfil = async function (req, res) {
     // Buscamos el usuario en la base de datos
     const user = await modeloUser.findByPk(decoded.userId);
 
+    // Destructuring de los datos del usuario
     const {
       id,
       email,
@@ -46,7 +51,7 @@ const vistaPerfil = async function (req, res) {
       newsletter,
     } = user.dataValues;
 
-    //console.log(token,user);
+    // Si el usuario existe renderizamos la vista del perfil con sus datos
     if (user) {
       return res.render("perfil", {
         title: "- Perfil",
@@ -71,6 +76,7 @@ const vistaPerfil = async function (req, res) {
   }
 };
 
+// se renderiza la vista de eliminación de la cuenta del usuario con todos sus datos
 const vistaEliminarCuenta = async function (req, res) {
   try {
     // Importamos las cookies con cookie parser

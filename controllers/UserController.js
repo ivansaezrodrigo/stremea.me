@@ -239,9 +239,11 @@ const deleteUser = async (req, res) => {
 // Metodo para darse de baja de la newsletter
 const unsubscribeNewsletter = async (req, res) => {
   try {
+    // se busca el usuario en la base de datos
     const { userId } = req.body;
     const user = await modeloUser.findByPk(userId);
     if (user) {
+      // si el usuario existe se actualiza el campo newsletter a false
       await user.update({
         newsletter: false,
       });
@@ -257,8 +259,10 @@ const unsubscribeNewsletter = async (req, res) => {
 // Metodo para darse de alta de la newsletter
 const subscribeNewsletter = async (req, res) => {
   try {
+    // se busca el usuario en la base de datos
     const { userId } = req.body;
     const user = await modeloUser.findByPk(userId);
+    // si el usuario existe se actualiza el campo newsletter a true
     if (user) {
       await user.update({
         newsletter: true,
@@ -275,8 +279,10 @@ const subscribeNewsletter = async (req, res) => {
 // Metodo para cambiar el rol de un usuario
 const changeRol = async (req, res) => {
   try {
+    // se busca el usuario en la base de datos
     const { userId, rol } = req.body;
     const user = await modeloUser.findByPk(userId);
+    // si el usuario existe se actualiza el campo rol
     if (user) {
       await user.update({
         rol: rol,
@@ -328,7 +334,7 @@ const loginUser = async (req, res) => {
             httpOnly: true,
           });
           res.redirect("/");
-          //res.render("landing", { title: "Iniciar sesión", token: token });
+
         } else {
           // si el password no es correcto devolvemos un error
           res.status(400).json({ message: "Usuario o contraseña incorrecta." });
@@ -347,10 +353,12 @@ const loginUser = async (req, res) => {
 // Metodo para cambiar de contraseña
 const changePassword = async (req, res) => {
   try {
+    // se busca el usuario en la base de datos a partir del token
     const token = req.cookies.jwt;
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     const user = await modeloUser.findByPk(decoded.userId);
 
+    // se recogen los datos del formulario
     const { passwordOld, password, password2 } = req.body;
 
     // Validamos los campos del formulario de registro
@@ -401,6 +409,7 @@ const changePassword = async (req, res) => {
 // Metodo para desloguearse
 const logoutUser = async (req, res) => {
   try {
+    // se borra la cookie y se redirige a la pagina principal
     res.clearCookie("jwt");
     res.redirect("/");
   } catch (error) {
@@ -411,6 +420,7 @@ const logoutUser = async (req, res) => {
 // Metodo para recuperar la contraseña desde el correo
 const recoveryPassword = async (req, res) => {
   try {
+    // se recogen los datos del formulario
     const { password, password2, tokenRecu } = req.body;
 
     // Validamos los campos del formulario de registro
@@ -504,6 +514,7 @@ const recoveryPassword = async (req, res) => {
 // Metodo para enviar el correo con el token de recuperación de contraseña
 const confirmToken = async (req, res) => {
   try {
+    // se recogen los datos del formulario
     const { email } = req.body;
 
     // Validamos los campos del formulario de registro
@@ -533,8 +544,10 @@ const confirmToken = async (req, res) => {
         const payload2 = {
           emailRecuperacion: user.email,
         };
+        // creamos el token para desuscribirse de la newsletter
         const tokenUnsuscribe = generateToken(payload2, "3652d"); // 10 años
 
+        // creamos el html del email
         const recuperacionURL = `http://localhost:3000/recovering/${token}`;
         const urlUnsuscribe = `http://localhost:3000/unsubscribe/${tokenUnsuscribe}`;
         const html = `
@@ -546,7 +559,8 @@ const confirmToken = async (req, res) => {
             <p>Si quieres desuscribirte de la newsletter haz click <a href="${urlUnsuscribe}">aquí</a></p>
             <p>Si no has solicitado la recuperación de contraseña ignora este email</p>
           `;
-        // enviamos el email
+          
+        // enviamos el email en el caso de que estuviese implementado :)
 
         //añadimos el token a la bbdd
         modeloToken.create({

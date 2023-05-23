@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 // importamos y configuramos dotenv
 require("dotenv").config({ path: "../.env" });
 
+// Función para generar el token
 function generateToken(data, expiresIn) {
   //return jwt.sign(data, process.env.SECRET_KEY, { expiresIn: expiresIn});
   return jwt.sign(

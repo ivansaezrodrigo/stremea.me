@@ -12,9 +12,6 @@ document.getElementById("idImagenPerfilBtn").addEventListener("click", () => {
   document.querySelectorAll(".imagenPerfil").forEach((element) => {
     element.src = `img/avatars/${id}.jpg`;
   });
-
-  // se recarga la pagina
-  // flocation.reload();
 });
 
 // Se obtiene el formulario
@@ -23,8 +20,8 @@ const form = document.getElementById("formPerfil");
 // Se le asigna un evento al formulario
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+  // se obtienen los datos del formulario
   const alias = document.getElementById("alias").value;
-  //const image = document.getElementById('image').value;
   const twitter = document.getElementById("twitter").value;
   const twitch = document.getElementById("twitch").value;
   const url = document.getElementById("url").value;
@@ -32,6 +29,7 @@ form.addEventListener("submit", (event) => {
   const email = document.getElementById("email").value;
   const newsletter = document.getElementById("newsletter").checked;
 
+  // se envían los datos al servidor
   axios
     .put("/user", {
       alias,
@@ -53,8 +51,7 @@ form.addEventListener("submit", (event) => {
       });
     })
     .catch((error) => {
-      console.log(error);
-
+      // se muestra un mensaje de error
       Swal.fire({
         icon: "error",
         title: "Oops...",

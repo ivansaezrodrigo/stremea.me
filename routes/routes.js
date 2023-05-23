@@ -30,11 +30,9 @@ router.get('/kicked', vista.vistaKicked);
 router.get('/recovery', vista.vistaRecovery);
 router.get('/recovered', vista.vistaRecovered);
 
+// Rutas y vistas con token
 router.get('/recovering/:token', isNotAuth ,vista.vistaRecovering);
 router.get('/unsubscribe/:token' , vista.vistaUnsuscribe);
-
-//router.get('/new', isAuth , vista.vistaStreaming);
-
 
 // -Ruta para darse de alta en la plataforma 
 router.post('/signup', controladorUser.createUser);
@@ -57,8 +55,7 @@ router.get('/user/:id' ,controladorUser.getUserById);
 // -Ruta para actualizar un usuario
 router.put('/user', isAuth ,controladorUser.updateUser);
 
-// -Ruta para borrar un usuario
-//router.delete('/user/:aliasDelete', controladorUser.deleteUser);
+// -Ruta para borrar un usuario;
 router.post('/sayonara', isAuth ,controladorUser.deleteUser);
 
 // -Ruta para crear una Room
@@ -66,7 +63,6 @@ router.get('/create', isAuth ,controladorRoom.createRoom);
 
 // -Ruta para ver un streaming
 router.get('/streaming', isAuth ,vista.vistaStreamer);
-
 
 // -Ruta para unirse a una Room 
 router.get('/room/:codigo', controladorRoom.joinRoom);
@@ -83,8 +79,8 @@ router.post('/recovering', isNotAuth ,controladorUser.recoveryPassword);
 // -Ruta de confirmación de recuperación con el token
 router.post('/recovery', controladorUser.confirmToken);
 
-// WEBRTC ################################
-let senderStream; // Declarar senderStream en un ámbito más amplio
+// WEBRTC - Codigo de Coding With Chaim adaptado a nuestro proyecto \/
+let senderStream; 
 
 function handleTrackEvent(e, peer) {
     senderStream = e.streams[0];
@@ -136,11 +132,7 @@ router.post('/broadcast', async ({ body }, res) => {
     res.json(payload);
 });
 
-
-
-//######################################
-
-
+// WebRTC - Codigo de Coding With Chaim adaptado a nuestro proyecto /\
 
 // -Ruta para salir de una Room
 router.post('/leave', controladorRoom.leaveRoom);

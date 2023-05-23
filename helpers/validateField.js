@@ -1,3 +1,5 @@
+// Funciones que se usaron y crearon en primera instancia para validar los campos del formulario de registro y login. Se han sustituido por la funcionalidad que presenta joivalidator.
+
 // Función para validar el email
 function isValidEmail(email) {
   // expresión regular para validar el email

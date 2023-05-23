@@ -1,5 +1,6 @@
 // se obtiene el formulario
 const formulario = document.getElementById("formulario-password");
+
 // se obtienen los campos
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");

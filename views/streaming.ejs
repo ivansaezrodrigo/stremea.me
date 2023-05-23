@@ -10,8 +10,14 @@
   </div>
   <div class="flex flex-col justify-center items-center p-4 w-full">
     <% if(typeof viewer !== 'undefined' && viewer == true) { %>
-    <button class="font-bold mx-2" id="my-button">View Stream</button>
-    <button class="font-bold mx-2" id="stop-button">Stop Stream</button>
+    <div class="flex w-full flex-col justify-center md:flex-row  lg:w-2/3 max-w-7xl sm:px-14">
+      <button class="font-bold mx-2 my-5 text-lg bg-primary-100 text-black hover:bg-primary-200 active:border-none active:mt-6
+      py-2 rounded-lg transition duration-300  
+      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="my-button">View Stream</button>
+      <button class="font-bold mx-2 my-5 text-lg text-white  bg-red-700 hover:bg-red-800 active:border-none active:mt-6
+      py-2 rounded-lg transition duration-300  
+      border-b-4 border-primary-300 self-center w-full lg:w-1/2 max-w-lg" id="stop-button">Stop Stream</button>
+    </div>
 
     <% } else { %>
       <div class="flex w-full flex-col justify-center md:flex-row  lg:w-2/3 max-w-7xl sm:px-14">
@@ -257,7 +263,7 @@
       </div>
     </div>
     <!-- Chat y lista de usuarios -->
-    <div
+    <div id="chatYlistaDeUsuarios"
       class="mt-2 flex justify-center self-center flex-col-reverse lg:flex-row font-medium w-5/6 lg:w-2/3 max-w-7xl rounded-3xl"
     >
       <!-- Lista de usuarios -->
@@ -722,7 +728,7 @@ document.getElementById("hidden-button").onclick = () => {
   return "";
 }
 
-function generarListaDeUsuarios(usuarios) {
+  function generarListaDeUsuarios(usuarios) {
   let html = '';
 
   usuarios.forEach((usuario) => {
@@ -730,7 +736,7 @@ function generarListaDeUsuarios(usuarios) {
     
     // se genera un elemento HTML por cada elemento del array
     const elementoHTML = `
-      <div class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5">
+      <div id=${id} class="mt-2 flex justify-center items-center h-fit mb-2 sm:mb-0 border-2 border-b-4 border-primary-300 self-center flex-col font-medium bg-gray-100 py-3 w-full max-w-7xl rounded-3xl border-primary-300 p-5">
         <div class="flex flex-row w-full justify-center">
           <img class="h-20 w-20 rounded-full bg-primary-100 self-center shadow-md mr-4" src="/img/avatars/${avatar}.jpg" alt="">
           <div class="flex flex-col justify-center w-fit max-w-52">
@@ -798,18 +804,32 @@ function generarListaDeUsuarios(usuarios) {
   // Get room and users
   socket.on('roomUsers', ({ room, users }) => {
     console.log('users: '+JSON.stringify(users));
-    generarListaDeUsuarios(users);
+    var users = users;
+    
     <% if (usuarioRender.rol != 'mecenas') { %>
     for (let i = 0; i < users.length; i++) {
       if(users[i].alias == aliasStreamer){
         imgStreamer.src = '/img/avatars/'+users[i].avatar+'.jpg';
+        
+        // se eliminar de la lista de usuarios el usuario streamer
+        users.splice(i, 1);
+
       }
     }
+    generarListaDeUsuarios(users);
     <% } %>
   });
 
-// Message from server
-socket.on('message', (data) => {
+  // Recibimos el mensaje de echar usuario
+  socket.on('echar', (data) => {
+    console.log('data: '+JSON.stringify(data));
+    if(data.idUsuario == socket.id){
+      window.location.href = '/kicked';
+    }
+  });
+
+  // Message from server
+  socket.on('message', (data) => {
   // console.log('data:',data)
   const { name, message, avatar, socketId} = data;
   if(socketId == socket.id){
@@ -836,6 +856,7 @@ socket.on('message', (data) => {
   const btnDark = document.getElementById("btnDark");
   // const btnVentana = document.getElementById("btnVentana");
   const btnChat = document.getElementById("btnChat");
+  const chatYlistaDeUsuarios = document.getElementById("chatYlistaDeUsuarios");
   const divStreaming = document.getElementById("divStreaming");
   const divComentarios = document.getElementById("divComentarios");
   const imgPrivate = document.getElementById("imgPrivate");
@@ -889,14 +910,13 @@ socket.on('message', (data) => {
   // cuando se pulse el botón de chat se abrirá una nueva ventana con divComentarios
   btnChat.addEventListener("click", (e) => {
     e.preventDefault();
-    // la ventana tendrá el mismo estilo que el divComentarios
-    ventana = window.open(
-      "",
-      "StremeaMe",
-      "location=0,status=0,menubar=0,toolbar=0,scrollbars=0,resizable=0,width=500,height=500"
-    );
-    // se escribirá el contenido del divComentarios en la ventana
-    ventana.document.write(divComentarios.innerHTML);
+    
+    // se ocultara o mostrara chatYlistaDeUsuarios
+    if (chatYlistaDeUsuarios.classList.contains("hidden")) {
+      chatYlistaDeUsuarios.classList.remove("hidden");
+    } else {
+      chatYlistaDeUsuarios.classList.add("hidden");
+    }
   });
 
 
@@ -936,10 +956,15 @@ socket.on('message', (data) => {
       socket.on('echar', ({ echarIdUsuario }) => {  
         // si el id del usuario a echar es igual al id del usuario que ha pulsado el botón de echar se ejecutará el siguiente código
         if (echarIdUsuario == idUsuario) {
-          // se muestra un mensaje de confirmación
-          Swal.fire("Echado!", "", "success");
-          // se reenvia al usuario a la página de inicio
-          window.location.href = "/";
+
+          let users = users.filter(user => user.id != idUsuario);
+    
+          // actualizamos la lista de usuarios
+         generarListaDeUsuarios(users);
+
+                   // se muestra un mensaje de confirmación
+                   //Swal.fire("¡Echado!", "", "success");
+
         }
   });
 
@@ -948,27 +973,30 @@ socket.on('message', (data) => {
   Swal.fire({
     title: "¿Qué quieres hacer?",
     showDenyButton: true,
+    showConfirmButton: false,
     showCancelButton: true,
     confirmButtonText: `Echar`,
-    denyButtonText: `Banear`,
+    denyButtonText: `Echar`,
   }).then(async (result) => {
     // si se pulsa echar se ejecutará el siguiente código
-    if (result.isConfirmed) {
+    if (result.isDenied) {
       // se envia un mensaje al usuario para que sepa que ha sido expulsado
-      socket.emit('message', { name: 'StremeaMe', message: 'Has sido expulsado de la sala', avatar: 'mascota', socketId: idUsuario });
+      //socket.emit('message', { name: 'StremeaMe', message: 'Has sido expulsado de la sala', avatar: '', socketId: idUsuario });
       // se envia un mensaje al servidor para que expulse al usuario
       socket.emit('echar', { idUsuario });
       // se muestra un mensaje de confirmación
-      Swal.fire("Echado!", "", "success");
-    } else if (result.isDenied) {
-      // si se pulsa banear se ejecutará el siguiente código
-      // se envia un mensaje al usuario para que sepa que ha sido baneado
-      socket.emit('message', { name: 'StremeaMe', message: 'Has sido baneado de la sala', avatar: 'mascota', socketId: idUsuario });
-      // se envia un mensaje al servidor para que banee al usuario
-      socket.emit('banear', { idUsuario, idStreaming });
-      // se muestra un mensaje de confirmación
-      Swal.fire("Baneado!", "", "success");
-    }
+      //Swal.fire("Echado!", "", "success");
+      
+      // eliminamos del html el usuario expulsado
+      listaDeUsuarios.removeChild(document.getElementById(idUsuario));
+
+
+
+
+    // se muestra un mensaje de confirmación
+    Swal.fire("¡Echado!", "", "success");
+
+    } 
   });
 }
 

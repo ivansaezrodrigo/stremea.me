@@ -107,7 +107,7 @@ const createUser = async (req, res) => {
       }
     } else {
       // Si hay errores en la validación, renderizamos la página de registro con los errores
-      res.render("register", { title: "Registro", errors: error.details });
+      res.status(400).send();
     }
   }
 };
@@ -300,13 +300,10 @@ const loginUser = async (req, res) => {
 
   // Validamos los datos
   const { error } = schemaLogin.validate(req.body);
-
+  console.log(req.body);
   if (error) {
     // si hay errores devolvemos el formulario con los errores
-    return res.render("login", {
-      title: "Iniciar sesión",
-      errors: error.details,
-    });
+    res.status(400).json({ message: "Usuario no encontrado" });
   } else {
     try {
       const { email, password } = req.body;

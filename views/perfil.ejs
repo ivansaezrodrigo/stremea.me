@@ -15,7 +15,13 @@
                                     <input title="Alias aleatorio en japones" disabled class="cursor-not-allowed border border-gray-200 rounded-lg pl-2 py-2
                                     font-medium bg-gray-300 px-6 border-b-4 border-primary-300"  <% if(user.alias != undefined) {%> value="<%= user.alias %>" <% } %>  type="text" placeholder="Introduce tu correo" name="alias" id="alias">
                                 </div>
-                                <div class="flex flex-col md:flex-row w-fit">                                   
+                                <div class="flex flex-col md:flex-row w-fit">
+                                    <!-- <div class="flex flex-col max-w-80 w-fit pr-5 sm:pl-2">
+                                        <label class="text-2xl rounded-md my-1.5 font-bold text-black w-fit" for="image">Imagen</label>
+                                        <input class="hidden border border-gray-200 rounded-lg pl-2 py-2
+                                        font-medium bg-white px-6 border-b-4 border-primary-300" type="text" placeholder="Id imagen" name="image" id="image">
+                                    </div> -->
+                                    
                                     <div class="flex flex-col h-20 mr-3">
                                         <label class="text-2xl rounded-md my-1.5 font-bold text-black w-fit" for="image">Imagen</label>
                                         <a href="#"  title="Imagen de perfil aleatoria">
@@ -41,7 +47,13 @@
                                         <input title="Alias" class="border border-gray-200 rounded-lg pl-2 py-2
                                         font-medium bg-white px-6 border-b-4 border-primary-300"  <% if(user.alias != undefined) {%> value="<%= user.alias %>" <% } %>  type="text" placeholder="Introduce tu correo" name="alias" id="alias">
                                     </div>
-                                    <div class="flex flex-col md:flex-row w-fit">                                        
+                                    <div class="flex flex-col md:flex-row w-fit">
+                                        <!-- <div class="flex flex-col max-w-80 w-fit pr-5 sm:pl-2">
+                                            <label class="text-2xl rounded-md my-1.5 font-bold text-black w-fit" for="image">Imagen</label>
+                                            <input class="hidden border border-gray-200 rounded-lg pl-2 py-2
+                                            font-medium bg-white px-6 border-b-4 border-primary-300" type="text" placeholder="Id imagen" name="image" id="image">
+                                        </div> -->
+                                        
                                         <div class="flex flex-col h-20 mr-3">
                                             <label class="text-2xl rounded-md my-1.5 font-bold text-black w-fit sm:ml-2" for="image">Imagen</label>
                                             <a href="#"  class="sm:ml-2" title="Imagen de perfil aleatoria">
@@ -114,4 +126,73 @@
     </div>
    
 </main>
-<script src="/js/perfil.js">
+<script>
+
+    // al clicar en idImagenPerfilBtn se reasigna de forma aleatoria la imagen de perfil
+    document.getElementById('idImagenPerfilBtn').addEventListener('click', () => {
+
+        let id = Math.floor(Math.random() * 10) + 1;
+        // mientras el id no sea el mismo que el que ya tiene
+        while (id == localStorage.getItem('idImagenPerfil')) {
+            id = Math.floor(Math.random() * 10) + 1;
+        }
+        // se cambia en sesion storage el valor de la imagen de perfil
+        localStorage.setItem('idImagenPerfil', id);
+
+        // se cambian la imagenes de perfil
+        document.querySelectorAll('.imagenPerfil').forEach((element) => {
+            element.src = `img/avatars/${id}.jpg`;
+        });
+        
+
+        // se recarga la pagina
+        // flocation.reload();
+    });
+
+    // Se obtiene el formulario
+    const form = document.getElementById('formPerfil');
+
+    // Se le asigna un evento al formulario
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const alias = document.getElementById('alias').value;
+      //const image = document.getElementById('image').value;
+      const twitter = document.getElementById('twitter').value;
+      const twitch = document.getElementById('twitch').value;
+      const url = document.getElementById('url').value;
+      const instagram = document.getElementById('instagram').value;
+        const email = document.getElementById('email').value;
+        const newsletter = document.getElementById('newsletter').checked;
+
+    axios.put('/user', {
+        alias,
+        twitter,
+        twitch,
+        url,
+        instagram,
+        email,
+        newsletter        
+    })
+      .then(response => {
+        // Meter aqui un modal de que se ha actualizado correctamente
+        console.log('Datos actualizados');
+        Swal.fire({
+                    icon: 'success',
+                    title: 'Datos guardados satisfactoriamente.',
+                    showConfirmButton: false,
+                    timer: 2500
+        })
+      
+      })
+      .catch(error => {
+        console.log(error);
+
+        Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ha ocurrido un error al actualizar los datos. Por favor, inténtalo de nuevo más tarde.',
+                    confirmButtonText: 'Aceptar'
+        })
+    });
+    });
+  </script>

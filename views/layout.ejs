@@ -29,12 +29,10 @@
   <script>
     // se obtienen todas las imagenes con la clase imagenPerfil
     let imagenesPerfil = document.querySelectorAll(".imagenPerfil");
-    console.log(imagenesPerfil);
+
     // se recorren todas las imagenes con la clase imagenPerfil y se les asigna el id de la imagen de perfil
     imagenesPerfil.forEach((imagen) => {
-      imagen.src = `/img/avatars/${localStorage.getItem(
-        "idImagenPerfil"
-      )}.jpg`;
+      imagen.src = '/img/avatars/'+localStorage.getItem("idImagenPerfil")+`.jpg`;
     });
 
   </script>

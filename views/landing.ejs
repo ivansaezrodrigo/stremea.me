@@ -1,3 +1,72 @@
+<script>
+  // se obtienen los elementos del DOM
+  const busqueda_landing = document.getElementById('busqueda-landing');
+  const codigo_busqueda = document.getElementById('busqueda');
+
+  // Por cada letra que se envie se comprueba si existe en la bbdd y si es así se redirige a la sala
+  busqueda_landing.addEventListener('submit', (e) => {
+    e.preventDefault();
+    //hacemos una petición por axios para comprobar si existe la sala
+    axios
+      .get(`/room/${codigo_busqueda.value}`)
+      .then((res) => {
+        if (res.status === 200) {
+          window.location.href = `/room/${codigo_busqueda.value}`;
+        }
+      })
+      .catch((err) => {
+        // si no existe la sala se muestra un mensaje de error
+        Swal.fire({
+          title: '¡Error!',
+          text: 'El código introducido no es válido.',
+          icon: 'error',
+          timer: 8000,
+          showConfirmButton: false,
+        });
+      });
+  });
+
+  // si llega algun parametro en la cabecera se muestra el mensaje correspondiente
+  <% try { %>
+    <% if (typeof updated !== 'undefined' && updated) { %>
+        Swal.fire({
+            title: '¡Desuscrito!',
+            text: 'Gracias por aguantarnos tanto tiempo 😊.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+        })
+    <% }  else if (typeof updated !== 'undefined' && updated == false) {%>
+        Swal.fire({
+            title: '¡Error!',
+            text: 'Ha ocurrido un error al desuscribirte.',
+            icon: 'error',
+            timer: 8000,
+            showConfirmButton: false
+        })
+    <% } else if (typeof error !== 'undefined' && error == true) {%>
+        Swal.fire({
+            title: '¡Vaya!',
+            text: '<%- message %>',
+            icon: 'error',
+            timer: 8000,
+            showConfirmButton: false
+        })
+        <% } %>
+        <% if (typeof error !== 'undefined' && error) { %>
+        Swal.fire({
+            title: '¡Vaya!',
+            text: '<%- message %>',
+            icon: 'error',
+            timer: 8000,
+            showConfirmButton: false
+        })   
+        <% } %>
+    <% } catch (error) { %>
+        // se redirige al landing si algo falla
+        window.location.href = '/';
+    <% } %>
+
+</script>
 <main class="row-span-4 bg-gradient-to-t from-white to-gray-300">
   <div
     class="-mt-3 bg-gradient-to-t from-secondary-200 to-secondary-100 shadow-sm bg-cover min-h-fit max-h-max"
@@ -104,72 +173,4 @@
   </div>
   <img class="sm:-mt-36" src="/img/wave-gris.svg" alt="Ola gris" />
 </main>
-<script>
-  // se obtienen los elementos del DOM
-  const busqueda_landing = document.getElementById('busqueda-landing');
-  const codigo_busqueda = document.getElementById('busqueda');
 
-  // Por cada letra que se envie se comprueba si existe en la bbdd y si es así se redirige a la sala
-  busqueda_landing.addEventListener('submit', (e) => {
-    e.preventDefault();
-    //hacemos una petición por axios para comprobar si existe la sala
-    axios
-      .get(`/room/${codigo_busqueda.value}`)
-      .then((res) => {
-        if (res.status === 200) {
-          window.location.href = `/room/${codigo_busqueda.value}`;
-        }
-      })
-      .catch((err) => {
-        // si no existe la sala se muestra un mensaje de error
-        Swal.fire({
-          title: '¡Error!',
-          text: 'El código introducido no es válido.',
-          icon: 'error',
-          timer: 8000,
-          showConfirmButton: false,
-        });
-      });
-  });
-
-  // si llega algun parametro en la cabecera se muestra el mensaje correspondiente
-  <% try { %>
-    <% if (typeof updated !== 'undefined' && updated) { %>
-        Swal.fire({
-            title: '¡Desuscrito!',
-            text: 'Gracias por aguantarnos tanto tiempo 😊.',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-        })
-    <% }  else if (typeof updated !== 'undefined' && updated == false) {%>
-        Swal.fire({
-            title: '¡Error!',
-            text: 'Ha ocurrido un error al desuscribirte.',
-            icon: 'error',
-            timer: 8000,
-            showConfirmButton: false
-        })
-    <% } else if (typeof error !== 'undefined' && error == true) {%>
-        Swal.fire({
-            title: '¡Vaya!',
-            text: '<%- message %>',
-            icon: 'error',
-            timer: 8000,
-            showConfirmButton: false
-        })
-        <% } %>
-        <% if (typeof error !== 'undefined' && error) { %>
-        Swal.fire({
-            title: '¡Vaya!',
-            text: '<%- message %>',
-            icon: 'error',
-            timer: 8000,
-            showConfirmButton: false
-        })   
-        <% } %>
-    <% } catch (error) { %>
-        // se redirige al landing si algo falla
-        window.location.href = '/';
-    <% } %>
-
-</script>

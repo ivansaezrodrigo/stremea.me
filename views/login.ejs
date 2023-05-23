@@ -72,76 +72,9 @@
         <a class="inline self-center pb-5" href="/recovery"
           >¿No puedes iniciar sesión?</a
         >
-        <hr class="w-48 h-0.5 mx-auto my-1 bg-gray-900 border-0 rounded" />
-        <span class="self-center font-normal text-gray-800"
-          ><i>O continúa con:</i></span
-        >
-        <button
-          class="self-center my-2 text-lg text-black font-bold bg-white hover:bg-gray-200 active:border-none active:mt-3 py-2 w-5/6 rounded-lg transition duration-300 border-b-4 border-primary-300"
-          href=""
-        >
-          <img
-            class="w-5 h-5 inline mb-1 mr-2"
-            src="/img/google-logo.svg"
-            alt="Logo de google"
-          />Google
-        </button>
       </div>
     </div>
     <img src="/img/wave-gris.svg" alt="Ola gris" />
   </div>
 </main>
-
-<script>
-  const email = document.getElementById("email");
-  const password = document.getElementById("password");
-  const form = document.getElementById("formulario-login");
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    // Validación de campos vacíos
-    if (email.value == "" || password.value == "") {
-      Swal.fire({
-        icon: "warning",
-        title: "Atención",
-        text: "Todos los campos son obligatorios.",
-        confirmButtonText: "Aceptar",
-      });
-      // Validación de formato del password
-    } else if (password.value.length < 8) {
-      Swal.fire({
-        icon: "warning",
-        title: "Atención",
-        text: "La contraseña debe tener al menos 8 caracteres.",
-        confirmButtonText: "Aceptar",
-      });
-    } else {
-        // Envío del formulario
-        axios.post('/login', {
-            email: email.value,
-            password: password.value
-        }).then((response) => {
-            if(response.status == 200) {
-                window.location.href = '/';
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: "Atención",
-                    text: 'Correo o contraseña incorrecta',
-                    confirmButtonText: 'Aceptar'
-                });
-            }
-        }).catch((error) => {
-            Swal.fire({
-                icon: 'warning',
-                title: "Atención",
-                text: 'Correo o contraseña incorrecta',
-                confirmButtonText: 'Aceptar'
-            });
-        });
-    }
-
-
-  });
-</script>
+<script src="/js/login.js">

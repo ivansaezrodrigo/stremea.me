@@ -30,9 +30,6 @@ router.get('/kicked', vista.vistaKicked);
 router.get('/recovery', vista.vistaRecovery);
 router.get('/recovered', vista.vistaRecovered);
 
-router.get('/streamer', isAuth , vista.vistaStreamer);
-router.get('/viewer', isAuth , vista.vistaViewer);
-
 router.get('/recovering/:token', isNotAuth ,vista.vistaRecovering);
 router.get('/unsubscribe/:token' , vista.vistaUnsuscribe);
 

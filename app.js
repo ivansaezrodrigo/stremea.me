@@ -26,6 +26,9 @@ const router = require('./routes/routes.js');
 // Usamos express
 const app = express();
 
+// Importamos tailwindcss
+const tailwindcss = require('tailwindcss');
+
 // Importamos http para poder usar socket.io
 const http = require('http');
 const server = http.createServer(app);

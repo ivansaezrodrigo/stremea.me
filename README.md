@@ -7,7 +7,7 @@ A continuación, se describen los pasos para ejecutar el proyecto de **Iván Sá
 ## Paso 1: Preparación del entorno
 
 1.  Crea una nueva carpeta en tu escritorio o en cualquier ubicación deseada.
-2.  Copia el contenido de la carpeta "**Node**" desde el USB a la carpeta recién creada.
+2.  Copia el contenido de la carpeta "**Node**" desde el repositorio a la carpeta recién creada.
 
 ## Paso 2: Instalación de Node.js
 
